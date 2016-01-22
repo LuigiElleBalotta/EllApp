@@ -49,11 +49,12 @@
         if (messaggio != "") {
             $("#container_chat").html($("#container_chat").html() + '<div class="row"><div class="col-xs-12 text-right"><div class="bubble bubble--alt">' + messaggio + '</div></div></div>');
             $("#message").val("");
+            
         }
     }
 
     function updateScroll() {
-        $('#container_chat').scrollTop($('#container_chat').scrollHeight);
+        $("#container_chat").scrollTop($("#container_chat")[0].scrollHeight);
     }
 
 } )();
