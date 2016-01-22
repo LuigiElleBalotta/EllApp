@@ -1,8 +1,5 @@
 ﻿/* Bit of normalisation */
 
-body {
-}
-
 img {
 	display: block;
 	height: auto;
@@ -83,6 +80,7 @@ background-image: -webkit-gradient(
 	color-stop(1, rgb(122,205,71))
 );
 float:right;
+margin-right: 5px;
 }
 
 .bubble--alt:before {
@@ -97,27 +95,5 @@ float:right;
 	border-radius: 20px / 10px;
 	left: auto;
 	right: -5px;
-}
-
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 37px;
-}
-#container_text {
-  position: fixed;
-  bottom: 0;
-  /* Set the fixed height of the footer here */
-  height: 37px;
-  background-color: #f5f5f5;
-}
-
-#container-chat{
-    overflow-y: scroll;
-    background-color: red;
 }
 
