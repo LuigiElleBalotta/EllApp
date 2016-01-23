@@ -6,7 +6,13 @@
     "use strict";
 
     document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
-
+    var lastMessage = "";
+    /*var conn = new WebSocket('ws://localhost:8080/echo');
+    conn.onmessage = function (e) { console.log(e.data); lastMessage = e.data; };
+    conn.onopen = function (e) {
+        //document.getElementById("conn").innerText = "Connection established!";
+        //conn.send('Hello Me!');
+    };*/
     function onDeviceReady() {
         // Gestire gli eventi di sospensione e ripresa di Cordova
         document.addEventListener( 'pause', onPause.bind( this ), false );
@@ -15,12 +21,6 @@
         document.getElementById("sendMessageBTN").addEventListener('click', sendMessage.bind(this), false);
         
         // TODO: Cordova è stato caricato. Eseguire qui eventuali operazioni di inizializzazione richieste da Cordova.
-        /*var conn = new WebSocket('ws://localhost:8080/echo');
-        conn.onmessage = function (e) { console.log(e.data); };
-        conn.onopen = function (e) {
-            document.getElementById("conn").innerText = "Connection established!";
-            conn.send('Hello Me!');
-        };*/
         $("#message").focus();
         setInterval(updateScroll, 100);
         
@@ -47,7 +47,11 @@
     {
         var messaggio = $("#message").val();
         if (messaggio != "") {
-            $("#container_chat").html($("#container_chat").html() + '<div class="row"><div class="col-xs-12 text-right"><div class="bubble bubble--alt">' + messaggio + '</div></div></div>');
+            $("#container_chat").append('<div class="row"><div class="col-xs-12 text-right"><div class="bubble bubble--alt">' + messaggio + '</div></div></div>');
+            //conn.send("Risposta Automatica dal server");
+            lastMessage = "Risposta Automatica dal server";
+            if (lastMessage != "")
+                $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble">'+lastMessage+'</div></div></div>');
             $("#message").val("");
             
         }
