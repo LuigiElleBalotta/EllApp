@@ -7,12 +7,16 @@
 
     document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
     var lastMessage = "";
-    /*var conn = new WebSocket('ws://localhost:8080/echo');
-    conn.onmessage = function (e) { console.log(e.data); lastMessage = e.data; };
+    var conn = new WebSocket('ws://localhost:8080/echo');
+    conn.onmessage = function (e) {
+        lastMessage = e.data;
+        if (lastMessage != "")
+            $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble">' + lastMessage + '</div></div></div>');
+    };
     conn.onopen = function (e) {
         //document.getElementById("conn").innerText = "Connection established!";
         //conn.send('Hello Me!');
-    };*/
+    };
     function onDeviceReady() {
         // Gestire gli eventi di sospensione e ripresa di Cordova
         document.addEventListener( 'pause', onPause.bind( this ), false );
@@ -47,18 +51,42 @@
     {
         var messaggio = $("#message").val();
         if (messaggio != "") {
-            $("#container_chat").append('<div class="row"><div class="col-xs-12 text-right"><div class="bubble bubble--alt">' + messaggio + '</div></div></div>');
-            //conn.send("Risposta Automatica dal server");
-            lastMessage = "Risposta Automatica dal server";
-            if (lastMessage != "")
-                $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble">'+lastMessage+'</div></div></div>');
-            $("#message").val("");
-            
+            if (isSpecialCommand(messaggio))
+                executeCommand(messaggio);
+            else {
+                $("#container_chat").append('<div class="row"><div class="col-xs-12 text-right"><div class="bubble bubble--alt">' + messaggio + '</div></div></div>');
+                conn.send(messaggio);
+                //lastMessage = "Risposta Automatica dal server";
+                $("#message").val("");
+            }
         }
     }
 
     function updateScroll() {
         $("#container_chat").scrollTop($("#container_chat")[0].scrollHeight);
+    }
+
+    function isSpecialCommand(cmd)
+    {
+        var bool = false;
+        switch(cmd)
+        {
+            case "/clearchat":
+                bool = true;
+                break;
+        }
+        return bool;
+    }
+
+    function executeCommand(cmd)
+    {
+        switch(cmd)
+        {
+            case "/clearchat":
+                $("#container_chat").html("");
+                $("#message").val("");
+                break;
+        }
     }
 
 } )();
