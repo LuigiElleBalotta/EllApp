@@ -54,7 +54,7 @@
             if (isSpecialCommand(messaggio))
                 executeCommand(messaggio);
             else {
-                $("#container_chat").append('<div class="row"><div class="col-xs-12 text-right"><div class="bubble bubble--alt">' + messaggio + '</div></div></div>');
+                $("#container_chat").append('<div class="row"><div class="col-xs-12 text-right"><div class="bubble bubble--alt"><div class="text-left"><h6><small><b>nomeutente</b></small></h6>' + messaggio + '</div></div></div>');
                 conn.send(messaggio);
                 $("#message").val("");
             }
