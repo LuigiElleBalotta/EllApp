@@ -7,11 +7,17 @@
 
     document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
     var lastMessage = "";
-    var conn = new WebSocket('ws://localhost:8080/echo');
+    var conn = new WebSocket('ws://192.168.0.100:8080/echo');
     conn.onmessage = function (e) {
         lastMessage = e.data;
         if (lastMessage != "")
-            $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble">' + lastMessage + '</div></div></div>');
+        {
+            var arr = lastMessage.split("|");
+            var utente = arr[0];
+            lastMessage = arr[1];
+            $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble"><div class="text-left"><h6><small><b>'+utente+'</b></small></h6></div>' + lastMessage + '</div></div></div>');
+        }
+            
     };
     conn.onopen = function (e) {
         //document.getElementById("conn").innerText = "Connection established!";
@@ -54,7 +60,7 @@
             if (isSpecialCommand(messaggio))
                 executeCommand(messaggio);
             else {
-                $("#container_chat").append('<div class="row"><div class="col-xs-12 text-right"><div class="bubble bubble--alt"><div class="text-left"><h6><small><b>nomeutente</b></small></h6>' + messaggio + '</div></div></div>');
+                $("#container_chat").append('<div class="row"><div class="col-xs-12 text-right"><div class="bubble bubble--alt">' + messaggio + '</div></div></div>');
                 conn.send(messaggio);
                 $("#message").val("");
             }
