@@ -15,6 +15,7 @@ class Chat implements MessageComponentInterface {
         $this->clients->attach($conn);
 
         echo "New connection! ({$conn->resourceId})\n";
+        $conn->send("Server Message|Sei connesso");
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
