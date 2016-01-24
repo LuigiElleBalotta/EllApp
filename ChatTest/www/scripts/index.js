@@ -56,7 +56,6 @@
             else {
                 $("#container_chat").append('<div class="row"><div class="col-xs-12 text-right"><div class="bubble bubble--alt">' + messaggio + '</div></div></div>');
                 conn.send(messaggio);
-                //lastMessage = "Risposta Automatica dal server";
                 $("#message").val("");
             }
         }
