@@ -4,6 +4,7 @@ Instant Message chat for iOS, Android and Windows Phone, written with Apache Cor
 ## How to Use
 ### Server Side
 (Add php command to the CMD, search on google a guide)
+
 1. Open CMD
 2. Navigate to the WebSocketChat/bin folder
 3. Execute "php chat-server.php"
