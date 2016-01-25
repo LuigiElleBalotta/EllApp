@@ -30,6 +30,7 @@
         $("#container_text").hide();
         $("#backBTN").hide();
         $("#container_box_chat").hide();
+        var db = openDatabase("my.db", "1.0", "test", 20000);//need test on real device
     };
 
     function connectToServer()
