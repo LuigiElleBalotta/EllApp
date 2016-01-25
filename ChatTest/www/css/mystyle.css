@@ -15,6 +15,7 @@ body {
 #container_chat{
     overflow-x: hidden;
     margin-bottom: 20px;
+    margin-top: 5px;
 }
 
 .user_box_chat{

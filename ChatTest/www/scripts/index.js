@@ -8,24 +8,12 @@
     document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
     var lastMessage = "";
     var conn = null;
+    var isConnected = false;
     function onDeviceReady() {
         // Gestire gli eventi di sospensione e ripresa di Cordova
         document.addEventListener( 'pause', onPause.bind( this ), false );
         document.addEventListener('resume', onResume.bind(this), false);
-        conn = new WebSocket('ws://127.0.0.1:8080/echo');
-        conn.onmessage = function (e) {
-            lastMessage = e.data;
-            if (lastMessage != "") {
-                var arr = lastMessage.split("|");
-                var utente = arr[0];
-                lastMessage = arr[1];
-                $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble"><div class="text-left"><h6><small><b>' + utente + '</b></small></h6></div>' + lastMessage + '</div></div></div>');
-            }
-        };
-        conn.onopen = function (e) {
-            //document.getElementById("conn").innerText = "Connection established!";
-            //conn.send('Hello Me!');
-        };
+        setInterval(connectToServer, 1000);
         document.getElementById("message").addEventListener('keydown', sendMessageOnEnterKey.bind(this), false);
         document.getElementById("sendMessageBTN").addEventListener('click', sendMessage.bind(this), false);
         document.getElementById("backBTN").addEventListener('click', backBtnClick.bind(this), false);
@@ -41,7 +29,32 @@
         $("#container_chat").hide();
         $("#container_text").hide();
         $("#backBTN").hide();
+        $("#container_box_chat").hide();
     };
+
+    function connectToServer()
+    {
+        if (!isConnected)
+        {
+            conn = new WebSocket('ws://127.0.0.1:8080/echo');
+            conn.onmessage = function (e) {
+                lastMessage = e.data;
+                if (lastMessage != "") {
+                    var arr = lastMessage.split("|");
+                    var utente = arr[0];
+                    lastMessage = arr[1];
+                    $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble"><div class="text-left"><h6><small><b>' + utente + '</b></small></h6></div>' + lastMessage + '</div></div></div>');
+                }
+            };
+            conn.onopen = function (e) {
+                //document.getElementById("conn").innerText = "Connection established!";
+                //conn.send('Hello Me!');
+                $(".spinner-loading").hide();
+                $("#container_box_chat").show();
+                isConnected = true;
+            };
+        }
+    }
 
     function onPause() {
         // TODO: questa applicazione è stata sospesa. Salvarne lo stato qui.
