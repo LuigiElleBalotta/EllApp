@@ -13,7 +13,7 @@ $("document").ready(function () {
             return false;
         }
         else {
-            $.post("http://ellapp.dev/login/elaboraLogin.php", "username=" + username + "&password=" + password, function (data, status) {
+            $.post("http://localhost/login/elaboraLogin.php", "username=" + username + "&password=" + password, function (data, status) {
                 var msg = "";
                 var canGoOn = false;
                 switch(data)
