@@ -1,7 +1,23 @@
 ﻿$("#avviso").hide();
 $("document").ready(function () {
+    if (localStorage.getItem("uname") != "" && localStorage.getItem("psw") != "")
+    {
+        $("#user_login").val(localStorage.getItem("uname"));
+        $("#user_pass").val(localStorage.getItem("psw"));
+        executeLogin();
+    }
     $("#loginBTN").click(function (e) {
-        e.preventDefault();
+        executeLogin(e);
+    });
+
+    function resetAvviso() {
+        $("#avviso").hide(300);
+        $("#risultato").html("");
+    }
+
+    function executeLogin(e)
+    {
+        //e.preventDefault();
         $("#loginBTN").button("loading");
         var username = $("#user_login").val().trim();
         var password = $("#user_pass").val().trim();
@@ -16,11 +32,12 @@ $("document").ready(function () {
             $.post("http://localhost/login/elaboraLogin.php", "username=" + username + "&password=" + password, function (data, status) {
                 var msg = "";
                 var canGoOn = false;
-                switch(data)
-                {
+                switch (data) {
                     case "1":
                         msg = "Accesso effettuato! Attendi..";
                         canGoOn = true;
+                        localStorage.setItem("uname", username);
+                        localStorage.setItem("psw", password);
                         break;
                     case "2":
                         msg = "Credenziali errate";
@@ -41,10 +58,5 @@ $("document").ready(function () {
                     setTimeout(function () { window.location.href = "../../index.html"; }, 100);
             });
         }
-    });
-
-    function resetAvviso() {
-        $("#avviso").hide(300);
-        $("#risultato").html("");
     }
 });

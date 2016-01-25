@@ -104,4 +104,5 @@
   <platform name="wp8">
     <splash src="res/screens/wp8/SplashScreenImage.jpg" width="480" height="800" />
   </platform>
+  <plugin name="cordova-plugin-device" version="1.1.1" />
 </widget>
