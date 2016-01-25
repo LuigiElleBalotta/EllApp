@@ -51,7 +51,17 @@
                 //conn.send('Hello Me!');
                 $(".spinner-loading").hide();
                 $("#container_box_chat").show();
+                $("#container_chat").hide();
+                $("#container_text").hide();
                 isConnected = true;
+            };
+
+            conn.onclose = function (e) {
+                $(".spinner-loading").show();
+                $("#container_box_chat").hide();
+                $("#container_chat").hide();
+                $("#container_text").hide();
+                isConnected = false;
             };
         }
     }
