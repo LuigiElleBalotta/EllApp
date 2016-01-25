@@ -24,7 +24,12 @@ Follow these steps in order.
 4. Login
 5. Start Chat.
 
-
 #### Note
 - You have to change the IP in the index.js to properly connect to YOUR chat server.
 - Registration have to be made. For the moment the user can be recognized by his client ID.
+
+What Works
+------
+- Registration
+- Login
+- Global Chat
