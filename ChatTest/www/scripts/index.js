@@ -40,6 +40,7 @@
         setInterval(updateScroll, 100);
         $("#container_chat").hide();
         $("#container_text").hide();
+        $("#backBTN").hide();
     };
 
     function onPause() {
@@ -103,6 +104,7 @@
     {
         $("#container_chat").hide();
         $("#container_text").hide();
+        $("#backBTN").hide();
         $("#container_box_chat").show();
     }
 
@@ -110,6 +112,7 @@
     {
         $("#container_chat").show();
         $("#container_text").show();
+        $("#backBTN").show();
         $("#container_box_chat").hide();
     }
 
