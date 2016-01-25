@@ -29,10 +29,18 @@
         document.addEventListener('resume', onResume.bind(this), false);
         document.getElementById("message").addEventListener('keydown', sendMessageOnEnterKey.bind(this), false);
         document.getElementById("sendMessageBTN").addEventListener('click', sendMessage.bind(this), false);
+        document.getElementById("backBTN").addEventListener('click', backBtnClick.bind(this), false);
+        var chats = document.getElementsByClassName('user_box_chat_link');
+        for (var i = 0; i < chats.length; i++)
+        {
+            chats[i].addEventListener('click', showChat.bind(this), false);
+        }
         
         // TODO: Cordova è stato caricato. Eseguire qui eventuali operazioni di inizializzazione richieste da Cordova.
         $("#message").focus();
         setInterval(updateScroll, 100);
+        $("#container_chat").hide();
+        $("#container_text").hide();
     };
 
     function onPause() {
@@ -90,6 +98,20 @@
                 $("#message").val("");
                 break;
         }
+    }
+
+    function backBtnClick()
+    {
+        $("#container_chat").hide();
+        $("#container_text").hide();
+        $("#container_box_chat").show();
+    }
+
+    function showChat()
+    {
+        $("#container_chat").show();
+        $("#container_text").show();
+        $("#container_box_chat").hide();
     }
 
 } )();

@@ -33,3 +33,7 @@ body {
 .user_box_chat_link:visited{
     color: #000000;
 }
+
+.btn_back_chat_general{
+    width: 100%;
+}
