@@ -47,8 +47,6 @@
                 }
             };
             conn.onopen = function (e) {
-                //document.getElementById("conn").innerText = "Connection established!";
-                //conn.send('Hello Me!');
                 $(".spinner-loading").hide();
                 $("#container_box_chat").show();
                 $("#container_chat").hide();
