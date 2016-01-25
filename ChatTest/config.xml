@@ -3,7 +3,7 @@
   <name>EllApp</name>
   <description>Instant Message chat for iOS, Android and Windows Phone, written with Apache Cordova with Visual Studio 2015. (In Development)</description>
   <author href="http://cordova.io" email="dev@cordova.apache.org">Luigi Elle Balotta</author>
-  <content src="core/login.html" />
+  <content src="core/login/login.html" />
   <access origin="*" />
   <vs:features />
   <preference name="SplashScreen" value="screen" />

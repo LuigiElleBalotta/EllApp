@@ -3,7 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Login</title>
-    <link href="../css/bootstrap.css" rel="stylesheet" />
+    <link href="../../css/bootstrap.css" rel="stylesheet" />
+    <link href="../../css/mystyle.css" rel="stylesheet" />
 </head>
 <body>
     <div>
@@ -12,23 +13,21 @@
             <small>Written thanks to Apache Cordova</small>
         </div>
         <div id="container_login_form">
-            <form action="./elaboraLogin" method="post" id="loginform" name="loginform" onSubmit="return validateform();">
-                <div class="form-group has-feedback">
-                    <input type="text" id="user_login" name="username" class="form-control" placeholder="Username">
-                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            <div class="form-group has-feedback">
+                <input type="text" id="user_login" name="username" class="form-control" placeholder="Username">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" name="password" id="user_pass" class="form-control" placeholder="Password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <!-- /.col -->
+                <div class="col-xs-4 col-xs-offset-4">
+                    <button id="loginBTN" class="btn btn-primary btn-block btn-flat" data-loading-text="<!--<i class='spinner-loading'></i>-->Loading...">Sign In</button>
                 </div>
-                <div class="form-group has-feedback">
-                    <input type="password" name="password" id="user_pass" class="form-control" placeholder="Password">
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                </div>
-                <div class="row">
-                    <!-- /.col -->
-                    <div class="col-xs-4 col-xs-offset-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-                    </div>
-                    <!-- /.col -->
-                </div>
-            </form>
+                <!-- /.col -->
+            </div>
             <br />
             <div class="row">
                 <div class="col-xs-12 text-left">
@@ -38,7 +37,8 @@
         </div>
     </div>
     <!-- Riferimento Cordova aggiunto all'app durante la compilazione. -->
-    <script src="cordova.js"></script>
-    <script src="scripts/platformOverrides.js"></script>
+    <script src="../../scripts/jquery.js"></script>
+    <script src="../../scripts/bootstrap.js"></script>
+    <script src="login.js"></script>
 </body>
 </html>
