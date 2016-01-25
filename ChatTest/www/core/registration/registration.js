@@ -1,7 +1,6 @@
-﻿$("document").ready(function ()
+﻿$("#avviso").hide();
+$("document").ready(function ()
 {
-    $("#avviso").hide();
-
     $("#inviaModuloCreazioneAccount").click(function (e)
     {
         e.preventDefault();
