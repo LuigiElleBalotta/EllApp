@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Login</title>
+    <link href="../css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        <div class="text-center">
+            <h3><b>EllApp</b></h3>
+            <small>Written thanks to Apache Cordova</small>
+        </div>
+        <div id="container_login_form">
+            <form action="./elaboraLogin" method="post" id="loginform" name="loginform" onSubmit="return validateform();">
+                <div class="form-group has-feedback">
+                    <input type="text" id="user_login" name="username" class="form-control" placeholder="Username">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" name="password" id="user_pass" class="form-control" placeholder="Password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <!-- /.col -->
+                    <div class="col-xs-4 col-xs-offset-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+            <br />
+            <div class="row">
+                <div class="col-xs-12 text-left">
+                    Hai bisogno di un account? <a href="registration/registration.html">Registrati</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Riferimento Cordova aggiunto all'app durante la compilazione. -->
+    <script src="cordova.js"></script>
+    <script src="scripts/platformOverrides.js"></script>
+</body>
+</html>

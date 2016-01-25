@@ -1,7 +1,7 @@
 .spinner-loading {
     width: 20px;
     height: 20px;
-    background-image: url("/css/spinner-loading.png");
+    background-image: url("spinner-loading.png");
     background-position: -140px 0px;
     display: inline-block;
     animation: 0.8s steps(21, end) 0s normal none infinite running keyframes-loading;

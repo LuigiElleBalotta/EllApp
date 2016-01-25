@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Registrazione</title>
+    <link href="../../css/bootstrap.css" rel="stylesheet" />
+    <link href="../../css/mystyle.css" rel="stylesheet" />
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+</head>
+<body>
+    <div>
+        <div class="text-center">
+            <h3><b>EllApp</b></h3>
+            <small>Written thanks to Apache Cordova</small>
+        </div>
+        <div class='register-box'>
+            <div id="register" class="register-box-body">
+                <div class="form-group has-feedback">
+                    <input class="form-control" placeholder="Username" id="user" type="text">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input class="form-control" placeholder="Email" id="email" type="email">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input class="form-control" placeholder="Password" id="psw" type="password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="text-center">
+                        <button id="inviaModuloCreazioneAccount" class="btn btn-primary btn-block btn-flat" data-loading-text="<!--<i class='spinner-loading'></i>-->Loading...">Register</button>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-xs-12">
+                        Hai già un account? <a href="../login.html">Loggati</a>.
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div id="avviso" class="callout callout-warning"><h4>Avviso:</h4><div id="risultato"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../scripts/jquery.js"></script>
+    <script src="../../scripts/bootstrap.js"></script>
+    <script src="registration.js"></script>
+</body>
+</html>
