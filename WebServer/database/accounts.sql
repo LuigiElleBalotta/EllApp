@@ -10,17 +10,18 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
--- Dump della struttura di tabella transferoiltest.accounts
+-- Dump della struttura di tabella ellapp.accounts
 CREATE TABLE IF NOT EXISTS `accounts` (
   `idAccount` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
+  `email` varchar(200) NOT NULL,
   `data_creazione` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_connection` date NOT NULL,
   `last_ip` varchar(50) NOT NULL,
   PRIMARY KEY (`idAccount`),
-  UNIQUE KEY `username` (`username`)
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- L’esportazione dei dati non era selezionata.
