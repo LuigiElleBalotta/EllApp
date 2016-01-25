@@ -39,6 +39,10 @@ body {
     width: 100%;
 }
 
+#userspan{
+    text-transform: capitalize;
+}
+
 /*
  * Component: Callout
  * ------------------

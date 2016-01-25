@@ -21,7 +21,7 @@
     <div class="container_all">
         <div class="text-center">
             <h3><b>EllApp</b></h3>
-            <small>Written thanks to Apache Cordova</small>
+            <small>Benvenuto <span id="userspan"></span></small>
             <br />
             <i class="spinner-loading"></i>
         </div>
@@ -62,5 +62,8 @@
     <script src="scripts/index.js"></script>
     <script src="scripts/jquery.js"></script>
     <script src="scripts/bootstrap.js"></script>
+    <script type="text/javascript">
+        $("document").ready(function () { document.getElementById("userspan").innerText = localStorage["uname"]; });
+    </script>
 </body>
 </html>
