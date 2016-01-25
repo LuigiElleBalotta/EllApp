@@ -7,7 +7,7 @@
 
     document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
     var lastMessage = "";
-    var conn = new WebSocket('ws://192.168.0.100:8080/echo');
+    var conn = new WebSocket('ws://127.0.0.1:8080/echo');
     conn.onmessage = function (e) {
         lastMessage = e.data;
         if (lastMessage != "")
@@ -33,8 +33,6 @@
         // TODO: Cordova è stato caricato. Eseguire qui eventuali operazioni di inizializzazione richieste da Cordova.
         $("#message").focus();
         setInterval(updateScroll, 100);
-        
-
     };
 
     function onPause() {
