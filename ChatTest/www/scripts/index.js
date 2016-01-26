@@ -36,7 +36,7 @@
     {
         if (!isConnected)
         {
-            conn = new WebSocket('ws://127.0.0.1:8080/echo');
+            conn = new WebSocket('ws://127.0.0.1:8080');
             conn.onmessage = function (e) {
                 lastMessage = e.data;
                 if (lastMessage != "") {
@@ -55,6 +55,7 @@
             };
 
             conn.onclose = function (e) {
+                alert("disconnected");
                 $(".spinner-loading").show();
                 $("#container_box_chat").hide();
                 $("#container_chat").hide();
