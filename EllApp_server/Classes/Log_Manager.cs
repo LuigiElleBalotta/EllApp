@@ -10,13 +10,15 @@ namespace EllApp_server.Classes
     class Log_Manager
     {
         MySqlConnection conn = null;
+        public string content = "", to_type = "";
+        public int from = 0, to = 0;
 
         public Log_Manager()
         {
             conn = new MySqlConnection("Server=localhost;Database=ellapp;Uid=root;Pwd=test;"); //ToDO: implement a config file and a class that reads from it
         }
 
-        public void log(string content, int from, string to_type, int to)
+        public void SaveLog()
         {
             conn.Open();
             MySqlCommand cmd = new MySqlCommand("INSERT INTO log_chat(`content`, `from`, `to_type`, `to`) VALUES(@content, @from, @totype, @to);", conn);

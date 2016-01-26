@@ -68,8 +68,12 @@ namespace EllApp_server
             try
             {
                 Console.WriteLine("Data Received From [" + aContext.ClientAddress.ToString() + "] - " + aContext.DataFrame.ToString());
-                var logMGR = new Log_Manager();
-                logMGR.log(aContext.DataFrame.ToString(), 1, "globalchat", 0);
+                var log = new Log_Manager();
+                log.content = aContext.DataFrame.ToString();
+                log.to_type = "globalchat";
+                log.from = 1;
+                log.to = 0;
+                log.SaveLog();
             }
             catch (Exception ex)
             {
