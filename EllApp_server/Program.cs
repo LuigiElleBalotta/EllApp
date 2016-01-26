@@ -6,7 +6,7 @@ using Alchemy;
 using Alchemy.Classes;
 using System.Collections.Concurrent;
 using System.Threading;
-
+using EllApp_server.Classes;
 
 namespace EllApp_server
 {
@@ -31,7 +31,7 @@ namespace EllApp_server
             aServer.Start();
 
 
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.Title = "EllApp WebSocket Server";
             Console.WriteLine("Running EllApp WebSocket Server ...");
             Console.WriteLine("[Type \"exit\" and hit enter to stop the server]");
@@ -59,7 +59,6 @@ namespace EllApp_server
             // Add a connection Object to thread-safe collection
             OnlineConnections.TryAdd(aContext.ClientAddress.ToString(), conn);
             conn.WelcomeMessage();
-
         }
 
 
@@ -69,7 +68,8 @@ namespace EllApp_server
             try
             {
                 Console.WriteLine("Data Received From [" + aContext.ClientAddress.ToString() + "] - " + aContext.DataFrame.ToString());
-
+                var logMGR = new Log_Manager();
+                logMGR.log(aContext.DataFrame.ToString(), 1, "globalchat", 0);
             }
             catch (Exception ex)
             {
