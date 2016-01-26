@@ -5,7 +5,7 @@ class db_class
     private $conn;
     
     function __construct() {
-        $this->conn = new mysqli(MYSQL_HOST, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE);
+        $this->conn = new mysqli(MYSQL_HOST, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE) or die("error connect to database");
     }
     
     public function validaLogin($username, $password)
