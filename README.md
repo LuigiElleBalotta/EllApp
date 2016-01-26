@@ -35,9 +35,9 @@ You can choose (for the moment) if use PHP server or C# server
 - Registration have to be made. For the moment the user can be recognized by his client ID.
 
 ## ScreenShots
-![Image of Menu](http://imgur.com/GIomM3z)
+# ![Chatrooms](http://i.imgur.com/2jSeFmr.png)
 
-![Image of Chat](http://imgur.com/Y67RcRz)
+# ![Chat](http://i.imgur.com/DlWUm2O.png)
 
 What Works
 ------
