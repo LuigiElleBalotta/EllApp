@@ -34,6 +34,10 @@ You can choose (for the moment) if use PHP server or C# server
 - You have to change the IP in the index.js to properly connect to YOUR chat server.
 - Registration have to be made. For the moment the user can be recognized by his client ID.
 
+## ScreenShots
+![Image of Menu](http://imgur.com/GIomM3z)
+![Image of Chat](http://imgur.com/Y67RcRz)
+
 What Works
 ------
 - Registration
