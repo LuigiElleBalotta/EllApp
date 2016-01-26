@@ -12,6 +12,7 @@ namespace EllApp_server
 {
     class Program
     {
+        public static Config_Manager config = new Config_Manager();
         //Thread-safe collection of Online Connections.
         protected static ConcurrentDictionary<string, Connection> OnlineConnections = new ConcurrentDictionary<string, Connection>();
 
@@ -20,7 +21,7 @@ namespace EllApp_server
             // instantiate a new server - acceptable port and IP range,
             // and set up your methods.
 
-            var aServer = new WebSocketServer(8080, System.Net.IPAddress.Any)
+            var aServer = new WebSocketServer(Convert.ToInt16(config.getValue("serverport")), System.Net.IPAddress.Any)
             {
                 OnReceive = OnReceive,
                 OnSend = OnSend,
@@ -106,6 +107,7 @@ namespace EllApp_server
     {
         public System.Threading.Timer timer;
         public UserContext Context { get; set; }
+        Config_Manager config = null;
         public Connection()
         {
             //this.timer = new System.Threading.Timer(this.TimerCallback, null, 0, 1000);
@@ -127,7 +129,8 @@ namespace EllApp_server
 
         public void WelcomeMessage()
         {
-            Context.Send("Server Message|Benvenuto!");
+            config = new Config_Manager();
+            Context.Send("Server Message|"+config.getValue("WelcomeMessage"));
         }
 
 
