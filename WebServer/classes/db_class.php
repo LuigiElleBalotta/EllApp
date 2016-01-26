@@ -140,10 +140,7 @@ class db_class
     
     public function setLastLogin($username)
     {
-        $dd = date("d");
-        $mm = date("m");
-        $aaaa = date("Y");
-        $query = $this->conn->prepare("UPDATE accounts SET last_connection = '".$aaaa."-".$mm."-".$dd."' WHERE username = '$username';");
+        $query = $this->conn->prepare("UPDATE accounts SET last_connection = '".date("Y-m-d H:i:s")."' WHERE username = '$username';");
         $query->execute();
         $query->close();
     }

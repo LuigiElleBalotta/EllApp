@@ -9,13 +9,14 @@ namespace EllApp_server.Classes
 {
     class Log_Manager
     {
+        Config_Manager conf = new Config_Manager();
         MySqlConnection conn = null;
         public string content = "", to_type = "";
         public int from = 0, to = 0;
 
         public Log_Manager()
         {
-            conn = new MySqlConnection("Server=localhost;Database=ellapp;Uid=root;Pwd=test;"); //ToDO: implement a config file and a class that reads from it
+            conn = new MySqlConnection("Server=" + conf.getValue("mysql_host") + ";Database=" + conf.getValue("mysql_db") + ";Uid=" + conf.getValue("mysql_user") + ";Pwd=" + conf.getValue("mysql_password") + ";"); //ToDO: implement a config file and a class that reads from it
         }
 
         public void SaveLog()

@@ -2,5 +2,5 @@ serverport = 8080;
 WelcomeMessage = Benvenuto!;
 mysql_host = localhost;
 mysql_user = root;
-mysql_password = smemoranda2012;
+mysql_password = ;
 mysql_db = ellapp;
