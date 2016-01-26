@@ -70,11 +70,30 @@ namespace EllApp_server
             {
                 Console.WriteLine("Data Received From [" + aContext.ClientAddress.ToString() + "] - " + aContext.DataFrame.ToString());
                 var log = new Log_Manager();
-                log.content = aContext.DataFrame.ToString();
-                log.to_type = "globalchat";
-                log.from = 1;
-                log.to = 0;
+                log.content = aContext.DataFrame.ToString();  
+                log.to_type = "globalchat";                       //this needs to be taken from user session
+                log.from = 1;                                     //this too
+                log.to = 0;                                       //this too
                 log.SaveLog();
+
+                if ("globalchat" == "globalchat") //At the moment there will be this stupid IF statement. When I'll know how to decide the chat type this will change
+                {
+                    var StCLog = new Log_Manager();
+                    var o = 1;
+                    foreach(var u in OnlineConnections.Values)
+                    {
+                        if (u.Context.ClientAddress.ToString() != aContext.ClientAddress.ToString())
+                        {
+                            u.Context.Send(aContext.ClientAddress.ToString()+"|" + aContext.DataFrame.ToString());
+                            StCLog.content = aContext.DataFrame.ToString();
+                            StCLog.to_type = "globalchat";                       //this needs to be taken from user session
+                            StCLog.from = 0;                                     //this too
+                            StCLog.to = o++;                                       //this too
+                            StCLog.SaveLog();
+                        }
+                    }
+                    Console.WriteLine("Message sent to {0} users", (o - 1));
+                }
             }
             catch (Exception ex)
             {
@@ -110,7 +129,7 @@ namespace EllApp_server
         Config_Manager config = null;
         public Connection()
         {
-            //this.timer = new System.Threading.Timer(this.TimerCallback, null, 0, 1000);
+            this.timer = new System.Threading.Timer(this.TimerCallback, null, 0, 1000);
         }
 
         private void TimerCallback(object state)
@@ -118,7 +137,7 @@ namespace EllApp_server
             try
             {
                 // Sending Data to the Client
-                Context.Send("[" + Context.ClientAddress.ToString() + "] " + System.DateTime.Now.ToString());
+                //Context.Send("[" + Context.ClientAddress.ToString() + "] " + System.DateTime.Now.ToString());
             }
             catch (Exception ex)
             {
@@ -132,7 +151,6 @@ namespace EllApp_server
             config = new Config_Manager();
             Context.Send("Server Message|"+config.getValue("WelcomeMessage"));
         }
-
 
     }
 
