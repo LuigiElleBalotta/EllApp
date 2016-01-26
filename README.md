@@ -5,7 +5,8 @@ Follow these steps in order.
 
 ## How to Use
 ### Server Side
-#### Chat Server
+You can choose (for the moment) if use PHP server or C# server
+#### Chat Server (PHP)
 (Add php command to the CMD, search on google a guide)
 
 1. Open CMD
@@ -13,7 +14,12 @@ Follow these steps in order.
 3. Execute "php chat-server.php"
 4. Don't close the Window
 
-#### Web Server
+#### Chat Server (C#)
+1. Open the Solution
+2. Compile in Release Mode.
+3. If you have trouble compiling, add the DLLS into "references" folder. [Let me google it for you](http://lmgtfy.com/?q=How+to+add+reference+in+visual+studio)
+
+#### Web Server (PHP)
 1. Put the content of WebServer into a WebHost root folder (you can register on altervista.org or hostinger.it to register a free domain)
 2. Rename config.php.conf into config.php and configure it.
 
