@@ -30,6 +30,7 @@
         $("#container_text").hide();
         $("#backBTN").hide();
         $("#container_box_chat").hide();
+        $("#messaggio").html("Connessione");
     };
 
     function connectToServer()
@@ -49,7 +50,8 @@
                 }
             };
             conn.onopen = function (e) {
-                $(".spinner-loading").hide();
+                $("#messages").hide();
+                $("#messaggio").html("");
                 $("#container_box_chat").show();
                 $("#container_chat").hide();
                 $("#container_text").hide();
@@ -63,8 +65,8 @@
             };
 
             conn.onclose = function (e) {
-                alert("disconnected");
-                $(".spinner-loading").show();
+                $("#messaggio").html("Tentativo di riconnessione..");
+                $("#messages").show();
                 $("#container_box_chat").hide();
                 $("#container_chat").hide();
                 $("#container_text").hide();

@@ -1,6 +1,19 @@
 ﻿html {
 }
 body {
+    background:url("../images/intro3.jpg") no-repeat fixed;
+    background-repeat:no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    cursor: context-menu;
+    color: #FFFFFF;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 #container_text {
   position: fixed;
@@ -19,11 +32,13 @@ body {
 }
 
 .user_box_chat{
-    border: 1px solid #BCC2C4;
+    border: 1px solid #000000;
     margin-top: 1px;
+    border-radius: 6px;
 }
 
 .user_box_chat_link{
+    text-shadow: none;
     color: #000000;
 }
 

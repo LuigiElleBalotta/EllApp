@@ -22,7 +22,6 @@ namespace EllApp_server.Classes
             var sha_pass = SHA1.Create();
             byte[] bytehash = sha_pass.ComputeHash(passwordbyte);
             _password = HexStringFromBytes(bytehash);
-            Console.WriteLine(_password.ToUpper());
 
 
             conn.Open();

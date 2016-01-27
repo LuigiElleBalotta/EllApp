@@ -43,6 +43,7 @@ background-image: -webkit-gradient(
 	width: auto;
 	max-width: 100%;
 	word-wrap: break-word;
+    color: #000000;
 }
 
 .bubble:before, .bubble:after {
@@ -83,6 +84,7 @@ background-image: -webkit-gradient(
 float:right;
 /*margin-right: 5px;*/
 margin-left: 2px;
+color: #000000;
 }
 
 .bubble--alt:before {
