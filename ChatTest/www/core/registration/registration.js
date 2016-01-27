@@ -26,7 +26,7 @@ $("document").ready(function ()
                 setTimeout(resetAvviso, 3000);
                 return false;
             }
-            $.post("http://localhost/registration/elaboraCreazione.php", "user=" + username + "&psw=" + password + "&email=" + email, function (data, status) {
+            $.post("http://localhost/registration/elaboraCreazione.php", "user=" + encodeURIComponent(username) + "&psw=" + encodeURIComponent(password) + "&email=" + encodeURIComponent(email), function (data, status) {
                 var msg = "";
                 if (data == "1")
                     msg = "Account creato con successo!";

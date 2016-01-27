@@ -4,13 +4,13 @@ include_once($_SERVER['DOCUMENT_ROOT']."/config.php");
 
 if(isset($_REQUEST['user']) && $_REQUEST['user'] != "")
 {
-    $username = strtoupper($_REQUEST['user']);
+    $username = strtoupper(urldecode($_REQUEST['user']));
     if(isset($_REQUEST['psw']) && $_REQUEST['psw'] != "")
     {
-        $password = strtoupper($_REQUEST['psw']);
+        $password = strtoupper(urldecode($_REQUEST['psw']));
         if(isset($_REQUEST['email']) && $_REQUEST['email'] != "")
         {
-            $email = strtoupper($_REQUEST['email']);
+            $email = strtoupper(urldecode($_REQUEST['email']));
         }
         else
             die("Non sei autorizzato a visualizzare questa pagina");
