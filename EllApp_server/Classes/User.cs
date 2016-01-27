@@ -72,5 +72,27 @@ namespace EllApp_server.Classes
         {
             return ID;
         }
+
+        public void SetOnline()
+        {
+            conn.Open();
+            MySqlCommand cmd = new MySqlCommand("UPDATE accounts SET isOnline = 1 WHERE idAccount = @id;", conn);
+            MySqlParameter idParameter = new MySqlParameter("@id", MySqlDbType.Int32, 0);
+            idParameter.Value = ID;
+            cmd.Parameters.Add(idParameter);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
+
+        public void SetOffline()
+        {
+            conn.Open();
+            MySqlCommand cmd = new MySqlCommand("UPDATE accounts SET isOnline = 0 WHERE idAccount = @id;", conn);
+            MySqlParameter idParameter = new MySqlParameter("@id", MySqlDbType.Int32, 0);
+            idParameter.Value = ID;
+            cmd.Parameters.Add(idParameter);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
     }
 }

@@ -14,7 +14,6 @@ namespace EllApp_server.definitions
     {
         Login = 0,
         Message,
-        NameChange
     }
 
     public enum ResponseType
