@@ -1,6 +1,2 @@
-﻿bin/Release/Alchemy.dll
-bin/Release/MySql.Data.dll
-bin/Release/EllApp_server.exe
-bin/Release/EllApp_server.exe.config
-bin/Release/EllApp_server.pdb
+bin/
 obj/
