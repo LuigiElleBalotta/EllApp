@@ -6,7 +6,9 @@ using Alchemy;
 using Alchemy.Classes;
 using System.Collections.Concurrent;
 using System.Threading;
+using Newtonsoft.Json;
 using EllApp_server.Classes;
+using EllApp_server.definitions;
 
 namespace EllApp_server
 {
@@ -15,6 +17,7 @@ namespace EllApp_server
         public static Config_Manager config = new Config_Manager();
         //Thread-safe collection of Online Connections.
         protected static ConcurrentDictionary<string, Connection> OnlineConnections = new ConcurrentDictionary<string, Connection>();
+        public static List<Session> Sessions = new List<Session>();
 
         static void Main(string[] args)
         {
@@ -42,6 +45,8 @@ namespace EllApp_server
             var command = string.Empty;
             while (command != "exit")
             {
+                if (command == "online")
+                    Console.WriteLine("Online Users: " + GetOnlineUsers());
                 command = Console.ReadLine();
             }
 
@@ -59,7 +64,6 @@ namespace EllApp_server
 
             // Add a connection Object to thread-safe collection
             OnlineConnections.TryAdd(aContext.ClientAddress.ToString(), conn);
-            conn.WelcomeMessage();
         }
 
 
@@ -68,31 +72,63 @@ namespace EllApp_server
         {
             try
             {
-                Console.WriteLine("Data Received From [" + aContext.ClientAddress.ToString() + "] - " + aContext.DataFrame.ToString());
-                var log = new Log_Manager();
-                log.content = aContext.DataFrame.ToString();  
-                log.to_type = "globalchat";                       //this needs to be taken from user session
-                log.from = 1;                                     //this too
-                log.to = 0;                                       //this too
-                log.SaveLog();
+                //Console.WriteLine("Data Received From [" + aContext.ClientAddress.ToString() + "] - " + aContext.DataFrame.ToString());
 
-                if ("globalchat" == "globalchat") //At the moment there will be this stupid IF statement. When I'll know how to decide the chat type this will change
+                var json = aContext.DataFrame.ToString();
+                dynamic obj = JsonConvert.DeserializeObject(json);
+
+                switch ((int)obj.Type)
                 {
-                    var StCLog = new Log_Manager();
-                    var o = 1;
-                    foreach(var u in OnlineConnections.Values)
-                    {
-                        if (u.Context.ClientAddress.ToString() != aContext.ClientAddress.ToString())
+                    case (int)CommandType.Login:
+                        string username = (string)obj.Username;
+                        string psw = (string)obj.Psw;
+                        User u = new User(username.ToUpper(), psw.ToUpper());
+                        if(!u.Validate())
                         {
-                            u.Context.Send(aContext.ClientAddress.ToString()+"|" + aContext.DataFrame.ToString());
-                            StCLog.content = aContext.DataFrame.ToString();
-                            StCLog.to_type = "globalchat";                       //this needs to be taken from user session
-                            StCLog.from = 0;                                     //this too
-                            StCLog.to = o++;                                       //this too
-                            StCLog.SaveLog();
+                            Connection conn;
+                            OnlineConnections.TryRemove(aContext.ClientAddress.ToString(), out conn);
+                            conn.timer.Dispose();
                         }
-                    }
-                    Console.WriteLine("Message sent to {0} users", (o - 1));
+                        else
+                        {
+                            Session s = new Session(OnlineConnections.Count, u, aContext);
+                            Sessions.Add(s);
+                            var welcomeMessage = new MessagePacket(0, s.GetUser().GetID(), "Benvenuto " + s.GetUser().GetUsername());
+                            s.SendMessage(welcomeMessage);
+                        }
+                        break;
+                    case (int)CommandType.Message:
+                        string messagecontent = obj.Message;
+                        string to_type = obj.ToType;
+                        int from = obj.From;
+                        int to = obj.To;
+                        var log = new Log_Manager();
+                        log.content = messagecontent;
+                        log.to_type = to_type;
+                        log.from = from;
+                        log.to = to;
+                        log.SaveLog();
+                        if (to_type == "globalchat")
+                        {
+                            var StCLog = new Log_Manager();
+                            var o = 1;
+                            foreach (var session in Sessions)
+                            {
+                                if (session.GetUser().GetID() != from)
+                                {
+
+                                    session.SendMessage(new MessagePacket(from, 0, messagecontent));
+                                    StCLog.content = messagecontent;
+                                    StCLog.to_type = to_type;
+                                    StCLog.from = from;
+                                    StCLog.to = session.GetUser().GetID();
+                                    StCLog.SaveLog();
+                                    o++;
+                                }
+                            }
+                            Console.WriteLine("Message sent to {0} users", (o - 1));
+                        }
+                        break;
                 }
             }
             catch (Exception ex)
@@ -118,7 +154,11 @@ namespace EllApp_server
             conn.timer.Dispose();
         }
 
-
+        public static string GetOnlineUsers()
+        {
+            //return Sessions.Count.ToString(); Need to remove OnlineConnections and use Sessions instead
+            return OnlineConnections.Count.ToString();
+        }
 
     }
 
@@ -144,12 +184,6 @@ namespace EllApp_server
                 Console.WriteLine(ex.Message);
             }
 
-        }
-
-        public void WelcomeMessage()
-        {
-            config = new Config_Manager();
-            Context.Send("Server Message|"+config.getValue("WelcomeMessage"));
         }
 
     }

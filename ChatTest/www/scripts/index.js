@@ -39,11 +39,13 @@
             conn = new WebSocket('ws://127.0.0.1:8080');
             conn.onmessage = function (e) {
                 lastMessage = e.data;
+                var obj = JSON.parse(lastMessage);
                 if (lastMessage != "") {
-                    var arr = lastMessage.split("|");
-                    var utente = arr[0];
-                    lastMessage = arr[1];
-                    $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble"><div class="text-left"><h6><small><b>' + utente + '</b></small></h6></div>' + lastMessage + '</div></div></div>');
+                    //var arr = lastMessage.split("|");
+                    var utente = obj.from;
+                    var messaggio = obj.message;
+                    //lastMessage = arr[1];
+                    $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble"><div class="text-left"><h6><small><b>' + utente + '</b></small></h6></div>' + messaggio + '</div></div></div>');
                 }
             };
             conn.onopen = function (e) {
@@ -51,6 +53,12 @@
                 $("#container_box_chat").show();
                 $("#container_chat").hide();
                 $("#container_text").hide();
+                var loginObj = new Object();
+                loginObj.Type = 0;
+                loginObj.Username = localStorage.getItem("uname");
+                loginObj.Psw = localStorage.getItem("psw");
+                loginObj = JSON.stringify(loginObj);
+                conn.send(loginObj);
                 isConnected = true;
             };
 
@@ -89,7 +97,14 @@
                 executeCommand(messaggio);
             else {
                 $("#container_chat").append('<div class="row"><div class="col-xs-12 text-right"><div class="bubble bubble--alt">' + messaggio + '</div></div></div>');
-                conn.send(messaggio);
+                var messageObj = new Object();
+                messageObj.Type = 1;
+                messageObj.Message = messaggio;
+                messageObj.ToType = "globalchat";
+                messageObj.From = 1;
+                messageObj.To = 0;
+                messageObj = JSON.stringify(messageObj);
+                conn.send(messageObj);
                 $("#message").val("");
             }
         }

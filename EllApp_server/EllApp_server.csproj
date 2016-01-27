@@ -41,6 +41,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>references\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>references\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -53,6 +56,10 @@
   <ItemGroup>
     <Compile Include="Classes\Config_Manager.cs" />
     <Compile Include="Classes\Log_Manager.cs" />
+    <Compile Include="Classes\MessagePacket.cs" />
+    <Compile Include="Classes\Session.cs" />
+    <Compile Include="Classes\User.cs" />
+    <Compile Include="definitions\misc.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
