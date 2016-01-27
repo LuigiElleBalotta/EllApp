@@ -19,34 +19,53 @@
     </head>
 <body>
     <div class="container_all">
-        <div class="text-center">
-            <h3><b>EllApp</b></h3>
-            <small>Benvenuto <span id="userspan"></span></small>
-            <br />
-            <div id="messages">
-                <p id="messaggio"></p>
-                <i class="spinner-loading"></i>
-            </div>
-            
-        </div>
-        <div class="top_menu" id="top_menu">
-            <div class="row">
-                <div class="col-xs-4">
-                    <a href="#" class="btn btn-sm btn-primary btn_back_chat_general" id="backBTN"><i class="glyphicon glyphicon-arrow-left"></i> Indietro</a>
+        <!-- Navigation -->
+        <nav class="navbar navbar-custom navbar-fixed-top topmenu" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                        <i class="glyphicon glyphicon-menu-hamburger"></i>
+                    </button>
+                    <a class="navbar-brand" href="#" id="homepagelink">
+                        <span class="light"><small>Benvenuto <span id="userspan"></span></small></span>
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                    <ul class="nav navbar-nav text-right">
+                        <li class="hidden">
+                            <a href="#page-top"></a>
+                        </li>
+                        <li><a href="#" class="nav-page">Add User</a></li>
+                    </ul>
                 </div>
             </div>
-        </div>
-        <div id="container_box_chat">
-            <div class="user_box_chat">
-                <a href="#" class="user_box_chat_link">
-                    <div class="row">
-                        <div class="col-xs-8"><h5 class="text_distance_from_left"><b>Global Chat Room</b></h5></div>
-                        <div class="col-xs-4"><h6><small>Date Here</small></h6></div>
+        </nav>
+        <div id="content_under_navbar">
+            <div class="text-center">
+                <div id="messages">
+                    <p id="messaggio"></p>
+                    <i class="spinner-loading"></i>
+                </div>
+            </div>
+            <div class="top_menu" id="top_menu">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <a href="#" class="btn btn-sm btn-primary btn_back_chat_general" id="backBTN"><i class="glyphicon glyphicon-arrow-left"></i> Indietro</a>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12 text_distance_from_left">Last message here</div>
-                    </div>
-                </a>
+                </div>
+            </div>
+            <div id="container_box_chat">
+                <div class="user_box_chat">
+                    <a href="#" class="user_box_chat_link">
+                        <div class="row">
+                            <div class="col-xs-8"><h5 class="text_distance_from_left"><b>Global Chat Room</b></h5></div>
+                            <div class="col-xs-4"><h6><small>Date Here</small></h6></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text_distance_from_left">Last message here</div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
         <div id="container_chat"></div>
@@ -67,6 +86,7 @@
     <script src="scripts/jquery.js"></script>
     <script src="scripts/bootstrap.js"></script>
     <script src="scripts/JSMQ.js"></script>
+    <script src="scripts/responsive_menu.js"></script>
     <script type="text/javascript">
         $("document").ready(function () { document.getElementById("userspan").innerText = localStorage["uname"]; });
     </script>
