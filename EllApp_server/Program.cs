@@ -45,8 +45,15 @@ namespace EllApp_server
             var command = string.Empty;
             while (command != "exit")
             {
-                if (command == "online")
-                    Console.WriteLine("Online Users: " + GetOnlineUsers());
+                switch(command)
+                {
+                    case "online":
+                        Console.WriteLine("Online Users: " + GetOnlineUsers());
+                        break;
+                    default:
+                        Console.WriteLine("Unknown command");
+                        break;
+                }
                 command = Console.ReadLine();
             }
 
