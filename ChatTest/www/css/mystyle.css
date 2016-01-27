@@ -63,7 +63,16 @@ body {
 }
 
 #content_under_navbar{
-    margin-top: 50px;
+    margin-top: 60px;
+}
+
+.risultatoricerca{
+    background-color: rgba(0, 0, 0, 0.2);
+    margin-top: 3px;
+}
+
+.btnricerca{
+    width: 100%;
 }
 
 /*
