@@ -98,7 +98,7 @@ namespace EllApp_server
                         }
                         else
                         {
-                            Session s = new Session(OnlineConnections.Count, u, aContext);
+                            Session s = new Session(u.GetID(), u, aContext);
                             Sessions.Add(s);
                             var welcomeMessage = new MessagePacket(0, s.GetUser().GetID(), "Benvenuto " + s.GetUser().GetUsername());
                             s.SendMessage(welcomeMessage);
@@ -156,15 +156,14 @@ namespace EllApp_server
             // Remove the connection Object from the thread-safe collection
             Connection conn;
             OnlineConnections.TryRemove(aContext.ClientAddress.ToString(), out conn);
-
+            Sessions.Remove(Sessions.First(s => s.GetContext().ClientAddress.ToString() == aContext.ClientAddress.ToString()));
             // Dispose timer to stop sending messages to the client.
             conn.timer.Dispose();
         }
 
         public static string GetOnlineUsers()
         {
-            //return Sessions.Count.ToString(); Need to remove OnlineConnections and use Sessions instead
-            return OnlineConnections.Count.ToString();
+            return Sessions.Count.ToString();
         }
 
     }
