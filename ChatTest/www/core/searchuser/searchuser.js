@@ -7,6 +7,7 @@ $("document").ready(function ()
         {
             $.post("http://localhost/searchuser/elaboraRicerca.php", "username=" + username, function (data, status)
             {
+                $("#result").html("");
                 var obj = JSON.parse(data);
                 for(var i = 0; i < obj.length; i++)
                 {
@@ -30,9 +31,28 @@ $("document").ready(function ()
         {
             var id = e.target.id;
             $(e.target).button("loading");
-            $.post("", "idFrom=&idTo="+id, function (data, status)//ToDO: add to localStorage our ID
+            $.post("http://localhost/searchuser/addfriend.php", "from="+localStorage.getItem("uname")+"&idTo="+id, function (data, status)
             {
-
+                var msg = "";
+                switch(data)
+                {
+                    case "1":
+                        msg = "Added!";
+                        break;
+                    case "2":
+                        msg = "Error: no 'idTo' parameter.";
+                        break;
+                    case "3":
+                        msg = "Error: no 'from' parameter.";
+                        break;
+                    case "4":
+                        msg = "Friendship already pending.";
+                        break;
+                    case "5":
+                        msg = "You can't add yourself.";
+                        break;
+                }
+                alert(msg);
             });
             $(e.target).button("reset");
         }

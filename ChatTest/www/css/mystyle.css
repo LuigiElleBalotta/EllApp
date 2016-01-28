@@ -75,6 +75,10 @@ body {
     width: 100%;
 }
 
+.testborder{
+    border: 1px solid #FFFFFF;
+}
+
 /*
  * Component: Callout
  * ------------------

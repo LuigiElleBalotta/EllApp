@@ -12,20 +12,31 @@
     <nav class="navbar navbar-custom navbar-fixed-top topmenu" role="navigation">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
-                    <i class="glyphicon glyphicon-menu-hamburger"></i>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu" id="menuBTN">
+                    <i class="glyphicon glyphicon-menu-hamburger headerBTN"></i>
+                </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#friendshiprequests" id="friendBTN">
+                    <i class="glyphicon glyphicon-user headerBTN"></i>
                 </button>
                 <a class="navbar-brand" href="#" id="homepagelink">
                     <span class="light"><small>Benvenuto <span id="userspan"></span></small></span>
                 </a>
             </div>
-            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse" id="menu">
                 <ul class="nav navbar-nav text-right">
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
                     <li><a href="#" class="nav-page">Add User</a></li>
                     <li><a href="../../index.html" class="nav-page">Chat</a></li>
+                </ul>
+            </div>
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse" id="friendshiprequests">
+                <ul class="nav navbar-nav text-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li><a href="#" class="nav-page">Test has added you as friend</a></li>
                 </ul>
             </div>
         </div>

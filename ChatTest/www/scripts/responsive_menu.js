@@ -20,4 +20,26 @@
     function hasClass(elem, className) {
         return elem.className.split(' ').indexOf(className) > -1;
     }
+
+    document.addEventListener("click", function (e)
+    {
+        if(hasClass(e.target, "navbar-toggle") || hasClass(e.target, "headerBTN"))
+        {
+            if (hasClass(e.target, "headerBTN"))
+                var id = $(e.target).closest(".navbar-toggle").attr("id");
+            else
+                var id = e.target.id;
+            var menuitems = document.getElementsByClassName("navbar-toggle");
+            for(var i = 0; i < menuitems.length; i++)
+            {
+                if ($(menuitems[i]).attr("id") != id)
+                {
+                    var target = $(menuitems[i]).attr("data-target");
+                    if ($(target).is(":visible"))
+                        $(menuitems[i]).click();
+                }
+            }
+            $("#"+id).click();
+        }
+    });
 });
