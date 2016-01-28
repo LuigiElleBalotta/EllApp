@@ -66,13 +66,33 @@ body {
     margin-top: 60px;
 }
 
-.risultatoricerca{
+.row_background{
     background-color: rgba(0, 0, 0, 0.2);
     margin-top: 3px;
 }
 
 .btnricerca{
     width: 100%;
+}
+
+.btn-fullwidth{
+    width: 100%;
+}
+
+.element_no_overflow{
+    overflow-x: hidden;
+}
+
+.distance_bottom_xs{
+    margin-bottom: 3px;
+}
+
+.label{
+    position: absolute;
+    padding: 2px 3px;
+    top: -2px;
+    right: 2px;
+    font-size: 10px;
 }
 
 .testborder{

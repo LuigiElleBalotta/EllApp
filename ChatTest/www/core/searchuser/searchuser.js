@@ -11,7 +11,7 @@ $("document").ready(function ()
                 var obj = JSON.parse(data);
                 for(var i = 0; i < obj.length; i++)
                 {
-                    $("#result").append("<div class='row risultatoricerca'><div class='col-xs-8 text-left'>" + obj[i].name + "</div><div class='col-xs-4'><button id='" + obj[i].id + "' class='btn btn-primary btnricerca' data-loading-text='<i class=\"spinner-loading\"></i>' >Add</button></div></div>");
+                    $("#result").append("<div class='row row_background'><div class='col-xs-8 text-left'>" + obj[i].name + "</div><div class='col-xs-4'><button id='" + obj[i].id + "' class='btn btn-primary btnricerca' data-loading-text='<i class=\"spinner-loading\"></i>' >Add</button></div></div>");
                 }
             });
         }

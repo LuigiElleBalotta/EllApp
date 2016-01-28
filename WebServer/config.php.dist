@@ -4,6 +4,6 @@ define("MYSQL_USERNAME", "root");
 define("MYSQL_PASSWORD", "");
 define("MYSQL_DATABASE", "ellapp");
 
-define("DB_CLASS", $_SERVER['DOCUMENT_ROOT']."/classes/db_class.php");
+define("DB_CLASS", "classes/db_class.php");
 include(DB_CLASS);
 ?>

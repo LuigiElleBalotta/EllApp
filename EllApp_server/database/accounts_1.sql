@@ -1,1 +1,0 @@
-ALTER TABLE `accounts` CHANGE COLUMN `last_connection` `last_connection` TIMESTAMP NOT NULL AFTER `data_creazione`;

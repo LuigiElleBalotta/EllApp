@@ -39,7 +39,7 @@
                         $(menuitems[i]).click();
                 }
             }
-            $("#"+id).click();
+            $("#" + id).click();
         }
     });
 });

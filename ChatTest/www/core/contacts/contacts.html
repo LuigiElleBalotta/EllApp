@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Search User</title>
     <link href="../../css/index.css" rel="stylesheet" />
     <link href="../../css/bootstrap.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
                         <a href="#page-top"></a>
                     </li>
                     <li><a href="#" class="nav-page">Add User</a></li>
-                    <li><a href="../contacts/contacts.html" class="nav-page">My Contacts</a></li>
+                    <li><a href="#" class="nav-page">My Contacts</a></li>
                     <li><a href="../../index.html" class="nav-page">Chat</a></li>
                 </ul>
             </div>
@@ -44,20 +44,14 @@
         </div>
     </nav>
     <div id="content_under_navbar">
-        <div class="input-group margin">
-            <input id="searchUserTXT" class="form-control" />
-            <span class="input-group-btn">
-                <button class="btn btn-info btn-flat" id="searchUserBTN"><i class="glyphicon glyphicon-search"></i></button>
-            </span>
-        </div>
-        <div id="result"></div>
+        
     </div>
     <script src="../../scripts/jquery.js"></script>
     <script src="../../scripts/bootstrap.js"></script>
     <script src="../../scripts/JSMQ.js"></script>
     <script src="../../scripts/responsive_menu.js"></script>
-    <script src="searchuser.js"></script>
     <script src="../controls/friendships_pending.js"></script>
+    <script src="contacts.js"></script>
     <script type="text/javascript">
         $("document").ready(function () { document.getElementById("userspan").innerText = localStorage["uname"]; });
     </script>

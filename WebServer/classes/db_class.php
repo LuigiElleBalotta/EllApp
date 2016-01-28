@@ -144,6 +144,132 @@ class db_class
         $query->execute();
         $query->close();
     }
+    
+    public function GetAccountStartWith($str)
+    {
+        $str = strtoupper("{$str}%");
+        $query = $this->conn->prepare("SELECT idAccount, username FROM accounts WHERE username LIKE ?;");
+        $query->bind_param("s", $str);
+        $query->execute();
+        $array = array();
+        $c = 0;
+        $query->bind_result($id, $username);
+        while($query->fetch())
+        {
+            $array[$c]["id"] = $id;
+            $array[$c]["name"] = $username;
+            $c++;
+        }
+        $query->close();
+        return $array;
+    }
+    
+    public function addFriend($person1, $person2)
+    {
+        //First i get person1 ID
+        $p1ID = $person1;
+        $p2ID = $person2;
+        
+        $query = $this->conn->prepare("SELECT * FROM friendships WHERE (person1 = ? AND person2 = ?) OR (person1 = ? AND person2 = ?);");
+        $query->bind_param("iiii", $p1ID, $p2ID, $p2ID, $p1ID);
+        $query->execute();
+        $query->store_result();
+        if($query->num_rows == 0)
+        {
+            $query->close();
+            $query = $this->conn->prepare("INSERT INTO friendships(person1, person2, isPending) VALUES(?, ?, 1);");
+            $query->bind_param("ii", $p1ID, $p2ID);
+            $query->execute();
+            $query->close();
+            return true;
+        }
+        else
+        {
+            $query->close;
+            return false;
+        }
+    }
+    
+    public function GetPendingRequests($accID)
+    {
+        $query = $this->conn->prepare("SELECT * FROM friendships WHERE person2 = ? AND isPending = 1;");
+        $query->bind_param("i", $accID);
+        $query->execute();
+        $query->store_result();
+        $requests = $query->num_rows;
+        $query->close();
+        if($requests == 0)
+            $requests = "";
+        return $requests;
+    }
+    
+    public function GetPendingRequestsSpecs($accID)
+    {
+        $array = array();
+        $c = 0;
+        $query = $this->conn->prepare("SELECT idAccount, username FROM friendships JOIN accounts ON person1 = idAccount WHERE person2 = ? AND isPending = 1;");
+        $query->bind_param("i", $accID);
+        $query->execute();
+        $query->store_result();
+        $query->bind_result($id, $username);
+        $requests = $query->num_rows;
+        if($requests > 0)
+        {
+            while($query->fetch())
+            {
+                $array[$c]["id"] = $id;
+                $array[$c]["username"] = $username;
+                $c++;
+            }
+        }
+        $query->close();
+        return $array;
+    }
+    
+    public function acceptFriend($me, $who)
+    {
+        $bool = false;
+        $query = $this->conn->prepare("UPDATE friendships SET isPending = 0 WHERE person1 = ? AND person2 = ?;");
+        $query->bind_param("ii", $who, $me);
+        if($query->execute())
+            $bool = true;
+        $query->close();
+        return $bool;
+    }
+    
+    public function refuseFriend($me, $who)
+    {
+        $bool = false;
+        $query = $this->conn->prepare("UPDATE friendships SET isPending = 2 WHERE person1 = ? AND person2 = ?;");
+        $query->bind_param("ii", $who, $me);
+        if($query->execute())
+            $bool = true;
+        $query->close();
+        return $bool;
+    }
+    
+    public function GetFriendList($accID)
+    {
+        $array = array();
+        $c = 0;
+        $query = $this->conn->prepare("SELECT idAccount, username FROM friendships JOIN accounts ON person1 = idAccount WHERE person2 = ? AND isPending = 0;");
+        $query->bind_param("i", $accID);
+        $query->execute();
+        $query->store_result();
+        $query->bind_result($id, $username);
+        $requests = $query->num_rows;
+        if($requests > 0)
+        {
+            while($query->fetch())
+            {
+                $array[$c]["id"] = $id;
+                $array[$c]["username"] = $username;
+                $c++;
+            }
+        }
+        $query->close();
+        return $array;
+    }
 }
 
 ?>
