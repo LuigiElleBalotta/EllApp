@@ -51,6 +51,13 @@ namespace EllApp_server
                     {
                         case "online":
                             Console.WriteLine("Online Users: " + GetOnlineUsers());
+                            foreach(var session in Sessions)
+                            {
+                                Console.WriteLine("User ID: " + session.GetUser().GetID());
+                                Console.WriteLine("User Name: " + session.GetUser().GetUsername());
+                                Console.WriteLine("Connected from: " + session.GetContext().ClientAddress);
+                                Console.WriteLine("-------------------------------------");
+                            }
                             break;
                         case "serverinfo":
                             Console.WriteLine("Listening on: " + aServer.ListenAddress);
