@@ -142,25 +142,36 @@ namespace EllApp_server
                         log.from = from;
                         log.to = to;
                         log.SaveLog();
-                        if (to_type == MessageType.MSG_TYPE_GLOBAL_MESSAGE) //Send message to all connected clients (that we have stored in sessions)
+                        switch(to_type)
                         {
-                            var StCLog = new Log_Manager();
-                            var o = 1;
-                            foreach (var session in Sessions)
-                            {
-                                if (session.GetUser().GetID() != from) //Do not send message to ourselves
+                            case MessageType.MSG_TYPE_GLOBAL_MESSAGE: //Send message to all connected clients (that we have stored in sessions)
+                                var StCLog = new Log_Manager();
+                                var o = 1;
+                                foreach (var session in Sessions)
                                 {
+                                    if (session.GetUser().GetID() != from) //Do not send message to ourselves
+                                    {
 
-                                    session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_GLOBAL_MESSAGE, from, session.GetUser().GetID(), messagecontent));
-                                    StCLog.content = messagecontent;
-                                    StCLog.to_type = to_type;
-                                    StCLog.from = from;
-                                    StCLog.to = session.GetUser().GetID();
-                                    StCLog.SaveLog();
-                                    o++;
+                                        session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_GLOBAL_MESSAGE, from, session.GetUser().GetID(), messagecontent));
+                                        StCLog.content = messagecontent;
+                                        StCLog.to_type = to_type;
+                                        StCLog.from = from;
+                                        StCLog.to = session.GetUser().GetID();
+                                        StCLog.SaveLog();
+                                        o++;
+                                    }
                                 }
-                            }
-                            Console.WriteLine("Message sent to {0} users", (o - 1));
+                                Console.WriteLine("Message sent to {0} users", (o - 1));
+                                break;
+                            case MessageType.MSG_TYPE_CHAT_WITH_USER:
+                                Console.WriteLine("MSG_TYPE_CHAT_WITH_USER NOT YET IMPLEMENTED");
+                                break;
+                            case MessageType.MSG_TYPE_CHAT_WITH_GROUP:
+                                Console.WriteLine("MSG_TYPE_CHAT_WITH_GROUP NOT YET IMPLEMENTED");
+                                break;
+                            case MessageType.MSG_TYPE_NULL:
+                                Console.WriteLine("Message Type is NULL.");
+                                break;
                         }
                         break;
                 }

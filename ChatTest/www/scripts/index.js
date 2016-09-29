@@ -12,7 +12,9 @@
     ********/
     var MessageType = {
         "MSG_TYPE_LOGIN_INFO": 1,
-        "MSG_TYPE_GLOBAL_MESSAGE": 2
+        "MSG_TYPE_GLOBAL_MESSAGE": 2,
+        "MSG_TYPE_CHAT_WITH_USER": 3,
+        "MSG_TYPE_CHAT_WITH_GROUP":4
     }
 
     /*******
