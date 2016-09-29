@@ -24,7 +24,7 @@ namespace EllApp_server
             // instantiate a new server - acceptable port and IP range,
             // and set up your methods.
 
-            var aServer = new WebSocketServer(Convert.ToInt16(config.getValue("serverport")), System.Net.IPAddress.Parse("127.0.0.1"))
+            var aServer = new WebSocketServer(Convert.ToInt16(config.getValue("serverport")), System.Net.IPAddress.Any)
             {
                 OnReceive = OnReceive,
                 OnSend = OnSend,
