@@ -107,8 +107,11 @@ namespace EllApp_server
                         {
                             Session s = new Session(u.GetID(), u, aContext);
                             Sessions.Add(s);
-                            var welcomeMessage = new MessagePacket(0, s.GetUser().GetID(), "Benvenuto " + s.GetUser().GetUsername());
+
+                            var loginInfo = new MessagePacket("loginInfo", 0, s.GetUser().GetID(), s.GetUser().GetID().ToString());
+                            var welcomeMessage = new MessagePacket("globalmessage", 0, s.GetUser().GetID(), "Benvenuto " + s.GetUser().GetUsername());
                             s.GetUser().SetOnline();
+                            s.SendMessage(loginInfo);
                             s.SendMessage(welcomeMessage);
                         }
                         break;
@@ -123,16 +126,16 @@ namespace EllApp_server
                         log.from = from;
                         log.to = to;
                         log.SaveLog();
-                        if (to_type == "globalchat")
+                        if (to_type == "globalchat") //Send message to all connected clients (that we have stored in sessions)
                         {
                             var StCLog = new Log_Manager();
                             var o = 1;
                             foreach (var session in Sessions)
                             {
-                                if (session.GetUser().GetID() != from)
+                                if (session.GetUser().GetID() != from) //Do not send message to ourselves
                                 {
 
-                                    session.SendMessage(new MessagePacket(from, 0, messagecontent));
+                                    session.SendMessage(new MessagePacket("globalmessage", from, 0, messagecontent));
                                     StCLog.content = messagecontent;
                                     StCLog.to_type = to_type;
                                     StCLog.from = from;

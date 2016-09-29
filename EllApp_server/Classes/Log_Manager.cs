@@ -16,7 +16,7 @@ namespace EllApp_server.Classes
 
         public Log_Manager()
         {
-            conn = new MySqlConnection("Server=" + conf.getValue("mysql_host") + ";Database=" + conf.getValue("mysql_db") + ";Uid=" + conf.getValue("mysql_user") + ";Pwd=" + conf.getValue("mysql_password") + ";"); //ToDO: implement a config file and a class that reads from it
+            conn = new MySqlConnection("Server=" + conf.getValue("mysql_host") + ";Database=" + conf.getValue("mysql_db") + ";Uid=" + conf.getValue("mysql_user") + ";Pwd=" + conf.getValue("mysql_password") + ";");
         }
 
         public void SaveLog()

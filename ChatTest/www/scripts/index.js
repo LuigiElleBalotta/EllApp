@@ -7,8 +7,10 @@
 
     document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
     var lastMessage = "";
+    var dataReceived = "";
     var conn = null;
     var isConnected = false;
+    var accID = 0;
     function onDeviceReady() {
         // Gestire gli eventi di sospensione e ripresa di Cordova
         document.addEventListener( 'pause', onPause.bind( this ), false );
@@ -39,14 +41,23 @@
         {
             conn = new WebSocket('ws://127.0.0.1:8080');
             conn.onmessage = function (e) {
-                lastMessage = e.data;
-                var obj = JSON.parse(lastMessage);
-                if (lastMessage != "") {
-                    //var arr = lastMessage.split("|");
-                    var utente = obj.from;
-                    var messaggio = obj.message;
-                    //lastMessage = arr[1];
-                    $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble"><div class="text-left"><h6><small><b>' + utente + '</b></small></h6></div>' + messaggio + '</div></div></div>');
+                dataReceived = e.data;
+                if (dataReceived != "") {
+                    var obj = JSON.parse(dataReceived);
+                    switch(obj.MessageType)
+                    {
+                        case "loginInfo":
+                            accID = obj.message;
+                            break;
+                        case "globalmessage":
+                                //var arr = lastMessage.split("|");
+                                var utente = obj.from;
+                                var messaggio = obj.message;
+                                //lastMessage = arr[1];
+                                $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble"><div class="text-left"><h6><small><b>' + utente + '</b></small></h6></div>' + messaggio + '</div></div></div>');
+                        
+                            break;
+                    }
                 }
             };
             conn.onopen = function (e) {
@@ -103,7 +114,7 @@
                 messageObj.Type = 1;
                 messageObj.Message = messaggio;
                 messageObj.ToType = "globalchat";
-                messageObj.From = 1;
+                messageObj.From = accID;
                 messageObj.To = 0;
                 messageObj = JSON.stringify(messageObj);
                 conn.send(messageObj);
