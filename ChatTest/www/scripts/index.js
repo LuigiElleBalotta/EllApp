@@ -12,9 +12,21 @@
     ********/
     var MessageType = {
         "MSG_TYPE_LOGIN_INFO": 1,
-        "MSG_TYPE_GLOBAL_MESSAGE": 2,
-        "MSG_TYPE_CHAT_WITH_USER": 3,
-        "MSG_TYPE_CHAT_WITH_GROUP":4
+        "MSG_TYPE_CHAT_REQUEST_RESPONSE": 2,
+        "MSG_TYPE_CHAT": 3
+    }
+
+    var CommandType = {
+        "login": 0,
+        "message": 1,
+        "chatsrequest": 2
+    }
+
+    var ChatType = {
+        "CHAT_TYPE_NULL": 0,
+        "CHAT_TYPE_GLOBAL_CHAT": 1,
+        "CHAT_TYPE_USER_TO_USER": 2,
+        "CHAT_TYPE_GROUP_CHAT": 3
     }
 
     /*******
@@ -46,6 +58,7 @@
         $("#container_text").hide();
         $("#backBTN").hide();
         $("#container_box_chat").hide();
+        $("#container_box_chat_with_user").hide();
         $("#messaggio").html("Connessione");
     };
 
@@ -61,15 +74,30 @@
                     switch(obj.MessageType)
                     {
                         case MessageType.MSG_TYPE_LOGIN_INFO:
-                            accID = obj.message;
+                            accID = obj.data;
+
+                            //Request existing chat:
+                            /*var chatreqObj = new Object();
+                            chatreqObj.Type = CommandType.chatsrequest;
+                            chatreqObj.accid = accID;
+                            chatreqObj = JSON.stringify(loginObj);
+                            conn.send(chatreqObj);*/
                             break;
-                        case MessageType.MSG_TYPE_GLOBAL_MESSAGE:
-                                //var arr = lastMessage.split("|");
-                                var utente = obj.from;
-                                var messaggio = obj.message;
-                                //lastMessage = arr[1];
-                                $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble"><div class="text-left"><h6><small><b>' + utente + '</b></small></h6></div>' + messaggio + '</div></div></div>');
-                        
+                        case MessageType.MSG_TYPE_CHAT:
+                            var chatobject = JSON.parse(obj.data);
+                                switch(chatobject.chattype)
+                                {
+                                    case ChatType.CHAT_TYPE_GLOBAL_CHAT:
+                                        //var arr = lastMessage.split("|");
+                                        var utente = obj.from;
+                                        var messaggio = chatobject.text;
+                                        //lastMessage = arr[1];
+                                        $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble"><div class="text-left"><h6><small><b>' + utente + '</b></small></h6></div>' + messaggio + '</div></div></div>');
+                                    break;
+                                }
+                                break;
+                        case MessageType.MSG_TYPE_CHAT_REQUEST_RESPONSE:
+
                             break;
                     }
                 }
@@ -78,14 +106,16 @@
                 $("#messages").hide();
                 $("#messaggio").html("");
                 $("#container_box_chat").show();
+                $("#container_box_chat_with_user").show();
                 $("#container_chat").hide();
                 $("#container_text").hide();
                 var loginObj = new Object();
-                loginObj.Type = 0;
+                loginObj.Type = CommandType.login;
                 loginObj.Username = localStorage.getItem("uname");
                 loginObj.Psw = localStorage.getItem("psw");
                 loginObj = JSON.stringify(loginObj);
                 conn.send(loginObj);
+
                 isConnected = true;
             };
 
@@ -93,6 +123,7 @@
                 $("#messaggio").html("Tentativo di riconnessione..");
                 $("#messages").show();
                 $("#container_box_chat").hide();
+                $("#container_box_chat_with_user").hide();
                 $("#container_chat").hide();
                 $("#container_text").hide();
                 isConnected = false;
@@ -125,9 +156,9 @@
             else {
                 $("#container_chat").append('<div class="row"><div class="col-xs-12 text-right"><div class="bubble bubble--alt">' + messaggio + '</div></div></div>');
                 var messageObj = new Object();
-                messageObj.Type = 1;
+                messageObj.Type = CommandType.message;
                 messageObj.Message = messaggio;
-                messageObj.ToType = MessageType.MSG_TYPE_GLOBAL_MESSAGE;
+                messageObj.ToType = ChatType.CHAT_TYPE_GLOBAL_CHAT;
                 messageObj.From = accID;
                 messageObj.To = 0;
                 messageObj = JSON.stringify(messageObj);
@@ -170,6 +201,7 @@
         $("#container_text").hide();
         $("#backBTN").hide();
         $("#container_box_chat").show();
+        $("#container_box_chat_with_user").show();
     }
 
     function showChat()
@@ -178,6 +210,7 @@
         $("#container_text").show();
         $("#backBTN").show();
         $("#container_box_chat").hide();
+        $("#container_box_chat_with_user").hide();
     }
 
 } )();

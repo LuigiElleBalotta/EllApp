@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Chat.cs" />
     <Compile Include="Classes\Config_Manager.cs" />
     <Compile Include="Classes\Log_Manager.cs" />
     <Compile Include="Classes\MessagePacket.cs" />

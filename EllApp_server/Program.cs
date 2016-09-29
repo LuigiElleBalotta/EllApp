@@ -68,9 +68,12 @@ namespace EllApp_server
                             {
                                 Console.WriteLine("Message to send: ");
                                 var msg = Console.ReadLine();
-                                var message = new MessagePacket(MessageType.MSG_TYPE_GLOBAL_MESSAGE, 0, session.GetUser().GetID(), msg);
+                                var message = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, session.GetUser().GetID(), msg);
                                 session.SendMessage(message);
                             }
+                            break;
+                        case "clearconsole":
+                            Console.Clear();
                             break;
                         default:
                             Console.WriteLine("Unknown command");
@@ -125,7 +128,13 @@ namespace EllApp_server
                             Sessions.Add(s);
 
                             var loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, s.GetUser().GetID(), s.GetUser().GetID().ToString());
-                            var welcomeMessage = new MessagePacket(MessageType.MSG_TYPE_GLOBAL_MESSAGE, 0, s.GetUser().GetID(), "Benvenuto " + s.GetUser().GetUsername());
+
+                            //Create the welcome message object
+                            Chat c = new Chat();
+                            c.chattype = ChatType.CHAT_TYPE_GLOBAL_CHAT;
+                            c.text = "Benvenuto " + s.GetUser().GetUsername();
+                            string output = JsonConvert.SerializeObject(c);
+                            var welcomeMessage = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, s.GetUser().GetID(), output);
                             s.GetUser().SetOnline();
                             s.SendMessage(loginInfo);
                             s.SendMessage(welcomeMessage);
@@ -133,7 +142,7 @@ namespace EllApp_server
                         break;
                     case (int)CommandType.Message:
                         string messagecontent = obj.Message;
-                        MessageType to_type = obj.ToType;
+                        ChatType to_type = obj.ToType;
                         int from = obj.From;
                         int to = obj.To;
                         var log = new Log_Manager();
@@ -144,15 +153,15 @@ namespace EllApp_server
                         log.SaveLog();
                         switch(to_type)
                         {
-                            case MessageType.MSG_TYPE_GLOBAL_MESSAGE: //Send message to all connected clients (that we have stored in sessions)
+                            case ChatType.CHAT_TYPE_GLOBAL_CHAT: //Send message to all connected clients (that we have stored in sessions)
                                 var StCLog = new Log_Manager();
                                 var o = 1;
                                 foreach (var session in Sessions)
                                 {
                                     if (session.GetUser().GetID() != from) //Do not send message to ourselves
                                     {
-
-                                        session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_GLOBAL_MESSAGE, from, session.GetUser().GetID(), messagecontent));
+                                        Chat c = new Classes.Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, messagecontent);
+                                        session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, from, session.GetUser().GetID(), JsonConvert.SerializeObject(c)));
                                         StCLog.content = messagecontent;
                                         StCLog.to_type = to_type;
                                         StCLog.from = from;
@@ -163,16 +172,20 @@ namespace EllApp_server
                                 }
                                 Console.WriteLine("Message sent to {0} users", (o - 1));
                                 break;
-                            case MessageType.MSG_TYPE_CHAT_WITH_USER:
+                            case ChatType.CHAT_TYPE_USER_TO_USER:
                                 Console.WriteLine("MSG_TYPE_CHAT_WITH_USER NOT YET IMPLEMENTED");
                                 break;
-                            case MessageType.MSG_TYPE_CHAT_WITH_GROUP:
+                            case ChatType.CHAT_TYPE_GROUP_CHAT:
                                 Console.WriteLine("MSG_TYPE_CHAT_WITH_GROUP NOT YET IMPLEMENTED");
                                 break;
-                            case MessageType.MSG_TYPE_NULL:
+                            case ChatType.CHAT_TYPE_NULL:
                                 Console.WriteLine("Message Type is NULL.");
                                 break;
                         }
+                        break;
+                    case (int)CommandType.ChatsRequest:
+                        int accountID = obj.accid;
+
                         break;
                 }
             }

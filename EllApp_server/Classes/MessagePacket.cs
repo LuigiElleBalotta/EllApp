@@ -13,14 +13,14 @@ namespace EllApp_server.Classes
         public MessageType MessageType;
         public string from;
         public int to;
-        public string message;
+        public string data;
 
-        public MessagePacket(MessageType _msgtype, int _from, int _to, string _message)
+        public MessagePacket(MessageType _msgtype, int _from, int _to, string _data)
         {
             MessageType = _msgtype;
             from = GetUsername(_from);
             to = _to;
-            message = _message;
+            data = _data;
         }
 
         private string GetUsername(int id)

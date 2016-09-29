@@ -13,7 +13,7 @@ namespace EllApp_server.Classes
         Config_Manager conf = new Config_Manager();
         MySqlConnection conn = null;
         public string content = "";
-        public MessageType to_type = MessageType.MSG_TYPE_NULL;
+        public ChatType to_type = ChatType.CHAT_TYPE_NULL;
         public int from = 0, to = 0;
 
         public Log_Manager()
