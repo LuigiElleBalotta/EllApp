@@ -202,7 +202,6 @@ namespace EllApp_server
     {
         public System.Threading.Timer timer;
         public UserContext Context { get; set; }
-        Config_Manager config = null;
         public Connection()
         {
             this.timer = new System.Threading.Timer(this.TimerCallback, null, 0, 1000);
