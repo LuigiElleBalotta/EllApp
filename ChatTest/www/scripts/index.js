@@ -77,11 +77,11 @@
                             accID = obj.data;
 
                             //Request existing chat:
-                            /*var chatreqObj = new Object();
+                            var chatreqObj = new Object();
                             chatreqObj.Type = CommandType.chatsrequest;
                             chatreqObj.accid = accID;
-                            chatreqObj = JSON.stringify(loginObj);
-                            conn.send(chatreqObj);*/
+                            chatreqObj = JSON.stringify(chatreqObj);
+                            conn.send(chatreqObj);
                             break;
                         case MessageType.MSG_TYPE_CHAT:
                             var chatobject = JSON.parse(obj.data);

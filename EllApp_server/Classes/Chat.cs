@@ -11,12 +11,22 @@ namespace EllApp_server.Classes
     {
         public ChatType chattype;
         public string text;
+        public string ChatFrom;
+        public string ChatTo;
+        public long timestamp;
 
         public Chat() { }
-        public Chat(ChatType _type, string _text)
+        public Chat(ChatType _type, string _text, string _from, string _to, long _timestamp = 0)
         {
             chattype = _type;
             text = _text;
+            ChatFrom = _from;
+            ChatTo = _to;
+            timestamp = _timestamp;
+            /*if (timestamp == 0)
+                timestamp = Misc.UnixTimeNow();*/
         }
+
+        
     }
 }

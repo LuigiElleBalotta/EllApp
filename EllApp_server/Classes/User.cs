@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using MySql.Data.MySqlClient;
+using EllApp_server.definitions;
 
 namespace EllApp_server.Classes
 {
@@ -13,8 +14,8 @@ namespace EllApp_server.Classes
         int ID = 0;
         string username, last_ip, email;
         static Config_Manager conf = new Config_Manager();
+        static MySqlConnection staticconn = new MySqlConnection("Server=" + conf.getValue("mysql_host") + ";Database=" + conf.getValue("mysql_db") + ";Uid=" + conf.getValue("mysql_user") + ";Pwd=" + conf.getValue("mysql_password") + ";");
         MySqlConnection conn = new MySqlConnection("Server=" + conf.getValue("mysql_host") + ";Database=" + conf.getValue("mysql_db") + ";Uid=" + conf.getValue("mysql_user") + ";Pwd=" + conf.getValue("mysql_password") + ";");
-
         public User(string _username, string _password)
         {
             username = _username;
@@ -91,6 +92,25 @@ namespace EllApp_server.Classes
             cmd.Parameters.Add(idParameter);
             cmd.ExecuteNonQuery();
             conn.Close();
+        }
+
+        public static List<Chat> GetChats(int AccountID)
+        {
+            staticconn.Open();
+            MySqlCommand cmd = new MySqlCommand("SELECT `from`, content, `to`, `date` FROM log_chat WHERE to_type = 'CHAT_TYPE_USER_TO_USER' AND `from` = @id or `to` = @id ORDER BY `date`;", staticconn);
+            MySqlParameter idParameter = new MySqlParameter("@id", MySqlDbType.Int32, 0);
+            idParameter.Value = AccountID;
+            cmd.Parameters.Add(idParameter);
+            MySqlDataReader r = cmd.ExecuteReader();
+            List<Chat> chats = null;
+            while (r.Read())
+            {
+                Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, r["content"].ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["from"])).ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["to"])).ToString(), (long)Misc.DateTimeToUnixTimestamp(Convert.ToDateTime(r["date"].ToString())));
+                chats.Add(c);
+            }
+            r.Close();
+            staticconn.Close();
+            return chats;
         }
     }
 }

@@ -160,7 +160,7 @@ namespace EllApp_server
                                 {
                                     if (session.GetUser().GetID() != from) //Do not send message to ourselves
                                     {
-                                        Chat c = new Classes.Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, messagecontent);
+                                        Chat c = new Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, messagecontent, Misc.GetUsernameByID(from), Misc.GetUsernameByID(session.GetUser().GetID()));
                                         session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, from, session.GetUser().GetID(), JsonConvert.SerializeObject(c)));
                                         StCLog.content = messagecontent;
                                         StCLog.to_type = to_type;
@@ -184,8 +184,10 @@ namespace EllApp_server
                         }
                         break;
                     case (int)CommandType.ChatsRequest:
+                        Console.WriteLine("Request Chat");
                         int accountID = obj.accid;
-
+                        string chats = JsonConvert.SerializeObject(User.GetChats(accountID));
+                        Console.WriteLine(chats);
                         break;
                 }
             }
