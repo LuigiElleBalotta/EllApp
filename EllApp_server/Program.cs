@@ -56,6 +56,15 @@ namespace EllApp_server
                             Console.WriteLine("Listening on: " + aServer.ListenAddress);
                             Console.WriteLine("Port: " + aServer.Port);
                             break;
+                        case "gsm": //Global Server Message
+                            foreach (var session in Sessions)
+                            {
+                                Console.WriteLine("Message to send: ");
+                                var msg = Console.ReadLine();
+                                var message = new MessagePacket("globalmessage", 0, session.GetUser().GetID(), msg);
+                                session.SendMessage(message);
+                            }
+                            break;
                         default:
                             Console.WriteLine("Unknown command");
                             break;
@@ -135,7 +144,7 @@ namespace EllApp_server
                                 if (session.GetUser().GetID() != from) //Do not send message to ourselves
                                 {
 
-                                    session.SendMessage(new MessagePacket("globalmessage", from, 0, messagecontent));
+                                    session.SendMessage(new MessagePacket("globalmessage", from, session.GetUser().GetID(), messagecontent));
                                     StCLog.content = messagecontent;
                                     StCLog.to_type = to_type;
                                     StCLog.from = from;
