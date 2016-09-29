@@ -5,7 +5,19 @@
 (function () {
     "use strict";
 
-    document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
+    document.addEventListener('deviceready', onDeviceReady.bind(this), false);
+
+    /*******
+    * ENUMS
+    ********/
+    var MessageType = {
+        "MSG_TYPE_LOGIN_INFO": 1,
+        "MSG_TYPE_GLOBAL_MESSAGE": 2
+    }
+
+    /*******
+    * VARS
+    ********/
     var lastMessage = "";
     var dataReceived = "";
     var conn = null;
@@ -46,10 +58,10 @@
                     var obj = JSON.parse(dataReceived);
                     switch(obj.MessageType)
                     {
-                        case "loginInfo":
+                        case MessageType.MSG_TYPE_LOGIN_INFO:
                             accID = obj.message;
                             break;
-                        case "globalmessage":
+                        case MessageType.MSG_TYPE_GLOBAL_MESSAGE:
                                 //var arr = lastMessage.split("|");
                                 var utente = obj.from;
                                 var messaggio = obj.message;

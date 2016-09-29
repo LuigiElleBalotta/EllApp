@@ -68,7 +68,7 @@ namespace EllApp_server
                             {
                                 Console.WriteLine("Message to send: ");
                                 var msg = Console.ReadLine();
-                                var message = new MessagePacket("globalmessage", 0, session.GetUser().GetID(), msg);
+                                var message = new MessagePacket(MessageType.MSG_TYPE_GLOBAL_MESSAGE, 0, session.GetUser().GetID(), msg);
                                 session.SendMessage(message);
                             }
                             break;
@@ -124,8 +124,8 @@ namespace EllApp_server
                             Session s = new Session(u.GetID(), u, aContext);
                             Sessions.Add(s);
 
-                            var loginInfo = new MessagePacket("loginInfo", 0, s.GetUser().GetID(), s.GetUser().GetID().ToString());
-                            var welcomeMessage = new MessagePacket("globalmessage", 0, s.GetUser().GetID(), "Benvenuto " + s.GetUser().GetUsername());
+                            var loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, s.GetUser().GetID(), s.GetUser().GetID().ToString());
+                            var welcomeMessage = new MessagePacket(MessageType.MSG_TYPE_GLOBAL_MESSAGE, 0, s.GetUser().GetID(), "Benvenuto " + s.GetUser().GetUsername());
                             s.GetUser().SetOnline();
                             s.SendMessage(loginInfo);
                             s.SendMessage(welcomeMessage);
@@ -151,7 +151,7 @@ namespace EllApp_server
                                 if (session.GetUser().GetID() != from) //Do not send message to ourselves
                                 {
 
-                                    session.SendMessage(new MessagePacket("globalmessage", from, session.GetUser().GetID(), messagecontent));
+                                    session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_GLOBAL_MESSAGE, from, session.GetUser().GetID(), messagecontent));
                                     StCLog.content = messagecontent;
                                     StCLog.to_type = to_type;
                                     StCLog.from = from;

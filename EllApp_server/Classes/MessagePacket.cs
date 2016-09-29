@@ -10,12 +10,12 @@ namespace EllApp_server.Classes
 {
     class MessagePacket
     {
-        public string MessageType;
+        public MessageType MessageType;
         public string from;
         public int to;
         public string message;
 
-        public MessagePacket(string _msgtype, int _from, int _to, string _message)
+        public MessagePacket(MessageType _msgtype, int _from, int _to, string _message)
         {
             MessageType = _msgtype;
             from = GetUsername(_from);
