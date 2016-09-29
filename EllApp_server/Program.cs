@@ -133,7 +133,7 @@ namespace EllApp_server
                         break;
                     case (int)CommandType.Message:
                         string messagecontent = obj.Message;
-                        string to_type = obj.ToType;
+                        MessageType to_type = obj.ToType;
                         int from = obj.From;
                         int to = obj.To;
                         var log = new Log_Manager();
@@ -142,7 +142,7 @@ namespace EllApp_server
                         log.from = from;
                         log.to = to;
                         log.SaveLog();
-                        if (to_type == "globalchat") //Send message to all connected clients (that we have stored in sessions)
+                        if (to_type == MessageType.MSG_TYPE_GLOBAL_MESSAGE) //Send message to all connected clients (that we have stored in sessions)
                         {
                             var StCLog = new Log_Manager();
                             var o = 1;

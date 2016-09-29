@@ -125,7 +125,7 @@
                 var messageObj = new Object();
                 messageObj.Type = 1;
                 messageObj.Message = messaggio;
-                messageObj.ToType = "globalchat";
+                messageObj.ToType = MessageType.MSG_TYPE_GLOBAL_MESSAGE;
                 messageObj.From = accID;
                 messageObj.To = 0;
                 messageObj = JSON.stringify(messageObj);

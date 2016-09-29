@@ -12,6 +12,7 @@ namespace EllApp_server.definitions
 
     public enum MessageType
     {
+        MSG_TYPE_NULL               = 0,
         MSG_TYPE_LOGIN_INFO         = 1,
         MSG_TYPE_GLOBAL_MESSAGE     = 2
     }
