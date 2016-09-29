@@ -38,8 +38,6 @@ namespace EllApp_server
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Title = "EllApp WebSocket Server";
             Console.WriteLine("Running EllApp WebSocket Server ...");
-            Console.WriteLine("Host: " + aServer.ListenAddress);
-            Console.WriteLine("Port: " + aServer.Port);
             Console.WriteLine("[Type \"exit\" and hit enter to stop the server]");
 
 
@@ -53,6 +51,10 @@ namespace EllApp_server
                     {
                         case "online":
                             Console.WriteLine("Online Users: " + GetOnlineUsers());
+                            break;
+                        case "serverinfo":
+                            Console.WriteLine("Listening on: " + aServer.ListenAddress);
+                            Console.WriteLine("Port: " + aServer.Port);
                             break;
                         default:
                             Console.WriteLine("Unknown command");
