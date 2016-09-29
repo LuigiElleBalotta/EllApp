@@ -63,7 +63,7 @@ namespace EllApp_server
             }
 
             aServer.Stop();
-
+            Environment.Exit(0);
         }
 
         public static void OnConnect(UserContext aContext)
