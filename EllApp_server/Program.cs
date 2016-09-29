@@ -24,7 +24,7 @@ namespace EllApp_server
             // instantiate a new server - acceptable port and IP range,
             // and set up your methods.
 
-            var aServer = new WebSocketServer(Convert.ToInt16(config.getValue("serverport")), System.Net.IPAddress.Any)
+            var aServer = new WebSocketServer(Convert.ToInt16(config.getValue("serverport")), System.Net.IPAddress.Parse("127.0.0.1"))
             {
                 OnReceive = OnReceive,
                 OnSend = OnSend,
@@ -38,6 +38,8 @@ namespace EllApp_server
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Title = "EllApp WebSocket Server";
             Console.WriteLine("Running EllApp WebSocket Server ...");
+            Console.WriteLine("Host: " + aServer.ListenAddress);
+            Console.WriteLine("Port: " + aServer.Port);
             Console.WriteLine("[Type \"exit\" and hit enter to stop the server]");
 
 

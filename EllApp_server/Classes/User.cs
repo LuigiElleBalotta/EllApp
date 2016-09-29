@@ -23,7 +23,6 @@ namespace EllApp_server.Classes
             byte[] bytehash = sha_pass.ComputeHash(passwordbyte);
             _password = HexStringFromBytes(bytehash);
 
-
             conn.Open();
             MySqlCommand cmd = new MySqlCommand("SELECT idAccount, email, last_ip FROM accounts WHERE username = @username AND password = @password;", conn);
             MySqlParameter passwordParameter = new MySqlParameter("@password", MySqlDbType.VarChar, 0);
