@@ -185,6 +185,7 @@ namespace EllApp_server
                         }
                         break;
                     case (int)CommandType.ChatsRequest:
+                        Console.WriteLine("Received CHAT REQUEST from AccountID = " + obj.accid + ".");
                         int accountID = obj.accid;
                         string ChatRequestID = "";
                         if (obj.ChatRequestID != null)

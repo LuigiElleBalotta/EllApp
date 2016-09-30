@@ -242,7 +242,6 @@
             ReqObj.accid = accID;
             ReqObj.ChatRequestID = chatroomid;
             ReqObj = JSON.stringify(ReqObj);
-            alert(ReqObj);
             conn.send(ReqObj);
         }
     }
