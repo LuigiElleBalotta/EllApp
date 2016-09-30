@@ -109,7 +109,7 @@
                                             contact = chat.ChatTo;
                                         else
                                             contact = chat.ChatFrom;
-                                        $("#container_box_chat_with_user").append('<div class="user_box_chat"><a href="#" class="user_box_chat_link"><div class="row"><div class="col-xs-8"><h5 class="text_distance_from_left"><b>' + contact + '</b></h5></div><div class="col-xs-4"><h6><small>' + UnixToTime(chat.timestamp) + '</small></h6></div></div><div class="row"><div class="col-xs-12 text_distance_from_left">' + chat.text + '</div></div></a></div>');
+                                        $("#container_box_chat_with_user").append('<div class="user_box_chat"><a id="' + chat.ChatRoom + '" href="#" class="user_box_chat_link"><div class="row"><div class="col-xs-8"><h5 class="text_distance_from_left"><b>' + contact + '</b></h5></div><div class="col-xs-4"><h6><small>' + UnixToTime(chat.timestamp) + '</small></h6></div></div><div class="row"><div class="col-xs-12 text_distance_from_left">' + chat.text + '</div></div></a></div>');
                                         break;
                                     default:
                                         alert("ERR_NO_CHAT_TYPE");
@@ -227,7 +227,9 @@
         $("#container_chat").show();
         $("#container_text").show();
         $("#backBTN").show();
+        //hide global chat
         $("#container_box_chat").hide();
+        //hide user_to_user chat
         $("#container_box_chat_with_user").hide();
     }
 

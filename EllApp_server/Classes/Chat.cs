@@ -10,14 +10,16 @@ namespace EllApp_server.Classes
     class Chat
     {
         public ChatType chattype;
+        public string ChatRoom;
         public string text;
         public string ChatFrom;
         public string ChatTo;
         public long timestamp;
 
         public Chat() { }
-        public Chat(ChatType _type, string _text, string _from, string _to, long _timestamp = 0)
+        public Chat(ChatType _type, string _chatroom, string _text, string _from, string _to, long _timestamp = 0)
         {
+            ChatRoom = _chatroom;
             chattype = _type;
             text = _text;
             ChatFrom = _from;

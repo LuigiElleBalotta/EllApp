@@ -46,6 +46,14 @@ namespace EllApp_server.definitions
             else
                 return "Server Message";
         }
+
+        public static string CreateChatRoomID(int param1, int param2)
+        {
+            if (param1 < param2)
+                return param1.ToString() + "-" + param2.ToString();
+            else
+                return param2.ToString() + "-" + param1.ToString();
+        }
     }
 
     public enum MessageType

@@ -146,6 +146,7 @@ namespace EllApp_server
                         int from = obj.From;
                         int to = obj.To;
                         var log = new Log_Manager();
+                        log.ChatID = Misc.CreateChatRoomID(from, to);
                         log.content = messagecontent;
                         log.to_type = to_type;
                         log.from = from;
@@ -160,7 +161,7 @@ namespace EllApp_server
                                 {
                                     if (session.GetUser().GetID() != from) //Do not send message to ourselves
                                     {
-                                        Chat c = new Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, messagecontent, Misc.GetUsernameByID(from), Misc.GetUsernameByID(session.GetUser().GetID()));
+                                        Chat c = new Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, Misc.CreateChatRoomID(from, session.GetUser().GetID()), messagecontent, Misc.GetUsernameByID(from), Misc.GetUsernameByID(session.GetUser().GetID()));
                                         session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, from, session.GetUser().GetID(), JsonConvert.SerializeObject(c)));
                                         StCLog.content = messagecontent;
                                         StCLog.to_type = to_type;

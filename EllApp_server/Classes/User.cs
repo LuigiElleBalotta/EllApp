@@ -99,7 +99,7 @@ namespace EllApp_server.Classes
             staticconn.Open();
             if (ChatRequestID == "") //I am requesting only all open chat, not the messages
             {
-                MySqlCommand cmd = new MySqlCommand("SELECT `from`, content, `to`, `date` FROM log_chat WHERE to_type = 'CHAT_TYPE_USER_TO_USER' AND (`from` = @id or `to` = @id) AND `date` IN (SELECT MAX(`date`) FROM log_chat WHERE ChatID <> '' GROUP BY ChatID) ORDER BY `date` desc;", staticconn);
+                MySqlCommand cmd = new MySqlCommand("SELECT ChatID as 'chatroom', `from`, content, `to`, `date` FROM log_chat WHERE to_type = 'CHAT_TYPE_USER_TO_USER' AND (`from` = @id or `to` = @id) AND `date` IN (SELECT MAX(`date`) FROM log_chat WHERE ChatID <> '' GROUP BY ChatID) ORDER BY `date` desc;", staticconn);
                 MySqlParameter idParameter = new MySqlParameter("@id", MySqlDbType.Int32, 0);
                 idParameter.Value = AccountID;
                 cmd.Parameters.Add(idParameter);
@@ -107,7 +107,7 @@ namespace EllApp_server.Classes
                 List<Chat> chats = new List<Chat>();
                 while (r.Read())
                 {
-                    Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, r["content"].ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["from"])).ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["to"])).ToString(), (long)Misc.DateTimeToUnixTimestamp(Convert.ToDateTime(r["date"].ToString())));
+                    Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, r["chatroom"].ToString(), r["content"].ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["from"])).ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["to"])).ToString(), (long)Misc.DateTimeToUnixTimestamp(Convert.ToDateTime(r["date"].ToString())));
                     chats.Add(c);
                 }
                 r.Close();
