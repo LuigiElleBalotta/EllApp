@@ -193,6 +193,12 @@ namespace EllApp_server
                         string chats = JsonConvert.SerializeObject(User.GetChats(accountID, ChatRequestID));
                         Sessions.First(s => s.GetUser().GetID() == accountID).SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT_REQUEST_RESPONSE, 0, accountID, chats));
                         break;
+                    case (int)CommandType.ChatListRequest:
+                        Console.WriteLine("Received CHAT LIST REQUEST from AccountID = " + obj.accid + ".");
+                        int accountid = obj.accid;
+                        string chatlist = JsonConvert.SerializeObject(User.GetChats(accountid, ""));
+                        Sessions.First(s => s.GetUser().GetID() == accountid).SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE, 0, accountid, chatlist));
+                        break;
                 }
             }
             catch (Exception ex)

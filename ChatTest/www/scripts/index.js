@@ -13,20 +13,22 @@
     var MessageType = {
         "MSG_TYPE_LOGIN_INFO": 1,
         "MSG_TYPE_CHAT_REQUEST_RESPONSE": 2,
-        "MSG_TYPE_CHAT": 3
+        "MSG_TYPE_CHAT": 3,
+        "MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE": 4
     }
 
     var CommandType = {
         "login": 0,
         "message": 1,
-        "chatsrequest": 2
+        "chatsrequest": 2,
+        "chatlistrequest": 3
     }
 
     var ChatType = {
         "CHAT_TYPE_NULL": 0,
         "CHAT_TYPE_GLOBAL_CHAT": 1,
         "CHAT_TYPE_USER_TO_USER": 2,
-        "CHAT_TYPE_GROUP_CHAT": 3
+        "CHAT_TYPE_GROUP_CHAT": 3,
     }
 
     /*******
@@ -74,7 +76,7 @@
 
                             //Request existing chat:
                             var chatreqObj = new Object();
-                            chatreqObj.Type = CommandType.chatsrequest;
+                            chatreqObj.Type = CommandType.chatlistrequest;
                             chatreqObj.accid = accID;
                             chatreqObj = JSON.stringify(chatreqObj);
                             conn.send(chatreqObj);
@@ -90,7 +92,7 @@
                                     break;
                                 }
                                 break;
-                        case MessageType.MSG_TYPE_CHAT_REQUEST_RESPONSE:
+                        case MessageType.MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE:
                             var RequestedChat = JSON.parse(obj.data);
                             for (var i = 0; i < RequestedChat.length; i++)
                             {
@@ -98,6 +100,7 @@
                                 switch (chat.chattype)
                                 {
                                     case ChatType.CHAT_TYPE_USER_TO_USER:
+
                                         var contact = "";
                                         if (chat.ChatFrom == localStorage.getItem("uname"))
                                             contact = chat.ChatTo;

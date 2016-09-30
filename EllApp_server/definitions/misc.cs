@@ -58,10 +58,11 @@ namespace EllApp_server.definitions
 
     public enum MessageType
     {
-        MSG_TYPE_NULL                   = 0,
-        MSG_TYPE_LOGIN_INFO             = 1,
-        MSG_TYPE_CHAT_REQUEST_RESPONSE  = 2,
-        MSG_TYPE_CHAT                   = 3
+        MSG_TYPE_NULL                            = 0,
+        MSG_TYPE_LOGIN_INFO                      = 1,
+        MSG_TYPE_CHAT_REQUEST_RESPONSE           = 2,
+        MSG_TYPE_CHAT                            = 3,
+        MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE      = 4
     }
 
     public enum ChatType
@@ -69,14 +70,15 @@ namespace EllApp_server.definitions
         CHAT_TYPE_NULL              = 0,
         CHAT_TYPE_GLOBAL_CHAT       = 1,
         CHAT_TYPE_USER_TO_USER      = 2,
-        CHAT_TYPE_GROUP_CHAT        = 3
+        CHAT_TYPE_GROUP_CHAT        = 3,
     }
 
     public enum CommandType
     {
         Login           = 0,
         Message         = 1,
-        ChatsRequest    = 2
+        ChatsRequest    = 2,
+        ChatListRequest = 3
     }
 
     public enum ResponseType
