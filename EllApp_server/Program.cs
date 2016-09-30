@@ -184,10 +184,8 @@ namespace EllApp_server
                         }
                         break;
                     case (int)CommandType.ChatsRequest:
-                        Console.WriteLine("Request Chat");
                         int accountID = obj.accid;
                         string chats = JsonConvert.SerializeObject(User.GetChats(accountID));
-                        Console.WriteLine(chats);
                         break;
                 }
             }

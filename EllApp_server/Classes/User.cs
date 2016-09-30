@@ -102,7 +102,7 @@ namespace EllApp_server.Classes
             idParameter.Value = AccountID;
             cmd.Parameters.Add(idParameter);
             MySqlDataReader r = cmd.ExecuteReader();
-            List<Chat> chats = null;
+            List<Chat> chats = new List<Chat>();
             while (r.Read())
             {
                 Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, r["content"].ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["from"])).ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["to"])).ToString(), (long)Misc.DateTimeToUnixTimestamp(Convert.ToDateTime(r["date"].ToString())));
