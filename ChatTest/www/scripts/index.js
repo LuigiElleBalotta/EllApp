@@ -45,11 +45,7 @@
         document.getElementById("message").addEventListener('keydown', sendMessageOnEnterKey.bind(this), false);
         document.getElementById("sendMessageBTN").addEventListener('click', sendMessage.bind(this), false);
         document.getElementById("backBTN").addEventListener('click', backBtnClick.bind(this), false);
-        var chats = document.getElementsByClassName('user_box_chat_link');
-        for (var i = 0; i < chats.length; i++)
-        {
-            chats[i].addEventListener('click', showChat.bind(this), false);
-        }
+        checkForChatToBind();
         
         // TODO: Cordova è stato caricato. Eseguire qui eventuali operazioni di inizializzazione richieste da Cordova.
         $("#message").focus();
@@ -88,10 +84,8 @@
                                 switch(chatobject.chattype)
                                 {
                                     case ChatType.CHAT_TYPE_GLOBAL_CHAT:
-                                        //var arr = lastMessage.split("|");
                                         var utente = obj.from;
                                         var messaggio = chatobject.text;
-                                        //lastMessage = arr[1];
                                         $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble"><div class="text-left"><h6><small><b>' + utente + '</b></small></h6></div>' + messaggio + '</div></div></div>');
                                     break;
                                 }
@@ -109,13 +103,14 @@
                                             contact = chat.ChatTo;
                                         else
                                             contact = chat.ChatFrom;
-                                        $("#container_box_chat_with_user").append('<div class="user_box_chat" data-chatroomid="'+ chat.ChatRoom +'"><a id="' + chat.ChatRoom + '" href="#" class="user_box_chat_link"><div class="row"><div class="col-xs-8"><h5 class="text_distance_from_left"><b>' + contact + '</b></h5></div><div class="col-xs-4"><h6><small>' + UnixToTime(chat.timestamp) + '</small></h6></div></div><div class="row"><div class="col-xs-12 text_distance_from_left">' + chat.text + '</div></div></a></div>');
+                                        $("#container_box_chat_with_user").append('<div class="user_box_chat" data-chatroomid="'+ chat.ChatRoom +'"><a id="' + chat.ChatRoom + '" href="#" class="user_box_chat_link" data-chatroomid="' + chat.ChatRoom + '"><div class="row"><div class="col-xs-8"><h5 class="text_distance_from_left"><b>' + contact + '</b></h5></div><div class="col-xs-4"><h6><small>' + UnixToTime(chat.timestamp) + '</small></h6></div></div><div class="row"><div class="col-xs-12 text_distance_from_left">' + chat.text + '</div></div></a></div>');
                                         break;
                                     default:
                                         alert("ERR_NO_CHAT_TYPE");
                                         break;
                                 }
                             }
+                            checkForChatToBind();
                             break;
                     }
                 }
@@ -222,7 +217,15 @@
         $("#container_box_chat_with_user").show();
     }
 
-    function showChat()
+    function checkForChatToBind()
+    {
+        var chats = document.getElementsByClassName('user_box_chat_link');
+        for (var i = 0; i < chats.length; i++) {
+            chats[i].addEventListener('click', showChat.bind(this, chats[i]), false);
+        }
+    }
+
+    function showChat(ChatBox)
     {
         $("#container_chat").show();
         $("#container_text").show();
@@ -231,6 +234,17 @@
         $("#container_box_chat").hide();
         //hide user_to_user chat
         $("#container_box_chat_with_user").hide();
+        if (ChatBox.dataset.chatroomid != "globalchat") {
+            //I Have to ask to the server for the chat that i selected
+            var chatroomid = ChatBox.dataset.chatroomid;
+            var ReqObj = new Object();
+            ReqObj.Type = CommandType.chatsrequest;
+            ReqObj.accid = accID;
+            ReqObj.ChatRequestID = chatroomid;
+            ReqObj = JSON.stringify(ReqObj);
+            alert(ReqObj);
+            conn.send(ReqObj);
+        }
     }
 
     function UnixToTime(unix_timestamp)
