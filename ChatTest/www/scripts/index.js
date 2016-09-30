@@ -97,7 +97,25 @@
                                 }
                                 break;
                         case MessageType.MSG_TYPE_CHAT_REQUEST_RESPONSE:
-
+                            var RequestedChat = JSON.parse(obj.data);
+                            for (var i = 0; i < RequestedChat.length; i++)
+                            {
+                                var chat = RequestedChat[i];
+                                switch (chat.chattype)
+                                {
+                                    case ChatType.CHAT_TYPE_USER_TO_USER:
+                                        var contact = "";
+                                        if (chat.ChatFrom == localStorage.getItem("uname"))
+                                            contact = chat.ChatTo;
+                                        else
+                                            contact = chat.ChatFrom;
+                                        $("#container_box_chat_with_user").append('<div class="user_box_chat"><a href="#" class="user_box_chat_link"><div class="row"><div class="col-xs-8"><h5 class="text_distance_from_left"><b>' + contact + '</b></h5></div><div class="col-xs-4"><h6><small>' + UnixToTime(chat.timestamp) + '</small></h6></div></div><div class="row"><div class="col-xs-12 text_distance_from_left">' + chat.text + '</div></div></a></div>');
+                                        break;
+                                    default:
+                                        alert("ERR_NO_CHAT_TYPE");
+                                        break;
+                                }
+                            }
                             break;
                     }
                 }
@@ -211,6 +229,24 @@
         $("#backBTN").show();
         $("#container_box_chat").hide();
         $("#container_box_chat_with_user").hide();
+    }
+
+    function UnixToTime(unix_timestamp)
+    {
+        // Create a new JavaScript Date object based on the timestamp
+        // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+        var date = new Date(unix_timestamp * 1000);
+        // Hours part from the timestamp
+        var day = date.getDay();
+        var month = date.getMonth();
+        var year = date.getFullYear();
+        var hours = date.getHours();
+        // Minutes part from the timestamp
+        var minutes = "0" + date.getMinutes();
+        // Seconds part from the timestamp
+        var seconds = "0" + date.getSeconds();
+        var formattedTime = "";
+        return formattedTime = day + "/" + month + "/" + year + "<br/>" + "(" + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2) + ")";
     }
 
 } )();

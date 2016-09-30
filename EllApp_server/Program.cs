@@ -116,7 +116,7 @@ namespace EllApp_server
                         string username = (string)obj.Username;
                         string psw = (string)obj.Psw;
                         User u = new User(username.ToUpper(), psw.ToUpper());
-                        if(!u.Validate())
+                        if (!u.Validate())
                         {
                             Connection conn;
                             OnlineConnections.TryRemove(aContext.ClientAddress.ToString(), out conn);
@@ -151,7 +151,7 @@ namespace EllApp_server
                         log.from = from;
                         log.to = to;
                         log.SaveLog();
-                        switch(to_type)
+                        switch (to_type)
                         {
                             case ChatType.CHAT_TYPE_GLOBAL_CHAT: //Send message to all connected clients (that we have stored in sessions)
                                 var StCLog = new Log_Manager();
@@ -185,7 +185,11 @@ namespace EllApp_server
                         break;
                     case (int)CommandType.ChatsRequest:
                         int accountID = obj.accid;
-                        string chats = JsonConvert.SerializeObject(User.GetChats(accountID));
+                        string ChatRequestID = "";
+                        if (obj.ChatRequestID != null)
+                            ChatRequestID = obj.ChatRequestID;
+                        string chats = JsonConvert.SerializeObject(User.GetChats(accountID, ChatRequestID));
+                        Sessions.First(s => s.GetUser().GetID() == accountID).SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT_REQUEST_RESPONSE, 0, accountID, chats));
                         break;
                 }
             }
