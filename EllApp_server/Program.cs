@@ -68,7 +68,8 @@ namespace EllApp_server
                             {
                                 Console.WriteLine("Message to send: ");
                                 var msg = Console.ReadLine();
-                                var message = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, session.GetUser().GetID(), msg);
+                                Chat c = new Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, "", msg, "Server Message", session.GetUser().GetUsername());
+                                var message = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, session.GetUser().GetID(), JsonConvert.SerializeObject(c));
                                 session.SendMessage(message);
                             }
                             break;
@@ -113,6 +114,8 @@ namespace EllApp_server
                 switch ((int)obj.Type)
                 {
                     case (int)CommandType.Login:
+                        Console.WriteLine("LOGIN REQUEST FROM " + aContext.ClientAddress);
+                        Console.WriteLine(json);
                         string username = (string)obj.Username;
                         string psw = (string)obj.Psw;
                         User u = new User(username.ToUpper(), psw.ToUpper());
@@ -141,6 +144,7 @@ namespace EllApp_server
                         }
                         break;
                     case (int)CommandType.Message:
+                        Console.WriteLine("MESSAGE PACKET FROM " + aContext.ClientAddress);
                         string messagecontent = obj.Message;
                         ChatType to_type = obj.ToType;
                         int from = obj.From;

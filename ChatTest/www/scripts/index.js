@@ -115,6 +115,28 @@
                             }
                             checkForChatToBind();
                             break;
+                        case MessageType.MSG_TYPE_CHAT_REQUEST_RESPONSE:
+                            var RequestedChat = JSON.parse(obj.data);
+                            for (var i = 0; i < RequestedChat.length; i++)
+                            {
+                                var chat = RequestedChat[i];
+                                switch(chat.chattype)
+                                {
+                                    case ChatType.CHAT_TYPE_USER_TO_USER:
+                                        var contact = "";
+                                        var myusername = localStorage.getItem("uname");
+                                        if (chat.ChatFrom == myusername.toString().toUpperCase())
+                                        {
+                                            $("#container_chat").append('<div class="row"><div class="col-xs-12 text-right"><div class="bubble bubble--alt">' + chat.text + '</div></div></div>');
+                                        }
+                                        else
+                                        {
+                                            $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble"><div class="text-left"><h6><small><b>' + chat.ChatFrom + '</b></small></h6></div>' + chat.text + '</div></div></div>');
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
                     }
                 }
             };
@@ -230,6 +252,7 @@
 
     function showChat(ChatBox)
     {
+        $("#container_chat").html(""); //Clean chat template
         $("#container_chat").show();
         $("#container_text").show();
         $("#backBTN").show();
