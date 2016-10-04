@@ -178,7 +178,16 @@ namespace EllApp_server
                                 Console.WriteLine("Message sent to {0} users", (o - 1));
                                 break;
                             case ChatType.CHAT_TYPE_USER_TO_USER:
-                                Console.WriteLine("MSG_TYPE_CHAT_WITH_USER NOT YET IMPLEMENTED");
+                                Console.WriteLine("Received MSG_TYPE_CHAT_WITH_USER packet.");
+                                //If the receiving User is online, we can send the message to him, otherwise he will load everything at next login
+                                if (Sessions.First(s => s.GetUser().GetID() == obj.To).GetUser().IsOnline())
+                                {
+                                    Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, Misc.CreateChatRoomID(obj.To, obj.From), obj.Message, obj.From, obj.To);
+                                    Session session = Sessions.First(s => s.GetUser().GetID() == obj.To);
+                                    session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, obj.From, obj.To, JsonConvert.SerializeObject(c)));
+                                }
+                                else
+                                    Console.WriteLine("DEBUG: The receiver was not online, message will be read at next login");
                                 break;
                             case ChatType.CHAT_TYPE_GROUP_CHAT:
                                 Console.WriteLine("MSG_TYPE_CHAT_WITH_GROUP NOT YET IMPLEMENTED");
