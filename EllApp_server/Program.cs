@@ -9,6 +9,7 @@ using System.Threading;
 using Newtonsoft.Json;
 using EllApp_server.Classes;
 using EllApp_server.definitions;
+using System.Diagnostics;
 
 namespace EllApp_server
 {
@@ -180,11 +181,18 @@ namespace EllApp_server
                             case ChatType.CHAT_TYPE_USER_TO_USER:
                                 Console.WriteLine("Received MSG_TYPE_CHAT_WITH_USER packet.");
                                 //If the receiving User is online, we can send the message to him, otherwise he will load everything at next login
-                                if (Sessions.First(s => s.GetUser().GetID() == obj.To).GetUser().IsOnline())
+                                if (Sessions.Any(s => s.GetUser().GetID() == (int)obj.To))
                                 {
-                                    Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, Misc.CreateChatRoomID(obj.To, obj.From), obj.Message, obj.From, obj.To);
-                                    Session session = Sessions.First(s => s.GetUser().GetID() == obj.To);
-                                    session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, obj.From, obj.To, JsonConvert.SerializeObject(c)));
+                                    if (Sessions.SingleOrDefault(s => s.GetUser().GetID() == (int)obj.To).GetUser().IsOnline())
+                                    {
+                                        Console.WriteLine("Creo la chat.");
+                                        Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, Misc.CreateChatRoomID(obj.To, obj.From), obj.Message, obj.From, obj.To);
+                                        Console.WriteLine("Chat creata... Prendo la sessione dell'utente..");
+                                        Session session = Sessions.SingleOrDefault(s => s.GetUser().GetID() == (int)obj.To);
+                                        Console.WriteLine("Sessione presa.. Invio il messaggio..");
+                                        session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, obj.From, obj.To, JsonConvert.SerializeObject(c)));
+                                        Console.WriteLine("Messaggio inviato.");
+                                    }
                                 }
                                 else
                                     Console.WriteLine("DEBUG: The receiver was not online, message will be read at next login");

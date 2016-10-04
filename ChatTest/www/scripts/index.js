@@ -36,6 +36,7 @@
     ********/
     var lastMessage = "";
     var dataReceived = "";
+    var CurrentChatRoomID = "";
     var conn = null;
     var isConnected = false;
     var accID = 0;
@@ -181,11 +182,11 @@
     {
         if(e.keyCode == 13)
         {
-            sendMessage();
+            sendMessage($("#container_chat").data("roomtype"));
         }
     }
 
-    function sendMessage()
+    function sendMessage(_ChatType)
     {
         var messaggio = $("#message").val();
         if (messaggio != "") {
@@ -196,9 +197,18 @@
                 var messageObj = new Object();
                 messageObj.Type = CommandType.message;
                 messageObj.Message = messaggio;
-                messageObj.ToType = ChatType.CHAT_TYPE_GLOBAL_CHAT;
+                messageObj.ToType = _ChatType;
                 messageObj.From = accID;
-                messageObj.To = 0;
+                if(CurrentChatRoomID == "globalchat")
+                    messageObj.To = 0;
+                else
+                {
+                    var res = CurrentChatRoomID.split("-");
+                    if (res[0] != accID)
+                        messageObj.To = res[0];
+                    else
+                        messageObj.To = res[1];
+                }
                 messageObj = JSON.stringify(messageObj);
                 conn.send(messageObj);
                 $("#message").val("");
@@ -260,15 +270,20 @@
         $("#container_box_chat").hide();
         //hide user_to_user chat
         $("#container_box_chat_with_user").hide();
-        if (ChatBox.dataset.chatroomid != "globalchat") {
+        CurrentChatRoomID = ChatBox.dataset.chatroomid;
+        if (CurrentChatRoomID != "globalchat") {
+            $("#container_chat").data("roomtype", ChatType.CHAT_TYPE_USER_TO_USER);
             //I Have to ask to the server for the chat that i selected
-            var chatroomid = ChatBox.dataset.chatroomid;
             var ReqObj = new Object();
             ReqObj.Type = CommandType.chatsrequest;
             ReqObj.accid = accID;
-            ReqObj.ChatRequestID = chatroomid;
+            ReqObj.ChatRequestID = CurrentChatRoomID;
             ReqObj = JSON.stringify(ReqObj);
             conn.send(ReqObj);
+        }
+        else
+        {
+            $("#container_chat").data("roomtype", ChatType.CHAT_TYPE_GLOBAL_CHAT);
         }
     }
 

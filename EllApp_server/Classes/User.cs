@@ -72,6 +72,23 @@ namespace EllApp_server.Classes
             return ID;
         }
 
+        public bool IsOnline()
+        {
+            bool online = false;
+            conn.Open();
+            MySqlCommand cmd = new MySqlCommand("SELECT isOnline FROM accounts WHERE idAccount = @id;", conn);
+            MySqlParameter idParameter = new MySqlParameter("@id", MySqlDbType.Int32, 0);
+            cmd.Parameters.Add(idParameter);
+            MySqlDataReader r = cmd.ExecuteReader();
+            while(r.Read())
+            {
+                if (Convert.ToInt32(r["isOnline"]) == 1)
+                    online = true;
+            }
+            conn.Close();
+            return online;
+        }
+
         public void SetOnline()
         {
             conn.Open();
