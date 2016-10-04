@@ -101,9 +101,8 @@
                                 switch (chat.chattype)
                                 {
                                     case ChatType.CHAT_TYPE_USER_TO_USER:
-
                                         var contact = "";
-                                        if (chat.ChatFrom == localStorage.getItem("uname"))
+                                        if (chat.ChatFrom == localStorage.getItem("uname").toString().toUpperCase())
                                             contact = chat.ChatTo;
                                         else
                                             contact = chat.ChatFrom;
