@@ -185,13 +185,9 @@ namespace EllApp_server
                                 {
                                     if (Sessions.SingleOrDefault(s => s.GetUser().GetID() == (int)obj.To).GetUser().IsOnline())
                                     {
-                                        Console.WriteLine("Creo la chat.");
                                         Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, Misc.CreateChatRoomID(obj.To, obj.From), obj.Message, obj.From, obj.To);
-                                        Console.WriteLine("Chat creata... Prendo la sessione dell'utente..");
                                         Session session = Sessions.SingleOrDefault(s => s.GetUser().GetID() == (int)obj.To);
-                                        Console.WriteLine("Sessione presa.. Invio il messaggio..");
                                         session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, obj.From, obj.To, JsonConvert.SerializeObject(c)));
-                                        Console.WriteLine("Messaggio inviato.");
                                     }
                                 }
                                 else
