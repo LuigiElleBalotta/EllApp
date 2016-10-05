@@ -98,11 +98,13 @@ namespace EllApp_server
                                         Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, chatroomid, tmpmessage, uname, duname);
                                         var msg = new MessagePacket(MessageType.MSG_TYPE_CHAT, from, to, JsonConvert.SerializeObject(c));
 
-
+                                        Console.WriteLine($"Sending message to {to} - {duname}");
                                         if (Sessions.Any(s => s.GetUser().GetID() == to))
                                         {
-                                            if (Sessions.SingleOrDefault(s => s.GetUser().GetID() == to).GetUser().IsOnline())
+                                            Console.WriteLine("L'utente è nella lista delle sessioni");
+                                            if (Sessions.First(s => s.GetUser().GetID() == to).GetUser().IsOnline())
                                             {
+                                                Console.WriteLine("L'utente è online");
                                                 Session session = Sessions.SingleOrDefault(s => s.GetUser().GetID() == to);
                                                 Console.WriteLine("Sending message to user");
                                                 session.SendMessage(msg);

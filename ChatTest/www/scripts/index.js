@@ -99,7 +99,7 @@
                                         var from = chatobject.ChatFrom;
                                         var to = chatobject.ChatTo;
                                         var timestamp = chatobject.timestamp;
-                                        if ($('.item[data-chatroomid="' + chat.ChatRoom + '" ]').is(":visible")) //we do this only if this is visible, since the chat container is written every time we open a chat
+                                        if ($('.item[data-chatroomid="' + room + '" ]').is(":visible")) //we do this only if this is visible, since the chat container is written every time we open a chat
                                         {
                                             alert("visible");
                                         }

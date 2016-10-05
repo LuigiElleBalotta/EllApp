@@ -78,10 +78,12 @@ namespace EllApp_server.Classes
             conn.Open();
             MySqlCommand cmd = new MySqlCommand("SELECT isOnline FROM accounts WHERE idAccount = @id;", conn);
             MySqlParameter idParameter = new MySqlParameter("@id", MySqlDbType.Int32, 0);
+            idParameter.Value = ID;
             cmd.Parameters.Add(idParameter);
             MySqlDataReader r = cmd.ExecuteReader();
             while(r.Read())
             {
+                Console.WriteLine(Convert.ToInt32(r["isOnline"]));
                 if (Convert.ToInt32(r["isOnline"]) == 1)
                     online = true;
             }
