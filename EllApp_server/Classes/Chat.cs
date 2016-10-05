@@ -25,8 +25,8 @@ namespace EllApp_server.Classes
             ChatFrom = _from;
             ChatTo = _to;
             timestamp = _timestamp;
-            /*if (timestamp == 0)
-                timestamp = Misc.UnixTimeNow();*/
+            if (timestamp == 0)
+                timestamp = Misc.UnixTimeNow();
         }
 
         

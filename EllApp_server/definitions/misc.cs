@@ -47,6 +47,27 @@ namespace EllApp_server.definitions
                 return "Server Message";
         }
 
+        public static int GetUserIDByUsername(string username)
+        {
+            if (username != "")
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT idAccount FROM accounts WHERE username = @uname", conn);
+                MySqlParameter unameParameter = new MySqlParameter("@uname", MySqlDbType.String, 0);
+                unameParameter.Value = username;
+                cmd.Parameters.Add(unameParameter);
+                MySqlDataReader read = cmd.ExecuteReader();
+                int id = 0;
+                while (read.Read())
+                    id = Convert.ToInt16(read["idAccount"]);
+                read.Close();
+                conn.Close();
+                return id;
+            }
+            else
+                return 0;
+        }
+
         public static string CreateChatRoomID(int param1, int param2)
         {
             if (param1 < param2)

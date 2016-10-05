@@ -83,6 +83,7 @@
                             conn.send(chatreqObj);
                             break;
                         case MessageType.MSG_TYPE_CHAT:
+                            alert("MSG_TYPE_CHAT received");
                             var chatobject = JSON.parse(obj.data);
                                 switch(chatobject.chattype)
                                 {
@@ -90,7 +91,27 @@
                                         var utente = obj.from;
                                         var messaggio = chatobject.text;
                                         $("#container_chat").append('<div class="row"><div class="col-xs-12"><div class="bubble"><div class="text-left"><h6><small><b>' + utente + '</b></small></h6></div>' + messaggio + '</div></div></div>');
-                                    break;
+                                        break;
+                                    case ChatType.CHAT_TYPE_USER_TO_USER:
+                                        alert("Received user to user chat");
+                                        var room = chatobject.ChatRoom;
+                                        var text = chatobject.text;
+                                        var from = chatobject.ChatFrom;
+                                        var to = chatobject.ChatTo;
+                                        var timestamp = chatobject.timestamp;
+                                        if ($('.item[data-chatroomid="' + chat.ChatRoom + '" ]').is(":visible")) //we do this only if this is visible, since the chat container is written every time we open a chat
+                                        {
+                                            alert("visible");
+                                        }
+                                        else
+                                            alert("NOT visible");
+                                        break;
+                                    case ChatType.CHAT_TYPE_GROUP_CHAT:
+                                        alert("not yet implemented.");
+                                        break;
+                                    case ChatType.CHAT_TYPE_NULL:
+                                        alert("CHAT_TYPE_NULL");
+                                        break;
                                 }
                                 break;
                         case MessageType.MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE:
@@ -101,12 +122,15 @@
                                 switch (chat.chattype)
                                 {
                                     case ChatType.CHAT_TYPE_USER_TO_USER:
-                                        var contact = "";
-                                        if (chat.ChatFrom == localStorage.getItem("uname").toString().toUpperCase())
-                                            contact = chat.ChatTo;
-                                        else
-                                            contact = chat.ChatFrom;
-                                        $("#container_box_chat_with_user").append('<div class="user_box_chat" data-chatroomid="'+ chat.ChatRoom +'"><a id="' + chat.ChatRoom + '" href="#" class="user_box_chat_link" data-chatroomid="' + chat.ChatRoom + '"><div class="row"><div class="col-xs-8"><h5 class="text_distance_from_left"><b>' + contact + '</b></h5></div><div class="col-xs-4"><h6><small>' + UnixToTime(chat.timestamp) + '</small></h6></div></div><div class="row"><div class="col-xs-12 text_distance_from_left">' + chat.text + '</div></div></a></div>');
+                                        if ($('.item[data-chatroomid="' + chat.ChatRoom + '" ]').length == 0)
+                                        {
+                                            var contact = "";
+                                            if (chat.ChatFrom == localStorage.getItem("uname").toString().toUpperCase())
+                                                contact = chat.ChatTo;
+                                            else
+                                                contact = chat.ChatFrom;
+                                            $("#container_box_chat_with_user").append('<div class="user_box_chat" data-chatroomid="' + chat.ChatRoom + '"><a id="' + chat.ChatRoom + '" href="#" class="user_box_chat_link" data-chatroomid="' + chat.ChatRoom + '"><div class="row"><div class="col-xs-8"><h5 class="text_distance_from_left"><b>' + contact + '</b></h5></div><div class="col-xs-4"><h6><small>' + UnixToTime(chat.timestamp) + '</small></h6></div></div><div class="row"><div class="col-xs-12 text_distance_from_left">' + chat.text + '</div></div></a></div>');
+                                        }
                                         break;
                                     default:
                                         alert("ERR_NO_CHAT_TYPE");

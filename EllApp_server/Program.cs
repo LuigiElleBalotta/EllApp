@@ -74,6 +74,61 @@ namespace EllApp_server
                                 session.SendMessage(message);
                             }
                             break;
+                        case "fakemessage":
+                            Console.WriteLine("Insert the username: ");
+                            string uname = Console.ReadLine().ToUpper();
+                            bool validChoice = false;
+                            do
+                            {
+                                Console.WriteLine("Single chat or Group Chat? (1 or 2)");
+                                int choice = Convert.ToInt16(Console.ReadLine());
+                                switch (choice)
+                                {
+                                    case 1:
+                                        validChoice = true;
+                                        Console.WriteLine("Insert the destinatary username:");
+                                        string duname = Console.ReadLine().ToUpper();
+                                        Console.WriteLine("Insert your message: ");
+                                        string tmpmessage = Console.ReadLine();
+
+                                        int from = Misc.GetUserIDByUsername(uname);
+                                        int to = Misc.GetUserIDByUsername(duname);
+                                        string chatroomid = Misc.CreateChatRoomID(to, from);
+
+                                        Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, chatroomid, tmpmessage, uname, duname);
+                                        var msg = new MessagePacket(MessageType.MSG_TYPE_CHAT, from, to, JsonConvert.SerializeObject(c));
+
+
+                                        if (Sessions.Any(s => s.GetUser().GetID() == to))
+                                        {
+                                            if (Sessions.SingleOrDefault(s => s.GetUser().GetID() == to).GetUser().IsOnline())
+                                            {
+                                                Session session = Sessions.SingleOrDefault(s => s.GetUser().GetID() == to);
+                                                Console.WriteLine("Sending message to user");
+                                                session.SendMessage(msg);
+                                            }
+                                        }
+
+                                        var log = new Log_Manager();
+                                        log.ChatID = chatroomid;
+                                        log.content = tmpmessage;
+                                        log.to_type = ChatType.CHAT_TYPE_USER_TO_USER;
+                                        log.from = from;
+                                        log.to = to;
+                                        log.SaveLog();
+                                        Console.WriteLine(JsonConvert.SerializeObject(msg));
+                                        Console.WriteLine("Done.");
+                                        break;
+                                    case 2:
+                                        validChoice = true;
+                                        Console.WriteLine("Not yet implemented.");
+                                        break;
+                                    default:
+                                        Console.WriteLine("Invalid choice");
+                                        break;
+                                }
+                            } while (!validChoice);
+                            break;
                         case "clearconsole":
                             Console.Clear();
                             break;
