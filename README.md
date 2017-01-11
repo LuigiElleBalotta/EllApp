@@ -3,6 +3,8 @@ Instant Message chat for iOS, Android and Windows Phone, written with Apache Cor
 
 Follow these steps in order.
 
+## [Server Repo](https://github.com/LuigiElleBalotta/EllappServer)
+
 ## How to Use
 ### Server Side
 You can choose (for the moment) if use PHP server or C# server
