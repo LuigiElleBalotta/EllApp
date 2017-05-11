@@ -76,6 +76,7 @@ namespace EllApp_server
             Environment.Exit(0);
         }
 
+	    [System.Diagnostics.Conditional("DEBUG")]
         public static void OnConnect(UserContext aContext)
         {
 
@@ -87,9 +88,6 @@ namespace EllApp_server
             // Add a connection Object to thread-safe collection
             OnlineConnections.TryAdd(aContext.ClientAddress.ToString(), conn);
         }
-
-
-
         public static void OnReceive(UserContext aContext)
         {
             try
@@ -102,11 +100,13 @@ namespace EllApp_server
             }
 
         }
+	    [System.Diagnostics.Conditional("DEBUG")]
         public static void OnSend(UserContext aContext)
         {
             Console.WriteLine("Data Sent To : " + aContext.ClientAddress.ToString());
         }
 
+	    [System.Diagnostics.Conditional("DEBUG")]
         public static void OnDisconnect(UserContext aContext)
         {
             Console.WriteLine("Client Disconnected : " + aContext.ClientAddress.ToString());
