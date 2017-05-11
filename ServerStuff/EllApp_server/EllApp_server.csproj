@@ -67,6 +67,7 @@
     <Compile Include="Commands\CommandHandlers.cs" />
     <Compile Include="definitions\misc.cs" />
     <Compile Include="Network\ClassChooser.cs" />
+    <Compile Include="Network\Connection.cs" />
     <Compile Include="Network\Handlers\ChatHandler.cs" />
     <Compile Include="Network\Handlers\LoginHandler.cs" />
     <Compile Include="Network\Handlers\MessageHandler.cs" />

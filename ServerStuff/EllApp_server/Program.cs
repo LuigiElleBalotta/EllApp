@@ -1,21 +1,14 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Alchemy;
 using Alchemy.Classes;
 using System.Collections.Concurrent;
-using System.Threading;
-using Newtonsoft.Json;
 using EllApp_server.Classes;
-using EllApp_server.definitions;
-using System.Diagnostics;
 using System.Configuration;
 using System.Reflection;
 using EllApp_server.Commands;
 using EllApp_server.Network;
-using EllApp_server.Network.Handlers;
 
 namespace EllApp_server
 {
@@ -132,30 +125,4 @@ namespace EllApp_server
         
 
     }
-
-    public class Connection
-    {
-        public System.Threading.Timer timer;
-        public UserContext Context { get; set; }
-        public Connection()
-        {
-            this.timer = new System.Threading.Timer(this.TimerCallback, null, 0, 1000);
-        }
-
-        private void TimerCallback(object state)
-        {
-            try
-            {
-                // Sending Data to the Client
-                //Context.Send("[" + Context.ClientAddress.ToString() + "] " + System.DateTime.Now.ToString());
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-        }
-
-    }
-
 }
