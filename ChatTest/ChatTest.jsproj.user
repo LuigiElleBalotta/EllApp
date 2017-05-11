@@ -4,10 +4,11 @@
     <ReferenceCachePath>C:\Users\luigi\AppData\Local\Temp\ChatTest_refcache</ReferenceCachePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">
-    <DebuggerFlavor>RippleNexus</DebuggerFlavor>
+    <DebuggerFlavor>SimulateNexus6</DebuggerFlavor>
+    <AndroidEmulatorID>AndroidDevice;Dispositivo</AndroidEmulatorID>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Android'">
-    <DebuggerFlavor>RippleNexus</DebuggerFlavor>
-    <AndroidEmulatorID>AndroidDevice;Device</AndroidEmulatorID>
+    <DebuggerFlavor>Device</DebuggerFlavor>
+    <AndroidEmulatorID>AndroidInstallBuildTools;Installa gli strumenti di compilazione di Android...</AndroidEmulatorID>
   </PropertyGroup>
 </Project>

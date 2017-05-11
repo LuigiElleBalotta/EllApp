@@ -1,5 +1,9 @@
 ﻿$("#avviso").hide();
 $("document").ready(function () {
+
+    var isConnected = false;
+    var conn = null;
+
     if (localStorage.getItem("uname") != "" && localStorage.getItem("psw") != "")
     {
         $("#user_login").val(localStorage.getItem("uname"));
@@ -17,7 +21,6 @@ $("document").ready(function () {
 
     function executeLogin(e)
     {
-        //e.preventDefault();
         $("#loginBTN").button("loading");
         var username = $("#user_login").val().trim();
         var password = $("#user_pass").val().trim();
@@ -28,8 +31,23 @@ $("document").ready(function () {
             setTimeout(resetAvviso, 3000);
             return false;
         }
-        else {
-            $.post("http://localhost/login/elaboraLogin.php", "username=" + username + "&password=" + password, function (data, status) {
+        else
+        {
+            conn = new WebSocket('ws://192.168.0.91:8080');
+            conn.onmessage = function (e) {
+                //Risposta del login da parte del server
+                dataReceived = e.data;
+                if (dataReceived != "")
+                {
+                    var obj = JSON.parse(dataReceived);
+                    switch (obj.MessageType)
+                    {
+                        case 1:
+                            break;
+                        default: //Throw away everything else
+                            break; 
+                    }
+                }
                 var msg = "";
                 var canGoOn = false;
                 switch (data) {
@@ -56,6 +74,31 @@ $("document").ready(function () {
                     setTimeout(resetAvviso, 3000);
                 else
                     setTimeout(function () { window.location.href = "../../index.html"; }, 100);
+            };
+
+            conn.onopen = function (e) {
+                var loginObj = new Object();
+                loginObj.Type = CommandType.login;
+                loginObj.Username = username;
+                loginObj.Psw = password;
+                loginObj.WantWelcomeMessage = 0;
+                loginObj = JSON.stringify(loginObj);
+                conn.send(loginObj);
+
+                isConnected = true;
+            };
+
+            conn.onclose = function (e) { //TODO: to handle };
+        }
+
+        
+
+        //e.preventDefault();
+        
+        
+        else {
+            $.post("http://localhost/login/elaboraLogin.php", "username=" + username + "&password=" + password, function (data, status) {
+                
             });
         }
     }

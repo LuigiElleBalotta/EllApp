@@ -65,7 +65,7 @@
     {
         if (!isConnected)
         {
-            conn = new WebSocket('ws://127.0.0.1:8080');
+            conn = new WebSocket('ws://192.168.0.91:8080');
             conn.onmessage = function (e) {
                 dataReceived = e.data;
                 if (dataReceived != "") {
@@ -175,6 +175,7 @@
                 loginObj.Type = CommandType.login;
                 loginObj.Username = localStorage.getItem("uname");
                 loginObj.Psw = localStorage.getItem("psw");
+                loginObj.WantWelcomeMessage = 1;
                 loginObj = JSON.stringify(loginObj);
                 conn.send(loginObj);
 
