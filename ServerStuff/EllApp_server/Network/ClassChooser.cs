@@ -13,7 +13,7 @@ namespace EllApp_server.Network
 {
 	public class ClassChooser
 	{
-		public static void Handle(UserContext aContext, List<Session> Sessions, ConcurrentDictionary<string, Connection> OnlineConnections)
+		public static void Handle(UserContext aContext, List<Session> sessions, ConcurrentDictionary<string, Connection> OnlineConnections)
 		{
 			var json = aContext.DataFrame.ToString();
 			dynamic obj = JsonConvert.DeserializeObject(json);
@@ -31,28 +31,27 @@ namespace EllApp_server.Network
 				case (int)CommandType.Login:
 					type = lh.GetType();
 					metodo = type.GetMethod("DoLogin");
-					metodo.Invoke(lh, new object[]{ aContext, Sessions, OnlineConnections, obj, json });
+					metodo.Invoke(lh, new object[]{ aContext, sessions, OnlineConnections, obj, json });
 					break;
 				case (int)CommandType.Message:
 					type = messageHandler.GetType();
 					metodo = type.GetMethod("HandleMessage");
-					metodo.Invoke(messageHandler, new object[]{ aContext, obj, Sessions });
+					metodo.Invoke(messageHandler, new object[]{ aContext, obj, sessions });
 					break;
 				case (int)CommandType.ChatsRequest:
 					type = chatHandler.GetType();
 					metodo = type.GetMethod("ChatRequestList");
-					metodo.Invoke(chatHandler, new object[]{ Sessions, obj });
+					metodo.Invoke(chatHandler, new object[]{ sessions, obj });
 					break;
 				case (int)CommandType.ChatListRequest:
 					type = chatHandler.GetType();
 					metodo = type.GetMethod("ChatRequestList");
-					metodo.Invoke(chatHandler, new object[]{ Sessions, obj });
+					metodo.Invoke(chatHandler, new object[]{ sessions, obj });
 					break;
 				case (int)CommandType.Registration:
 					type = rh.GetType();
 					metodo = type.GetMethod("RegisterAccount");
 					metodo.Invoke(rh, new object[]{ obj, aContext });
-					Sessions.Remove(Sessions.First(s => s.GetContext() == aContext));
 					break;
 			}
 		}

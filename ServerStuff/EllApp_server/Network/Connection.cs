@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Alchemy.Classes;
@@ -10,7 +11,10 @@ namespace EllApp_server.Network
 	public class Connection
 	{
 		public System.Threading.Timer timer;
+		
 		public UserContext Context { get; set; }
+		public EndPoint IP { get; set; }
+
 		public Connection()
 		{
 			this.timer = new System.Threading.Timer(this.TimerCallback, null, 0, 1000);

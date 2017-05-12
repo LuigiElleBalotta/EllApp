@@ -32,6 +32,11 @@ namespace EllApp_server.Classes
             return user;
         }
 
+	    public int GetID()
+	    {
+		    return ID;
+	    }
+
         public void SendMessage(MessagePacket pkt)
         {
             var msg = JsonConvert.SerializeObject(pkt);

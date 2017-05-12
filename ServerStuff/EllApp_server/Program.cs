@@ -19,13 +19,14 @@ namespace EllApp_server
         protected static ConcurrentDictionary<string, Connection> OnlineConnections = new ConcurrentDictionary<string, Connection>();
         public static List<Session> Sessions = new List<Session>();
 	    private static Logger logger = LogManager.GetCurrentClassLogger();
+	    private static WebSocketServer aServer;
 
         static void Main(string[] args)
         {
             // instantiate a new server - acceptable port and IP range,
             // and set up your methods.
 
-            var aServer = new WebSocketServer(Convert.ToInt16(ConfigurationSettings.AppSettings["serverport"]), System.Net.IPAddress.Any)
+            aServer = new WebSocketServer(Convert.ToInt16(ConfigurationSettings.AppSettings["serverport"]), System.Net.IPAddress.Any)
             {
                 OnReceive = OnReceive,
                 OnSend = OnSend,
@@ -87,10 +88,11 @@ namespace EllApp_server
             logger.Info("Client Connected From : " + aContext.ClientAddress);
 
             // Create a new Connection Object to save client context information
-            var conn = new Connection { Context = aContext };
+            var conn = new Connection { Context = aContext, IP = aContext.ClientAddress };
 
             // Add a connection Object to thread-safe collection
             OnlineConnections.TryAdd(aContext.ClientAddress.ToString(), conn);
+			Sessions.Add(new Session(0, null, aContext));
         }
         public static void OnReceive(UserContext aContext)
         {
@@ -113,16 +115,26 @@ namespace EllApp_server
         public static void OnDisconnect(UserContext aContext)
         {
 	        logger.Info("Client Disconnected : " + aContext.ClientAddress);
-
+	        Sessions = Sessions;
             // Remove the connection Object from the thread-safe collection
             Connection conn;
             OnlineConnections.TryRemove(aContext.ClientAddress.ToString(), out conn);
-            var sessionlist = Sessions.Where(s => s.GetContext().ClientAddress.ToString() == aContext.ClientAddress.ToString());
-            foreach (var s in sessionlist)
-                s.GetUser().SetOffline();
-            Sessions.Remove(Sessions.First(s => s.GetContext() == aContext));
-            // Dispose timer to stop sending messages to the client.
-            conn.timer.Dispose();
+	        if (conn != null) //E' riuscito a rimuovere la connessione.
+	        {
+		        Sessions.Remove(Sessions.First(s =>
+											   {
+												   bool res = (s.GetContext().ClientAddress == conn.IP);
+												   if (res)
+												   {
+													   if(s.GetID() > 0)
+													       s.GetUser().SetOffline();   
+												   }
+												   return res;
+											   }));
+		        // Dispose timer to stop sending messages to the client.
+		        conn.timer.Dispose();
+	        }
+            
         }
 
         
