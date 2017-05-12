@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EllApp_server.Classes;
 using EllApp_server.definitions;
+using EllApp_server.Network.Packets;
 using Newtonsoft.Json;
 
 namespace EllApp_server.Network.Handlers
@@ -26,8 +27,8 @@ namespace EllApp_server.Network.Handlers
 		{
 			Console.WriteLine("Received CHAT LIST REQUEST from AccountID = " + obj.accid + ".");
 			int accountid = obj.accid;
-			string chatlist = JsonConvert.SerializeObject(User.GetChats(accountid, ""));
-			Sessions.First(s => s.GetUser().GetID() == accountid).SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE, 0, accountid, chatlist));
+			var chatlist = User.GetChats(accountid, "");
+			Sessions.First(s => s.GetUser().GetID() == accountid).SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE, 0, accountid, new ChatRequestListResponse{ ChatList = chatlist }));
 		}
 	}
 }

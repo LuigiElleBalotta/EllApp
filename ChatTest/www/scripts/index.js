@@ -117,10 +117,10 @@
                                 }
                                 break;
                         case MessageType.MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE:
-                            var RequestedChat = JSON.parse(obj.data);
-                            for (var i = 0; i < RequestedChat.length; i++)
+							var ChatList = JSON.parse(obj.data.ChatList);
+							for (var i = 0; i < ChatList.length; i++)
                             {
-                                var chat = RequestedChat[i];
+								var chat = ChatList[i];
                                 switch (chat.chattype)
                                 {
                                     case ChatType.CHAT_TYPE_USER_TO_USER:

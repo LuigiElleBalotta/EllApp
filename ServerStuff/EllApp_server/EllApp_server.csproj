@@ -80,6 +80,7 @@
     <Compile Include="Network\Handlers\LoginHandler.cs" />
     <Compile Include="Network\Handlers\MessageHandler.cs" />
     <Compile Include="Network\Handlers\RegistrationHandler.cs" />
+    <Compile Include="Network\Packets\ChatRequestListResponse.cs" />
     <Compile Include="Network\Packets\LoginResponse.cs" />
     <Compile Include="Network\Packets\RegistrationResponse.cs" />
     <Compile Include="Program.cs" />
