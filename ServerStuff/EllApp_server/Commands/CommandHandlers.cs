@@ -76,10 +76,10 @@ namespace EllApp_server.Commands
 
 							int from = Misc.GetUserIDByUsername(uname);
 							int to = Misc.GetUserIDByUsername(duname);
-							string chatroomid = Misc.CreateChatRoomID(to, @from);
+							string chatroomid = Misc.CreateChatRoomID(to, from);
 
 							Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, chatroomid, tmpmessage, uname, duname);
-							var msg = new MessagePacket(MessageType.MSG_TYPE_CHAT, @from, to, JsonConvert.SerializeObject(c));
+							var msg = new MessagePacket(MessageType.MSG_TYPE_CHAT, from, to, JsonConvert.SerializeObject(c));
 
 							logger.Info($"Sending message to {to} - {duname}");
 							if (sessions.Any(s => s.GetUser().GetID() == to))
@@ -98,7 +98,7 @@ namespace EllApp_server.Commands
 							log.ChatID = chatroomid;
 							log.content = tmpmessage;
 							log.to_type = ChatType.CHAT_TYPE_USER_TO_USER;
-							log.@from = @from;
+							log.from = from;
 							log.to = to;
 							log.SaveLog();
 							Console.WriteLine(JsonConvert.SerializeObject(msg));
