@@ -39,7 +39,7 @@ $("document").ready(function ()
 						switch (parseInt(obj.MessageType))
 						{
 							case 5:
-								if (obj.data) {
+								if (obj.data.Result) {
 									msg = "Success!";
 									canGoOn = true;
 								}

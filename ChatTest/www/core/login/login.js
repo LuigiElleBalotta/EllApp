@@ -44,7 +44,7 @@ $("document").ready(function () {
 							case 1:
 								var msg = "";
 								var canGoOn = false;
-								switch (obj.data) {
+								switch (obj.data.LoginResult) {
 								case 1:
 									msg = "Accesso effettuato! Attendi..";
 									canGoOn = true;

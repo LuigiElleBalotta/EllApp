@@ -59,8 +59,8 @@ namespace EllApp_server.Network.Handlers
 			{
 				if (session.GetUser().GetID() != from) //Do not send message to ourselves
 				{
-					Chat c = new Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, Misc.CreateChatRoomID(from, session.GetUser().GetID()), messagecontent, Misc.GetUsernameByID(from), Misc.GetUsernameByID(session.GetUser().GetID()));
-					session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, from, session.GetUser().GetID(), JsonConvert.SerializeObject(c)));
+					Chat chat = new Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, Misc.CreateChatRoomID(from, session.GetUser().GetID()), messagecontent, Misc.GetUsernameByID(from), Misc.GetUsernameByID(session.GetUser().GetID()));
+					session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, from, session.GetUser().GetID(), chat));
 					stCLog.content = messagecontent;
 					stCLog.to_type = toType;
 					stCLog.from = from;
@@ -81,9 +81,9 @@ namespace EllApp_server.Network.Handlers
 				Session singleOrDefault = sessions.SingleOrDefault(s => s.GetUser().GetID() == (int)obj.To);
 				if (singleOrDefault != null && singleOrDefault.GetUser().IsOnline())
 				{
-					Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, Misc.CreateChatRoomID(obj.To, obj.From), obj.Message, obj.From, obj.To);
+					Chat chat = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, Misc.CreateChatRoomID(obj.To, obj.From), obj.Message, obj.From, obj.To);
 					Session session = sessions.SingleOrDefault(s => s.GetUser().GetID() == (int)obj.To);
-					session?.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, obj.From, obj.To, JsonConvert.SerializeObject(c)));
+					session?.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, obj.From, obj.To, chat));
 				}
 			}
 			else

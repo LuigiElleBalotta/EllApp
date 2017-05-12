@@ -75,7 +75,7 @@
                     switch(obj.MessageType)
                     {
                         case MessageType.MSG_TYPE_LOGIN_INFO:
-                            accID = obj.data;
+                            accID = obj.data.AccountID;
 
                             //Request existing chat:
                             var chatreqObj = new Object();

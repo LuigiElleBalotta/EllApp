@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using EllApp_server.Network.Packets;
 
 namespace EllApp_server.Network.Handlers
 {
@@ -24,7 +25,7 @@ namespace EllApp_server.Network.Handlers
 		        Connection conn;
 
 		        Session s = new Session(0, null, aContext);
-		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, -1, LoginResult.WrongCredentials);
+		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, -1, new LoginResponse{ LoginResult = LoginResult.WrongCredentials });
 		        s.SendMessage(loginInfo);
 
 		        onlineConnections.TryRemove(aContext.ClientAddress.ToString(), out conn);
@@ -35,19 +36,16 @@ namespace EllApp_server.Network.Handlers
 		        Session s = new Session(u.GetID(), u, aContext);
 		        sessions.Add(s);
 
-		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, s.GetUser().GetID(), LoginResult.Success);
+		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, s.GetUser().GetID(), new LoginResponse{ LoginResult = LoginResult.WrongCredentials, AccountID = s.GetUser().GetID() });
                             
 		        s.SendMessage(loginInfo);
 				
 		        if(wantWelcomeMessage)
 		        {
 			        //Create the welcome message object
-			        Chat c = new Chat();
-			        c.chattype = ChatType.CHAT_TYPE_GLOBAL_CHAT;
-			        c.text = "Benvenuto " + s.GetUser().GetUsername();
-			        string output = JsonConvert.SerializeObject(c);
+			        Chat chat = new Chat{ chattype = ChatType.CHAT_TYPE_GLOBAL_CHAT, text = "Benvenuto " + s.GetUser().GetUsername() };
 			        s.GetUser().SetOnline();
-			        var welcomeMessage = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, s.GetUser().GetID(), output);
+			        var welcomeMessage = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, s.GetUser().GetID(), chat);
 			        s.SendMessage(welcomeMessage);
 		        }
 	        }

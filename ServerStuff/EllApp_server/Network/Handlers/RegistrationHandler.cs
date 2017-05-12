@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Alchemy.Classes;
 using EllApp_server.Classes;
 using EllApp_server.definitions;
+using EllApp_server.Network.Packets;
 
 namespace EllApp_server.Network.Handlers
 {
@@ -21,7 +22,7 @@ namespace EllApp_server.Network.Handlers
 
 			Session tmpSession = new Session(0, null, uContext);
 
-			MessagePacket registrationInfo = new MessagePacket(MessageType.MSG_TYPE_REGISTRATION_RESPONSE, 0, -1, result);
+			MessagePacket registrationInfo = new MessagePacket(MessageType.MSG_TYPE_REGISTRATION_RESPONSE, 0, -1, new RegistrationResponse{ Result = result });
                             
 			tmpSession.SendMessage(registrationInfo);
 		}

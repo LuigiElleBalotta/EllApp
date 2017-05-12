@@ -8,14 +8,21 @@ using EllApp_server.Classes;
 using EllApp_server.definitions;
 using EllApp_server.Network.Handlers;
 using Newtonsoft.Json;
+using NLog;
 
 namespace EllApp_server.Network
 {
 	public class ClassChooser
 	{
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
 		public static void Handle(UserContext aContext, List<Session> sessions, ConcurrentDictionary<string, Connection> OnlineConnections)
 		{
+			
 			var json = aContext.DataFrame.ToString();
+
+			logger.Info($"======================================={Environment.NewLine}Received packet: {Environment.NewLine} {json} { Environment.NewLine }=======================================");
+
 			dynamic obj = JsonConvert.DeserializeObject(json);
 			Type type;
 			MethodInfo metodo;
