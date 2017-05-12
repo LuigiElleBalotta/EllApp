@@ -14,14 +14,16 @@
         "MSG_TYPE_LOGIN_INFO": 1,
         "MSG_TYPE_CHAT_REQUEST_RESPONSE": 2,
         "MSG_TYPE_CHAT": 3,
-        "MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE": 4
+		"MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE": 4,
+        "MSG_TYPE_REGISTRATION_RESPONSE": 5
     }
 
     var CommandType = {
         "login": 0,
         "message": 1,
         "chatsrequest": 2,
-        "chatlistrequest": 3
+		"chatlistrequest": 3,
+		"registration": 4
     }
 
     var ChatType = {
