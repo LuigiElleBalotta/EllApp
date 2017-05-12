@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Alchemy.Classes;
 using EllApp_server.Classes;
 using EllApp_server.definitions;
-using Newtonsoft.Json;
 using NLog;
 
 namespace EllApp_server.Network.Handlers
