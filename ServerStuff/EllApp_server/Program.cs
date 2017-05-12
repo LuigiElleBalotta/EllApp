@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Reflection;
 using EllApp_server.Commands;
 using EllApp_server.Network;
+using log4net;
 
 namespace EllApp_server
 {
@@ -75,12 +76,11 @@ namespace EllApp_server
             aServer.Stop();
             Environment.Exit(0);
         }
-
-	    [System.Diagnostics.Conditional("DEBUG")]
+		
         public static void OnConnect(UserContext aContext)
         {
 
-            Console.WriteLine("Client Connected From : " + aContext.ClientAddress.ToString());
+            Console.WriteLine("Client Connected From : " + aContext.ClientAddress);
 
             // Create a new Connection Object to save client context information
             var conn = new Connection { Context = aContext };
@@ -96,20 +96,19 @@ namespace EllApp_server
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message.ToString());
+                Console.WriteLine(ex.Message);
             }
 
         }
-	    [System.Diagnostics.Conditional("DEBUG")]
+
         public static void OnSend(UserContext aContext)
         {
-            Console.WriteLine("Data Sent To : " + aContext.ClientAddress.ToString());
+            Console.WriteLine("Data Sent To : " + aContext.ClientAddress);
         }
-
-	    [System.Diagnostics.Conditional("DEBUG")]
+		
         public static void OnDisconnect(UserContext aContext)
         {
-            Console.WriteLine("Client Disconnected : " + aContext.ClientAddress.ToString());
+            Console.WriteLine("Client Disconnected : " + aContext.ClientAddress);
 
             // Remove the connection Object from the thread-safe collection
             Connection conn;
