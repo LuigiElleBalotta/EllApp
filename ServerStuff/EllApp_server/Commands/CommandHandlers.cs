@@ -5,11 +5,13 @@ using Alchemy;
 using EllApp_server.Classes;
 using EllApp_server.definitions;
 using Newtonsoft.Json;
+using NLog;
 
 namespace EllApp_server.Commands
 {
 	public class CommandHandlers
 	{
+		private static Logger logger = LogManager.GetCurrentClassLogger();
 		public void Online(List<Session> sessions)
 		{
 			Console.WriteLine("Online Users: " + Utility.GetOnlineUsers(sessions));
@@ -79,15 +81,15 @@ namespace EllApp_server.Commands
 							Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, chatroomid, tmpmessage, uname, duname);
 							var msg = new MessagePacket(MessageType.MSG_TYPE_CHAT, @from, to, JsonConvert.SerializeObject(c));
 
-							Console.WriteLine($"Sending message to {to} - {duname}");
+							logger.Info($"Sending message to {to} - {duname}");
 							if (sessions.Any(s => s.GetUser().GetID() == to))
 							{
-								Console.WriteLine("L'utente è nella lista delle sessioni");
+								logger.Info("L'utente è nella lista delle sessioni");
 								if (sessions.First(s => s.GetUser().GetID() == to).GetUser().IsOnline())
 								{
-									Console.WriteLine("L'utente è online");
+									logger.Info("L'utente è online");
 									Session session = sessions.SingleOrDefault(s => s.GetUser().GetID() == to);
-									Console.WriteLine("Sending message to user");
+									logger.Info("Sending message to user");
 									session?.SendMessage(msg);
 								}
 							}
@@ -104,10 +106,10 @@ namespace EllApp_server.Commands
 							break;
 						case 2:
 							validChoice = true;
-							Console.WriteLine("Not yet implemented.");
+							logger.Warn("Not yet implemented.");
 							break;
 						default:
-							Console.WriteLine("Invalid choice");
+							logger.Warn("Invalid choice");
 							break;
 					}
 				} while (!validChoice);

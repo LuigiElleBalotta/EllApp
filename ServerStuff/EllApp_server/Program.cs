@@ -9,7 +9,7 @@ using System.Configuration;
 using System.Reflection;
 using EllApp_server.Commands;
 using EllApp_server.Network;
-using log4net;
+using NLog;
 
 namespace EllApp_server
 {
@@ -18,6 +18,7 @@ namespace EllApp_server
         //Thread-safe collection of Online Connections.
         protected static ConcurrentDictionary<string, Connection> OnlineConnections = new ConcurrentDictionary<string, Connection>();
         public static List<Session> Sessions = new List<Session>();
+	    private static Logger logger = LogManager.GetCurrentClassLogger();
 
         static void Main(string[] args)
         {
@@ -66,7 +67,7 @@ namespace EllApp_server
                         case "clearconsole":
                             break;
                         default:
-                            Console.WriteLine("Unknown command");
+                            logger.Warn($"Unknown command \"{command}\".");
                             break;
                     }
                 }
@@ -80,7 +81,7 @@ namespace EllApp_server
         public static void OnConnect(UserContext aContext)
         {
 
-            Console.WriteLine("Client Connected From : " + aContext.ClientAddress);
+            logger.Info("Client Connected From : " + aContext.ClientAddress);
 
             // Create a new Connection Object to save client context information
             var conn = new Connection { Context = aContext };
@@ -103,12 +104,12 @@ namespace EllApp_server
 
         public static void OnSend(UserContext aContext)
         {
-            Console.WriteLine("Data Sent To : " + aContext.ClientAddress);
+	        logger.Info("Data Sent To : " + aContext.ClientAddress);
         }
 		
         public static void OnDisconnect(UserContext aContext)
         {
-            Console.WriteLine("Client Disconnected : " + aContext.ClientAddress);
+	        logger.Info("Client Disconnected : " + aContext.ClientAddress);
 
             // Remove the connection Object from the thread-safe collection
             Connection conn;

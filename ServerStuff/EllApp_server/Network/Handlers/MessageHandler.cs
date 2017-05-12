@@ -5,15 +5,16 @@ using Alchemy.Classes;
 using EllApp_server.Classes;
 using EllApp_server.definitions;
 using Newtonsoft.Json;
+using NLog;
 
 namespace EllApp_server.Network.Handlers
 {
 	public class MessageHandler
 	{
-		[System.Diagnostics.Conditional("DEBUG")]
+		private static Logger logger = LogManager.GetCurrentClassLogger();
 		public void HandleMessage(UserContext aContext, dynamic obj, List<Session> sessions)
 		{
-			Console.WriteLine("MESSAGE PACKET FROM " + aContext.ClientAddress);
+			logger.Info("MESSAGE PACKET FROM " + aContext.ClientAddress);
 			string messagecontent = obj.Message;
 			ChatType toType = obj.ToType;
 			int from = obj.From;
@@ -68,12 +69,12 @@ namespace EllApp_server.Network.Handlers
 					o++;
 				}
 			}
-			Console.WriteLine("Message sent to {0} users", (o - 1));
+			logger.Info("Message sent to {0} users", (o - 1));
 		}
 
 		private void HandleUserChat(List<Session> sessions, dynamic obj)
 		{
-			Console.WriteLine("Received MSG_TYPE_CHAT_WITH_USER packet.");
+			logger.Info("Received MSG_TYPE_CHAT_WITH_USER packet.");
 			//If the receiving User is online, we can send the message to him, otherwise he will load everything at next login
 			if (sessions.Any(s => s.GetUser().GetID() == (int)obj.To))
 			{
@@ -86,17 +87,17 @@ namespace EllApp_server.Network.Handlers
 				}
 			}
 			else
-				Console.WriteLine("DEBUG: The receiver was not online, message will be read at next login");
+				logger.Info("The receiver was not online, message will be read at next login");
 		}
 
 		private void HandleGroupChat()
 		{
-			Console.WriteLine("MSG_TYPE_CHAT_WITH_GROUP NOT YET IMPLEMENTED");
+			logger.Warn("MSG_TYPE_CHAT_WITH_GROUP NOT YET IMPLEMENTED");
 		}
 
 		private void HandleChatNull()
 		{
-			Console.WriteLine("Message Type is NULL.");
+			logger.Error("Message Type is NULL.");
 		}
 	}
 }
