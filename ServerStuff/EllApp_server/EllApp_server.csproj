@@ -66,6 +66,7 @@
     <Compile Include="Classes\DB.cs" />
     <Compile Include="Classes\Entities\Account.cs" />
     <Compile Include="Classes\Entities\Friendship.cs" />
+    <Compile Include="Classes\Entities\LogChat.cs" />
     <Compile Include="Classes\Log_Manager.cs" />
     <Compile Include="Classes\MessagePacket.cs" />
     <Compile Include="Classes\Session.cs" />
