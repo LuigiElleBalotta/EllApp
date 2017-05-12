@@ -24,6 +24,7 @@ namespace EllApp_server.Network
 			ChatHandler chatHandler = new ChatHandler();
 			LoginHandler lh = new LoginHandler();
 			MessageHandler messageHandler = new MessageHandler();
+			RegistrationHandler rh = new RegistrationHandler();
 
 			switch ((int)obj.Type)
 			{
@@ -46,6 +47,12 @@ namespace EllApp_server.Network
 					type = chatHandler.GetType();
 					metodo = type.GetMethod("ChatRequestList");
 					metodo.Invoke(chatHandler, new object[]{ Sessions, obj });
+					break;
+				case (int)CommandType.Registration:
+					type = rh.GetType();
+					metodo = type.GetMethod("RegisterAccount");
+					metodo.Invoke(rh, new object[]{ obj, aContext });
+					Sessions.Remove(Sessions.First(s => s.GetContext() == aContext));
 					break;
 			}
 		}

@@ -38,10 +38,8 @@ $("document").ready(function () {
 				try {
 					//Risposta del login da parte del server
 					dataReceived = e.data;
-					alert(dataReceived);
 					if (dataReceived != "") {
 						var obj = JSON.parse(dataReceived);
-						alert(obj.MessageType);
 						switch (parseInt(obj.MessageType)) {
 							case 1:
 								var msg = "";

@@ -79,6 +79,7 @@
     <Compile Include="Network\Handlers\ChatHandler.cs" />
     <Compile Include="Network\Handlers\LoginHandler.cs" />
     <Compile Include="Network\Handlers\MessageHandler.cs" />
+    <Compile Include="Network\Handlers\RegistrationHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

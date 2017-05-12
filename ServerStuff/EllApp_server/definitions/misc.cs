@@ -77,7 +77,8 @@ namespace EllApp_server.definitions
         MSG_TYPE_LOGIN_INFO                      = 1,
         MSG_TYPE_CHAT_REQUEST_RESPONSE           = 2,
         MSG_TYPE_CHAT                            = 3,
-        MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE      = 4
+        MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE      = 4,
+		MSG_TYPE_REGISTRATION_RESPONSE           = 5
     }
 
     public enum ChatType
@@ -101,7 +102,8 @@ namespace EllApp_server.definitions
         Login           = 0,
         Message         = 1,
         ChatsRequest    = 2,
-        ChatListRequest = 3
+        ChatListRequest = 3,
+		Registration    = 4
     }
 
     public enum ResponseType

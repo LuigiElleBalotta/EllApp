@@ -8,16 +8,20 @@ using MySql.Data.MySqlClient;
 
 namespace EllApp_server.Classes
 {
-    class Account
+    public class Account
     {
-        public static void CreateAccount(string username, string password, string email)
+        public static bool CreateAccount(string username, string password, string email)
         {
+	        username = username.ToUpper();
+	        password = password.ToUpper();
+	        email = email.ToUpper();
+
             byte[] passwordbyte = Encoding.ASCII.GetBytes(username + ":" + password);
             var sha_pass = SHA1.Create();
             byte[] bytehash = sha_pass.ComputeHash(passwordbyte);
             var hashedpsw = Utility.HexStringFromBytes(bytehash);
 
-            MySqlCommand cmd = new MySqlCommand("INSERT INTO accounts(username, password) VALUES(@username, @password, @email);", DB.EllAppDB);
+            MySqlCommand cmd = new MySqlCommand("INSERT INTO accounts(username, password, email) VALUES(@username, @password, @email);", DB.EllAppDB);
             MySqlParameter passwordParameter = new MySqlParameter("@password", MySqlDbType.VarChar, 0);
             MySqlParameter usernameParameter = new MySqlParameter("@username", MySqlDbType.VarChar, 0);
             MySqlParameter emailParameter = new MySqlParameter("@email", MySqlDbType.VarChar, 0);
@@ -27,10 +31,16 @@ namespace EllApp_server.Classes
             cmd.Parameters.Add(usernameParameter);
             cmd.Parameters.Add(passwordParameter);
             cmd.Parameters.Add(emailParameter);
-            if(cmd.ExecuteNonQuery() >= 1)
-                Console.WriteLine("Account created.");
-            else
-                Console.WriteLine("Failure creating account.");
+	        if (cmd.ExecuteNonQuery() >= 1)
+	        {
+		        Console.WriteLine("Account created.");
+		        return true;
+	        }
+	        else
+	        {
+		        Console.WriteLine("Failure creating account.");
+		        return false;
+	        }
         }
     }
 }

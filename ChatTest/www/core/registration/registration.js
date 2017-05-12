@@ -25,18 +25,57 @@ $("document").ready(function ()
                 $("#avviso").show(300);
                 setTimeout(resetAvviso, 3000);
                 return false;
-            }
-            $.post("http://localhost/registration/elaboraCreazione.php", "user=" + encodeURIComponent(username) + "&psw=" + encodeURIComponent(password) + "&email=" + encodeURIComponent(email), function (data, status) {
-                var msg = "";
-                if (data == "1")
-                    msg = "Account creato con successo!";
-                else
-                    msg = "Errore";
-                $("#risultato").html(msg);
-                $("#avviso").show(300);
-                $("#inviaModuloCreazioneAccount").button("reset");
-                setTimeout(resetAvviso, 3000);
-            });
+			}
+
+	        conn = new WebSocket('ws://192.168.0.113:8080');
+	        conn.onmessage = function (e) {
+		        try {
+					var dataReceived = e.data;
+					var msg = "";
+			        var canGoOn = false;
+					if (dataReceived != "")
+					{
+				        var obj = JSON.parse(dataReceived);
+						switch (parseInt(obj.MessageType))
+						{
+							case 5:
+								if (obj.data) {
+									msg = "Success!";
+									canGoOn = true;
+								}
+								else
+									msg = "Failure!";
+								break;
+							default: //Throw away everything else
+								break;
+						}
+						$("#risultato").html(msg);
+						$("#avviso").show(300);
+						$("#inviaModuloCreazioneAccount").button("reset");
+						if (!canGoOn)
+							setTimeout(resetAvviso, 3000);
+						else
+							setTimeout(function () { window.location.href = "../login/login.html"; }, 100);
+			        }
+		        }
+		        catch (e) {
+			        alert(e);
+		        }
+	        };
+
+	        conn.onopen = function (e) {
+		        var regObj = new Object();
+		        regObj.Type = 4;
+		        regObj.Username = username;
+				regObj.Psw = password;
+		        regObj.Email = email;
+				regObj = JSON.stringify(regObj);
+				conn.send(regObj);
+
+		        isConnected = true;
+	        };
+
+	        conn.onclose = function (e) { /*TODO: to handle*/ };
         }
     });
 

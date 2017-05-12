@@ -120,7 +120,7 @@ namespace EllApp_server
             var sessionlist = Sessions.Where(s => s.GetContext().ClientAddress.ToString() == aContext.ClientAddress.ToString());
             foreach (var s in sessionlist)
                 s.GetUser().SetOffline();
-            Sessions.Remove(Sessions.First(s => s.GetContext().ClientAddress.ToString() == aContext.ClientAddress.ToString()));
+            Sessions.Remove(Sessions.First(s => s.GetContext() == aContext));
             // Dispose timer to stop sending messages to the client.
             conn.timer.Dispose();
         }
