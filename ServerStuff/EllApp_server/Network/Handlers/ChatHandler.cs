@@ -19,7 +19,7 @@ namespace EllApp_server.Network.Handlers
 			string ChatRequestID = "";
 			if (obj.ChatRequestID != null)
 				ChatRequestID = obj.ChatRequestID;
-			string chats = JsonConvert.SerializeObject(User.GetChats(accountID, ChatRequestID));
+			var chats = User.GetChat(accountID, ChatRequestID);
 			Sessions.First(s => s.GetUser().GetID() == accountID).SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT_REQUEST_RESPONSE, 0, accountID, chats));
 		}
 
@@ -27,7 +27,7 @@ namespace EllApp_server.Network.Handlers
 		{
 			Console.WriteLine("Received CHAT LIST REQUEST from AccountID = " + obj.accid + ".");
 			int accountid = obj.accid;
-			var chatlist = User.GetChats(accountid, "");
+			var chatlist = User.GetChats(accountid);
 			Sessions.First(s => s.GetUser().GetID() == accountid).SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE, 0, accountid, new ChatRequestListResponse{ ChatList = chatlist }));
 		}
 	}

@@ -95,42 +95,54 @@ namespace EllApp_server.Classes
             cmd.ExecuteNonQuery();
         }
 
-        public static List<Chat> GetChats(int AccountID, string ChatRequestID = "")
+	    public static List<ChatMessage> GetChat(int AccountID, string ChatRequestID)
+	    {
+		    staticconn.Open();
+		    List<ChatMessage> chatMessages = new List<ChatMessage>();
+		    MySqlCommand cmd = new MySqlCommand("SELECT ChatID as 'chatroom', `from`, content, `to`, `date` FROM log_chat WHERE ChatID = @chatid AND to_type = 'CHAT_TYPE_USER_TO_USER' ORDER BY `date` ASC;", staticconn);
+		    MySqlParameter chatidParameter = new MySqlParameter("@chatid", MySqlDbType.String, 0);
+		    chatidParameter.Value = ChatRequestID;
+		    cmd.Parameters.Add(chatidParameter);
+		    MySqlDataReader r = cmd.ExecuteReader();
+		    while(r.Read())
+		    {
+			    int from = Convert.ToInt32(r["from"]);
+			    int to = Convert.ToInt32(r["to"]);
+			    ChatMessage chatMessage = new ChatMessage
+								{
+									chattype = ChatType.CHAT_TYPE_USER_TO_USER, 
+									ChatRoom = r["chatroom"].ToString(), 
+									Content = r["content"].ToString(), 
+									OwnerID = from,
+									OwnerUsername = Misc.GetUsernameByID(from), 
+									ReceiverID = to,
+									ReceiverUsername = Misc.GetUsernameByID(to), 
+									TimeStamp = (long)Misc.DateTimeToUnixTimestamp(Convert.ToDateTime(r["date"].ToString()))
+								};
+			    chatMessages.Add(chatMessage);
+		    }
+		    r.Close();
+		    staticconn.Close();
+		    return chatMessages;
+	    }
+
+        public static List<Chat> GetChats(int AccountID)
         {
-            staticconn.Open();
-            List<Chat> chats = new List<Chat>();
-            if (ChatRequestID == "") //I am requesting only all open chat, not the messages
+	        staticconn.Open();
+	        List<Chat> chats = new List<Chat>();
+            MySqlCommand cmd = new MySqlCommand("SELECT ChatID as 'chatroom', `from`, content, `to`, `date` FROM log_chat WHERE to_type = 'CHAT_TYPE_USER_TO_USER' AND (`from` = @id or `to` = @id) AND `date` IN (SELECT MAX(`date`) FROM log_chat WHERE ChatID <> '' GROUP BY ChatID) ORDER BY `date` desc;", staticconn);
+            MySqlParameter idParameter = new MySqlParameter("@id", MySqlDbType.Int32, 0);
+            idParameter.Value = AccountID;
+            cmd.Parameters.Add(idParameter);
+            MySqlDataReader r = cmd.ExecuteReader();
+            while (r.Read())
             {
-                MySqlCommand cmd = new MySqlCommand("SELECT ChatID as 'chatroom', `from`, content, `to`, `date` FROM log_chat WHERE to_type = 'CHAT_TYPE_USER_TO_USER' AND (`from` = @id or `to` = @id) AND `date` IN (SELECT MAX(`date`) FROM log_chat WHERE ChatID <> '' GROUP BY ChatID) ORDER BY `date` desc;", staticconn);
-                MySqlParameter idParameter = new MySqlParameter("@id", MySqlDbType.Int32, 0);
-                idParameter.Value = AccountID;
-                cmd.Parameters.Add(idParameter);
-                MySqlDataReader r = cmd.ExecuteReader();
-                while (r.Read())
-                {
-                    Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, r["chatroom"].ToString(), r["content"].ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["from"])).ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["to"])).ToString(), (long)Misc.DateTimeToUnixTimestamp(Convert.ToDateTime(r["date"].ToString())));
-                    chats.Add(c);
-                }
-                r.Close();
-                staticconn.Close();
-                return chats;
+                Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, r["chatroom"].ToString(), r["content"].ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["from"])).ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["to"])).ToString(), (long)Misc.DateTimeToUnixTimestamp(Convert.ToDateTime(r["date"].ToString())));
+                chats.Add(c);
             }
-            else
-            {
-                MySqlCommand cmd = new MySqlCommand("SELECT ChatID as 'chatroom', `from`, content, `to`, `date` FROM log_chat WHERE ChatID = @chatid AND to_type = 'CHAT_TYPE_USER_TO_USER' ORDER BY `date` ASC;", staticconn);
-                MySqlParameter chatidParameter = new MySqlParameter("@chatid", MySqlDbType.String, 0);
-                chatidParameter.Value = ChatRequestID;
-                cmd.Parameters.Add(chatidParameter);
-                MySqlDataReader r = cmd.ExecuteReader();
-                while(r.Read())
-                {
-                    Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, r["chatroom"].ToString(), r["content"].ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["from"])).ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["to"])).ToString(), (long)Misc.DateTimeToUnixTimestamp(Convert.ToDateTime(r["date"].ToString())));
-                    chats.Add(c);
-                }
-                r.Close();
-                staticconn.Close();
-                return chats;
-            }
+            r.Close();
+            staticconn.Close();
+            return chats;
         }
     }
 }
