@@ -8,7 +8,7 @@ using MySql.Data.MySqlClient;
 
 namespace EllApp_server.Classes
 {
-    class CommandManager
+    class Account
     {
         public static void CreateAccount(string username, string password, string email)
         {

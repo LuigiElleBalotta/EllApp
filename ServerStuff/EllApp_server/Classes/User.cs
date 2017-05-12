@@ -13,8 +13,7 @@ namespace EllApp_server.Classes
     {
         int ID = 0;
         string username, last_ip, email;
-        static Config_Manager conf = new Config_Manager();
-        static MySqlConnection staticconn = new MySqlConnection("Server=" + conf.getValue("mysql_host") + ";Database=" + conf.getValue("mysql_db") + ";Uid=" + conf.getValue("mysql_user") + ";Pwd=" + conf.getValue("mysql_password") + ";");
+        static MySqlConnection staticconn = new MySqlConnection(DB.GetConnectionString());
         public User(string _username, string _password)
         {
             username = _username;

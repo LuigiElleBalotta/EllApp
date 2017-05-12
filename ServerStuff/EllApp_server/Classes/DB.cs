@@ -17,7 +17,7 @@ namespace EllApp_server.Classes
             EllAppDB.Open();
         }
 
-        private static string GetConnectionString()
+        public static string GetConnectionString()
         {
             return $"server={ConfigurationManager.AppSettings["mysql_host"]};uid={ConfigurationManager.AppSettings["mysql_user"]};pwd={ConfigurationManager.AppSettings["mysql_password"]};database={ConfigurationManager.AppSettings["mysql_db"]};";
         }

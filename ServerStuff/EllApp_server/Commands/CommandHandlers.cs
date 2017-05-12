@@ -50,7 +50,7 @@ namespace EllApp_server.Commands
 			string password = Console.ReadLine();
 			Console.WriteLine("Insert email:");
 			string email = Console.ReadLine();
-			CommandManager.CreateAccount(username, password, email);
+			Account.CreateAccount(username, password, email);
 		}
 
 		public void Fakemessage(List<Session> sessions)

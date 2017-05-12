@@ -10,7 +10,6 @@ namespace EllApp_server.Classes
 {
     class Log_Manager
     {
-        Config_Manager conf = new Config_Manager();
         MySqlConnection conn = null;
         public string ChatID = "";
         public string content = "";

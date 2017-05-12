@@ -62,8 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Chat.cs" />
-    <Compile Include="Classes\CommandManager.cs" />
-    <Compile Include="Classes\Config_Manager.cs" />
+    <Compile Include="Classes\Account.cs" />
     <Compile Include="Classes\DB.cs" />
     <Compile Include="Classes\Log_Manager.cs" />
     <Compile Include="Classes\MessagePacket.cs" />
