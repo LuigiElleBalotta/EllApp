@@ -8,7 +8,7 @@
     <AndroidEmulatorID>AndroidDevice;Dispositivo</AndroidEmulatorID>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Android'">
-    <DebuggerFlavor>Device</DebuggerFlavor>
-    <AndroidEmulatorID>AndroidInstallBuildTools;Installa gli strumenti di compilazione di Android...</AndroidEmulatorID>
+    <DebuggerFlavor>AndroidEmulator</DebuggerFlavor>
+    <AndroidEmulatorID>AndroidEmulator;Emulatore Google - Telefono</AndroidEmulatorID>
   </PropertyGroup>
 </Project>

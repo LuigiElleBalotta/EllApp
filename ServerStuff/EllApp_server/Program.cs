@@ -63,6 +63,9 @@ namespace EllApp_server
                         case "serverinfo":
 	                        metodo.Invoke(cmd, new object[]{ aServer });
                             break;
+						case "commands":
+							metodo.Invoke(cmd, null);
+							break;
                         case "createaccount":
                         case "clearconsole":
                             break;

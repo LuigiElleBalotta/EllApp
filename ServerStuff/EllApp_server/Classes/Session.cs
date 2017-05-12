@@ -35,7 +35,7 @@ namespace EllApp_server.Classes
         public void SendMessage(MessagePacket pkt)
         {
             var msg = JsonConvert.SerializeObject(pkt);
-            Console.WriteLine(msg);
+            Console.WriteLine($"Invio questo pacchetto: {msg}");
             context.Send(msg);
         }
     }

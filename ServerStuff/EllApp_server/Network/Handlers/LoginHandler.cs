@@ -1,43 +1,45 @@
 ﻿using Alchemy.Classes;
-using EllApp_server;
 using EllApp_server.Classes;
 using EllApp_server.definitions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EllApp_server.Network.Handlers
 {
     public class LoginHandler
     {
 
-        public static void DoLogin(UserContext aContext, List<Session> Sessions, ConcurrentDictionary<string, Connection> OnlineConnections, dynamic obj, string json)
+        public static void DoLogin(UserContext aContext, List<Session> sessions, ConcurrentDictionary<string, Connection> onlineConnections, dynamic obj, string json)
         {
 	        Console.WriteLine("LOGIN REQUEST FROM " + aContext.ClientAddress);
 	        Console.WriteLine(json);
 	        string username = (string)obj.Username;
 	        string psw = (string)obj.Psw;
-	        bool WantWelcomeMessage = Convert.ToBoolean((int)obj.WantWelcomeMessage);
+	        bool wantWelcomeMessage = Convert.ToBoolean((int)obj.WantWelcomeMessage);
 	        User u = new User(username.ToUpper(), psw.ToUpper());
 	        if (!u.Validate())
 	        {
 		        Connection conn;
-		        OnlineConnections.TryRemove(aContext.ClientAddress.ToString(), out conn);
+
+		        Session s = new Session(0, null, aContext);
+		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, -1, LoginResult.WrongCredentials);
+		        s.SendMessage(loginInfo);
+
+		        onlineConnections.TryRemove(aContext.ClientAddress.ToString(), out conn);
 		        conn.timer.Dispose();
 	        }
 	        else
 	        {
 		        Session s = new Session(u.GetID(), u, aContext);
-		        Sessions.Add(s);
+		        sessions.Add(s);
 
-		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, s.GetUser().GetID(), s.GetUser().GetID().ToString());
+		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, s.GetUser().GetID(), LoginResult.Success);
                             
 		        s.SendMessage(loginInfo);
-		        if(WantWelcomeMessage)
+				
+		        if(wantWelcomeMessage)
 		        {
 			        //Create the welcome message object
 			        Chat c = new Chat();

@@ -65,7 +65,7 @@
     {
         if (!isConnected)
         {
-            conn = new WebSocket('ws://192.168.0.91:8080');
+			conn = new WebSocket('ws://192.168.0.113:8080');
             conn.onmessage = function (e) {
                 dataReceived = e.data;
                 if (dataReceived != "") {

@@ -88,6 +88,14 @@ namespace EllApp_server.definitions
         CHAT_TYPE_GROUP_CHAT        = 3,
     }
 
+	public enum LoginResult
+	{
+		Success = 1,
+		WrongCredentials = 2,
+		NoPassword = 3,
+		NoUsername = 4
+	}
+
     public enum CommandType
     {
         Login           = 0,

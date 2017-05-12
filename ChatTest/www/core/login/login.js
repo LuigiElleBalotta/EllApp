@@ -33,52 +33,58 @@ $("document").ready(function () {
         }
         else
         {
-            conn = new WebSocket('ws://192.168.0.91:8080');
-            conn.onmessage = function (e) {
-                //Risposta del login da parte del server
-                dataReceived = e.data;
-                if (dataReceived != "")
-                {
-                    var obj = JSON.parse(dataReceived);
-                    switch (obj.MessageType)
-                    {
-                        case 1:
-                            break;
-                        default: //Throw away everything else
-                            break; 
-                    }
-                }
-                var msg = "";
-                var canGoOn = false;
-                switch (data) {
-                    case "1":
-                        msg = "Accesso effettuato! Attendi..";
-                        canGoOn = true;
-                        localStorage.setItem("uname", username);
-                        localStorage.setItem("psw", password);
-                        break;
-                    case "2":
-                        msg = "Credenziali errate";
-                        break;
-                    case "3":
-                        msg = "Nessuna password";
-                        break;
-                    case "4":
-                        msg = "Nessun username";
-                        break;
-                }
-                $("#risultato").html(msg);
-                $("#avviso").show(300);
-                $("#loginBTN").button("reset");
-                if (!canGoOn)
-                    setTimeout(resetAvviso, 3000);
-                else
-                    setTimeout(function () { window.location.href = "../../index.html"; }, 100);
-            };
+			conn = new WebSocket('ws://192.168.0.113:8080');
+			conn.onmessage = function (e) {
+				try {
+					//Risposta del login da parte del server
+					dataReceived = e.data;
+					alert(dataReceived);
+					if (dataReceived != "") {
+						var obj = JSON.parse(dataReceived);
+						alert(obj.MessageType);
+						switch (parseInt(obj.MessageType)) {
+							case 1:
+								var msg = "";
+								var canGoOn = false;
+								switch (obj.data) {
+								case 1:
+									msg = "Accesso effettuato! Attendi..";
+									canGoOn = true;
+									localStorage.setItem("uname", username);
+									localStorage.setItem("psw", password);
+									break;
+								case 2:
+									msg = "Credenziali errate";
+									break;
+								case 3:
+									msg = "Nessuna password";
+									break;
+								case 4:
+									msg = "Nessun username";
+									break;
+								}
+								$("#risultato").html(msg);
+								$("#avviso").show(300);
+								$("#loginBTN").button("reset");
+								if (!canGoOn)
+									setTimeout(resetAvviso, 3000);
+								else
+									setTimeout(function () { window.location.href = "../../index.html"; }, 100);
+							break;
+						default: //Throw away everything else
+							break;
+						}
+					}
+				}
+				catch(e) {
+					alert(e);
+					$("#loginBTN").button("reset");
+				}
+			};
 
             conn.onopen = function (e) {
                 var loginObj = new Object();
-                loginObj.Type = CommandType.login;
+                loginObj.Type = 0;
                 loginObj.Username = username;
                 loginObj.Psw = password;
                 loginObj.WantWelcomeMessage = 0;
@@ -88,18 +94,17 @@ $("document").ready(function () {
                 isConnected = true;
             };
 
-            conn.onclose = function (e) { //TODO: to handle };
-        }
+            conn.onclose = function (e) { /*TODO: to handle*/ };
 
         
 
         //e.preventDefault();
         
         
-        else {
+        /*else {
             $.post("http://localhost/login/elaboraLogin.php", "username=" + username + "&password=" + password, function (data, status) {
                 
-            });
+            });*/
         }
     }
 });

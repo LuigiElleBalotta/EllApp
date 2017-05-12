@@ -1,9 +1,9 @@
 {
      "android": {
          "release": {
-             "keystore": "c:\\my-release-key.keystore",
+             "keystore": "c:\\ellapp_key.keystore",
              "storePassword": "smemo2012",
-             "alias": "johnS",
+             "alias": "Elle",
              "password" : "smemo2012",
              "keystoreType": ""
          }

@@ -13,9 +13,9 @@ namespace EllApp_server.Classes
         public MessageType MessageType;
         public string from;
         public int to;
-        public string data;
+        public object data;
 
-        public MessagePacket(MessageType _msgtype, int _from, int _to, string _data)
+        public MessagePacket(MessageType _msgtype, int _from, int _to, object _data)
         {
             MessageType = _msgtype;
             from = GetUsername(_from);

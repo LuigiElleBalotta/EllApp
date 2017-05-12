@@ -22,12 +22,14 @@ namespace EllApp_server.Classes
             byte[] bytehash = sha_pass.ComputeHash(passwordbyte);
             _password = Utility.HexStringFromBytes(bytehash);
 
+	        _password = _password.ToUpper();
+	        username = username.ToUpper();
             
-            MySqlCommand cmd = new MySqlCommand("SELECT idAccount, email, last_ip FROM accounts WHERE username = @username AND password = @password;", DB.EllAppDB);
+            MySqlCommand cmd = new MySqlCommand("SELECT idAccount, email, last_ip FROM accounts WHERE UPPER(username) = @username AND UPPER(password) = @password;", DB.EllAppDB);
             MySqlParameter passwordParameter = new MySqlParameter("@password", MySqlDbType.VarChar, 0);
             MySqlParameter usernameParameter = new MySqlParameter("@username", MySqlDbType.VarChar, 0);
-            passwordParameter.Value = _password.ToUpper();
-            usernameParameter.Value = username.ToUpper();
+            passwordParameter.Value = _password;
+            usernameParameter.Value = username;
             cmd.Parameters.Add(usernameParameter);
             cmd.Parameters.Add(passwordParameter);
             MySqlDataReader row = cmd.ExecuteReader();
@@ -44,8 +46,8 @@ namespace EllApp_server.Classes
         {
             if (ID > 0)
                 return true;
-            else
-                return false;
+
+            return false;
         }
 
         public string GetUsername()

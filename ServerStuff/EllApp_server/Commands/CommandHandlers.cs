@@ -120,5 +120,16 @@ namespace EllApp_server.Commands
 		{
 			Console.Clear();
 		}
+
+		public void Commands()
+		{
+			Console.WriteLine("- clearconsole -> clears console");
+			Console.WriteLine("- fakemessage -> send a fake message");
+			Console.WriteLine("- gsm -> Global Server message");
+			Console.WriteLine("- online -> How many person are connected");
+			Console.WriteLine("- serverinfo -> self explained.");
+			Console.WriteLine("- createaccount -> create account");
+			Console.WriteLine("- exit");
+		}
 	}
 }
