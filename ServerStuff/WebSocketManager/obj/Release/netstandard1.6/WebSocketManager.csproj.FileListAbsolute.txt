@@ -1,0 +1,9 @@
+C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager\bin\Release\netstandard1.6\WebSocketManager.deps.json
+C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager\bin\Release\netstandard1.6\WebSocketManager.dll
+C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager\bin\Release\netstandard1.6\WebSocketManager.pdb
+C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager\bin\Release\netstandard1.6\WebSocketManager.Common.dll
+C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager\bin\Release\netstandard1.6\WebSocketManager.Common.pdb
+C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager\obj\Release\netstandard1.6\WebSocketManager.csprojResolveAssemblyReference.cache
+C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager\obj\Release\netstandard1.6\WebSocketManager.AssemblyInfo.cs
+C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager\obj\Release\netstandard1.6\WebSocketManager.dll
+C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager\obj\Release\netstandard1.6\WebSocketManager.pdb
