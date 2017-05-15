@@ -15,6 +15,7 @@ namespace EllApp_server.Classes
         public string ChatFrom { get; set; }
         public string ChatTo { get; set; }
         public long timestamp { get; set; }
+	    private ChatMessage[] Messages { get; set; }
 
         public Chat() { }
         public Chat(ChatType _type, string _chatroom, string _text, string _from, string _to, long _timestamp = 0)

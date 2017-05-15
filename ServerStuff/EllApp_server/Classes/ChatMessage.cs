@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EllApp_server.Classes
 {
-	public class ChatMessage : Chat
+	public class ChatMessage
 	{
 		public int idMessage { get; set; }
 		public string Content { get; set; }
