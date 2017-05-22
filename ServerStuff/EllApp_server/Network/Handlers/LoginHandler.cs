@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using EllApp_server.Classes.Entities;
 using EllApp_server.Network.Packets;
 
 namespace EllApp_server.Network.Handlers
@@ -33,19 +34,20 @@ namespace EllApp_server.Network.Handlers
 	        }
 	        else
 	        {
-		        Session s = new Session(u.GetID(), u, aContext);
+		        Session s = new Session(u.ID, u, aContext);
 		        sessions.Add(s);
 
-		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, s.GetUser().GetID(), new LoginResponse{ LoginResult = LoginResult.WrongCredentials, AccountID = s.GetUser().GetID() });
+		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, s.GetUser().ID, new LoginResponse{ LoginResult = LoginResult.WrongCredentials, AccountID = s.GetUser().ID });
                             
 		        s.SendMessage(loginInfo);
 				
 		        if(wantWelcomeMessage)
 		        {
+			        User utente = s.GetUser();
 			        //Create the welcome message object
-			        Chat chat = new Chat{ chattype = ChatType.CHAT_TYPE_GLOBAL_CHAT, text = "Benvenuto " + s.GetUser().GetUsername() };
-			        s.GetUser().SetOnline();
-			        var welcomeMessage = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, s.GetUser().GetID(), chat);
+			        ChatMessage chat = new ChatMessage{ MessageToType = ChatType.CHAT_TYPE_GLOBAL_CHAT, Text = "Benvenuto " + utente.Username, ChatRoom = "GLOBAL", Date = DateTime.Now, MessageFrom = 0, MessageTo = utente.ID };
+			        utente.SetOnline();
+			        var welcomeMessage = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, utente.ID, chat);
 			        s.SendMessage(welcomeMessage);
 		        }
 	        }

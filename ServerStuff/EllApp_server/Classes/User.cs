@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using EllApp_server.Classes.Entities;
 using MySql.Data.MySqlClient;
 using EllApp_server.definitions;
 
@@ -11,25 +12,28 @@ namespace EllApp_server.Classes
 {
     public class User
     {
-        int ID = 0;
-        string username, last_ip, email;
+        public int ID { get; set; } = 0;
+		public string Username { get; set; }
+		public string last_ip { get; set; }
+		public string email { get; set; }
+
         static MySqlConnection staticconn = new MySqlConnection(DB.GetConnectionString());
         public User(string _username, string _password)
         {
-            username = _username;
-            byte[] passwordbyte = Encoding.ASCII.GetBytes(username + ":" + _password);
+            Username = _username;
+            byte[] passwordbyte = Encoding.ASCII.GetBytes(Username + ":" + _password);
             var sha_pass = SHA1.Create();
             byte[] bytehash = sha_pass.ComputeHash(passwordbyte);
             _password = Utility.HexStringFromBytes(bytehash);
 
 	        _password = _password.ToUpper();
-	        username = username.ToUpper();
+	        Username = Username.ToUpper();
             
             MySqlCommand cmd = new MySqlCommand("SELECT idAccount, email, last_ip FROM accounts WHERE UPPER(username) = @username AND UPPER(password) = @password;", DB.EllAppDB);
             MySqlParameter passwordParameter = new MySqlParameter("@password", MySqlDbType.VarChar, 0);
             MySqlParameter usernameParameter = new MySqlParameter("@username", MySqlDbType.VarChar, 0);
             passwordParameter.Value = _password;
-            usernameParameter.Value = username;
+            usernameParameter.Value = Username;
             cmd.Parameters.Add(usernameParameter);
             cmd.Parameters.Add(passwordParameter);
             MySqlDataReader row = cmd.ExecuteReader();
@@ -48,16 +52,6 @@ namespace EllApp_server.Classes
                 return true;
 
             return false;
-        }
-
-        public string GetUsername()
-        {
-            return username;
-        }
-
-        public int GetID()
-        {
-            return ID;
         }
 
         public bool IsOnline()
@@ -95,14 +89,15 @@ namespace EllApp_server.Classes
             cmd.ExecuteNonQuery();
         }
 
-	    public static List<ChatMessage> GetChat(int AccountID, string ChatRequestID)
+	    public static List<ChatMessage> GetChat(int accountId, string chatRequestId)
 	    {
 		    staticconn.Open();
 		    List<ChatMessage> chatMessages = new List<ChatMessage>();
-		    MySqlCommand cmd = new MySqlCommand("SELECT ChatID as 'chatroom', `from`, content, `to`, `date` FROM log_chat WHERE ChatID = @chatid AND to_type = 'CHAT_TYPE_USER_TO_USER' ORDER BY `date` ASC;", staticconn);
-		    MySqlParameter chatidParameter = new MySqlParameter("@chatid", MySqlDbType.String, 0);
-		    chatidParameter.Value = ChatRequestID;
+		    MySqlCommand cmd = new MySqlCommand("SELECT ID, ChatRoom, MessageFrom, MessageToType, MessageTo, Text, Date FROM chatmessage WHERE ChatRoom = @chatroom AND MessageToType = 2 AND (MessageFrom = @id or MessageTo = @id) ORDER BY `Date` ASC;", staticconn);
+		    MySqlParameter chatidParameter = new MySqlParameter("@chatroom", MySqlDbType.String, 0) {Value = chatRequestId};
 		    cmd.Parameters.Add(chatidParameter);
+		    MySqlParameter idParameter = new MySqlParameter("@id", MySqlDbType.Int32, 0) {Value = accountId};
+		    cmd.Parameters.Add(idParameter);
 		    MySqlDataReader r = cmd.ExecuteReader();
 		    while(r.Read())
 		    {
@@ -110,14 +105,14 @@ namespace EllApp_server.Classes
 			    int to = Convert.ToInt32(r["to"]);
 			    ChatMessage chatMessage = new ChatMessage
 								{
-									chattype = ChatType.CHAT_TYPE_USER_TO_USER, 
+									MessageToType = ChatType.CHAT_TYPE_USER_TO_USER, 
 									ChatRoom = r["chatroom"].ToString(), 
-									Content = r["content"].ToString(), 
-									OwnerID = from,
-									OwnerUsername = Misc.GetUsernameByID(from), 
-									ReceiverID = to,
-									ReceiverUsername = Misc.GetUsernameByID(to), 
-									TimeStamp = (long)Misc.DateTimeToUnixTimestamp(Convert.ToDateTime(r["date"].ToString()))
+									Text = r["content"].ToString(), 
+									MessageFrom = from,
+									FromUsername = Misc.GetUsernameByID(from), 
+									MessageTo = to,
+									ToUsername = Misc.GetUsernameByID(to), 
+									Date = Convert.ToDateTime(r["date"].ToString())
 								};
 			    chatMessages.Add(chatMessage);
 		    }
@@ -126,18 +121,26 @@ namespace EllApp_server.Classes
 		    return chatMessages;
 	    }
 
-        public static List<Chat> GetChats(int AccountID)
+        public static List<Chat> GetChats(int accountId)
         {
 	        staticconn.Open();
 	        List<Chat> chats = new List<Chat>();
-            MySqlCommand cmd = new MySqlCommand("SELECT ChatID as 'chatroom', `from`, content, `to`, `date` FROM log_chat WHERE to_type = 'CHAT_TYPE_USER_TO_USER' AND (`from` = @id or `to` = @id) AND `date` IN (SELECT MAX(`date`) FROM log_chat WHERE ChatID <> '' GROUP BY ChatID) ORDER BY `date` desc;", staticconn);
+            MySqlCommand cmd = new MySqlCommand("SELECT ChatRoom, MessageFrom, MessageToType, MessageTo, Text, Date FROM chatmessage WHERE MessageToType = 2 AND (MessageFrom = @id or MessageTo = @id) GROUP BY ChatRoom ORDER BY Date desc;", staticconn);
             MySqlParameter idParameter = new MySqlParameter("@id", MySqlDbType.Int32, 0);
-            idParameter.Value = AccountID;
+            idParameter.Value = accountId;
             cmd.Parameters.Add(idParameter);
             MySqlDataReader r = cmd.ExecuteReader();
             while (r.Read())
             {
-                Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, r["chatroom"].ToString(), r["content"].ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["from"])).ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["to"])).ToString(), (long)Misc.DateTimeToUnixTimestamp(Convert.ToDateTime(r["date"].ToString())));
+                Chat c = new Chat
+						 {
+							 ChatRoom = r["ChatRoom"].ToString(),
+							 Chattype = (ChatType)Convert.ToInt16(r["MessageToType"]),
+							 LastMessage = r["Text"].ToString(),
+							 LastMessageDate = Convert.ToDateTime(r["Date"]),
+							 LastMessageUserID = Convert.ToInt16(r["MessageFrom"])
+						 };
+	            c.LastMessageUsername = Misc.GetUsernameByID(c.LastMessageUserID);
                 chats.Add(c);
             }
             r.Close();

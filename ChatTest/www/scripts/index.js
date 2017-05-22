@@ -121,17 +121,17 @@
 							for (var i = 0; i < ChatList.length; i++)
                             {
 								var chat = ChatList[i];
-                                switch (chat.chattype)
+                                switch (chat.Chattype)
                                 {
                                     case ChatType.CHAT_TYPE_USER_TO_USER:
                                         if ($('.item[data-chatroomid="' + chat.ChatRoom + '" ]').length == 0)
                                         {
                                             var contact = "";
-                                            if (chat.ChatFrom == localStorage.getItem("uname").toString().toUpperCase())
-                                                contact = chat.ChatTo;
+											if (chat.LastMessageUsername.toString().toUpperCase() == localStorage.getItem("uname").toString().toUpperCase())
+                                                contact = "You";
                                             else
-                                                contact = chat.ChatFrom;
-                                            $("#container_box_chat_with_user").append('<div class="user_box_chat" data-chatroomid="' + chat.ChatRoom + '"><a id="' + chat.ChatRoom + '" href="#" class="user_box_chat_link" data-chatroomid="' + chat.ChatRoom + '"><div class="row"><div class="col-xs-8"><h5 class="text_distance_from_left"><b>' + contact + '</b></h5></div><div class="col-xs-4"><h6><small>' + UnixToTime(chat.timestamp) + '</small></h6></div></div><div class="row"><div class="col-xs-12 text_distance_from_left">' + chat.text + '</div></div></a></div>');
+												contact = chat.LastMessageUsername;
+                                            $("#container_box_chat_with_user").append('<div class="user_box_chat" data-chatroomid="' + chat.ChatRoom + '"><a id="' + chat.ChatRoom + '" href="#" class="user_box_chat_link" data-chatroomid="' + chat.ChatRoom + '"><div class="row"><div class="col-xs-8"><h5 class="text_distance_from_left"><b>' + contact + '</b></h5></div><div class="col-xs-4"><h6><small>' + Date.parse(chat.LastMessageDate) + '</small></h6></div></div><div class="row"><div class="col-xs-12 text_distance_from_left">' + chat.LastMessage + '</div></div></a></div>');
                                         }
                                         break;
                                     default:

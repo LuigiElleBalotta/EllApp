@@ -115,7 +115,6 @@ namespace EllApp_server
         public static void OnDisconnect(UserContext aContext)
         {
 	        logger.Info("Client Disconnected : " + aContext.ClientAddress);
-	        Sessions = Sessions;
             // Remove the connection Object from the thread-safe collection
             Connection conn;
             OnlineConnections.TryRemove(aContext.ClientAddress.ToString(), out conn);
