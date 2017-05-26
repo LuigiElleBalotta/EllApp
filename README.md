@@ -1,4 +1,5 @@
-# EllApp [!master Build Status](https://travis-ci.org/LuigiElleBalotta/EllApp.svg?branch=master)](https://travis-ci.org/LuigiElleBalotta/EllApp)
+# EllApp 
+[master Build Status](https://travis-ci.org/LuigiElleBalotta/EllApp.svg?branch=master)](https://travis-ci.org/LuigiElleBalotta/EllApp)
 Instant Message chat for iOS, Android and Windows Phone, written with Apache Cordova with Visual Studio 2015. (In Development)
 
 Follow these steps in order.
