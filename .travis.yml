@@ -1,2 +1,2 @@
 language: csharp
-solution: ChatTest.sln
+solution: ./ServerStuff/EllApp_server/EllApp_server.csproj
