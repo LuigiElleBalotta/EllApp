@@ -70,13 +70,13 @@
 			conn = new WebSocket('ws://192.168.0.113:8080');
             conn.onmessage = function (e) {
                 dataReceived = e.data;
-                if (dataReceived != "") {
+                if (dataReceived != "") 
+				{
                     var obj = JSON.parse(dataReceived);
                     switch(obj.MessageType)
                     {
                         case MessageType.MSG_TYPE_LOGIN_INFO:
                             accID = obj.data.AccountID;
-
                             //Request existing chat:
                             var chatreqObj = new Object();
                             chatreqObj.Type = CommandType.chatlistrequest;
