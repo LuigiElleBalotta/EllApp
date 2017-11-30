@@ -1,8 +1,9 @@
 ﻿using System;
+using Lappa.ORM;
 
 namespace Server.Classes.Entities
 {
-	public class Account
+	public class Account : Entity
 	{
 		public int		idAccount { get; set; }
 		public string	username { get; set; }

@@ -55,14 +55,14 @@ namespace Server.Network.Handlers
 			var o = 1;
 			foreach (var session in sessions)
 			{
-				if (session.GetUser().GetID() != from) //Do not send message to ourselves
+				if (session.user.idAccount != from) //Do not send message to ourselves
 				{
-					Chat chat = new Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, Misc.CreateChatRoomID(from, session.GetUser().GetID()), messagecontent, Misc.GetUsernameByID(from), Misc.GetUsernameByID(session.GetUser().GetID()));
-					session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, from, session.GetUser().GetID(), chat));
+					Chat chat = new Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, Misc.CreateChatRoomID(from, session.user.idAccount), messagecontent, Misc.GetUsernameByID(from), Misc.GetUsernameByID(session.user.idAccount));
+					session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, from, session.user.idAccount, chat));
 					stCLog.content = messagecontent;
 					stCLog.to_type = toType;
 					stCLog.from = from;
-					stCLog.to = session.GetUser().GetID();
+					stCLog.to = session.user.idAccount;
 					stCLog.SaveLog();
 					o++;
 				}
@@ -74,13 +74,13 @@ namespace Server.Network.Handlers
 		{
 			logger.Info("Received MSG_TYPE_CHAT_WITH_USER packet.");
 			//If the receiving User is online, we can send the message to him, otherwise he will load everything at next login
-			if (sessions.Any(s => s.GetUser().GetID() == (int)obj.To))
+			if (sessions.Any(s => s.user.idAccount == (int)obj.To))
 			{
-				Session singleOrDefault = sessions.SingleOrDefault(s => s.GetUser().GetID() == (int)obj.To);
-				if (singleOrDefault != null && singleOrDefault.GetUser().IsOnline())
+				Session singleOrDefault = sessions.SingleOrDefault(s => s.user.idAccount == (int)obj.To);
+				if (singleOrDefault != null && AccountMgr.IsOnline( singleOrDefault.user ))
 				{
 					Chat chat = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, Misc.CreateChatRoomID(obj.To, obj.From), obj.Message, obj.From, obj.To);
-					Session session = sessions.SingleOrDefault(s => s.GetUser().GetID() == (int)obj.To);
+					Session session = sessions.SingleOrDefault(s => s.user.idAccount == (int)obj.To);
 					session?.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, obj.From, obj.To, chat));
 				}
 			}

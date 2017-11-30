@@ -13,7 +13,7 @@ namespace Server.Network.Handlers
 			string password = obj.Psw.ToString();
 			string email = obj.Email.ToString();
 
-			bool result = Account.CreateAccount(username, password, email);
+			bool result = AccountMgr.CreateAccount(username, password, email);
 
 			Session tmpSession = new Session(0, null, uContext);
 

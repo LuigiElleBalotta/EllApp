@@ -15,7 +15,7 @@ namespace Server.Classes
 
         public Log_Manager()
         {
-            db = DB.EllAppDB;
+            db = Program.mysql.EllAppDB;
         }
 
         public void SaveLog()

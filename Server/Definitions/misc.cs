@@ -1,11 +1,17 @@
 ﻿using System;
 using MySql.Data.MySqlClient;
 using Server.Classes;
+using Server.Classes.Entities;
 
 namespace Server.definitions
 {
     class Misc
     {
+        public const string DATE_FORMAT = "dd/MM/yyyy";
+        public const string DATE_FORMAT_NOCHAR = "ddMMyyyy";
+        public const string DATETIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
+        public const string ORARIO_FORMAT = "HH:mm:ss";
+
         public static long UnixTimeNow()
         {
             /*var timeSpan = (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
@@ -24,16 +30,8 @@ namespace Server.definitions
         {
             if (ID != 0)
             {
-                /*MySqlCommand cmd = new MySqlCommand("SELECT username FROM accounts WHERE idAccount = @id", DB.EllAppDB);
-                MySqlParameter idParameter = new MySqlParameter("@id", MySqlDbType.Int32, 0);
-                idParameter.Value = ID;
-                cmd.Parameters.Add(idParameter);
-                MySqlDataReader read = cmd.ExecuteReader();
-                string uname = "";
-                while (read.Read())
-                    uname = read["username"].ToString();
-                read.Close();*/
-                return "";//uname;
+                Account acc = Program.mysql.EllAppDB.Single<Account>( row => row.idAccount == ID );
+                return acc.username;
             }
             else
                 return "Server Message";
@@ -41,20 +39,13 @@ namespace Server.definitions
 
         public static int GetUserIDByUsername(string username)
         {
-            /*if (username != "")
+            
+            if (username != "")
             {
-                MySqlCommand cmd = new MySqlCommand("SELECT idAccount FROM accounts WHERE username = @uname", DB.EllAppDB);
-                MySqlParameter unameParameter = new MySqlParameter("@uname", MySqlDbType.String, 0);
-                unameParameter.Value = username;
-                cmd.Parameters.Add(unameParameter);
-                MySqlDataReader read = cmd.ExecuteReader();
-                int id = 0;
-                while (read.Read())
-                    id = Convert.ToInt16(read["idAccount"]);
-                read.Close();
-                return id;
+                Account acc = Program.mysql.EllAppDB.Single<Account>( row => row.username == username );
+                return acc.idAccount;
             }
-            else*/
+            else
                 return 0;
         }
 

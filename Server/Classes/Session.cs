@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using Server.Classes.Entities;
 using Server.Network.Alchemy.Classes;
 
 namespace Server.Classes
@@ -7,30 +8,20 @@ namespace Server.Classes
     public class Session
     {
         int ID;
-        User user;
-        UserContext context;
+        public Account user { get; set; }
+        public UserContext context { get; set; }
 
-        public Session(int _id, User _user, UserContext _context)
+        public Session(int _id, Account _user, UserContext _context)
         {
             ID = _id;
             user = _user;
             context = _context;
         }
 
-        public UserContext GetContext()
+        public int GetID()
         {
-            return context;
+            return ID;
         }
-
-        public User GetUser()
-        {
-            return user;
-        }
-
-	    public int GetID()
-	    {
-		    return ID;
-	    }
 
         public void SendMessage(MessagePacket pkt)
         {

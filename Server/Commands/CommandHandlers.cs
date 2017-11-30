@@ -17,9 +17,9 @@ namespace Server.Commands
 			Console.WriteLine("Online Users: " + Utility.GetOnlineUsers(sessions));
 			foreach(var session in sessions)
 			{
-				Console.WriteLine("User ID: " + session.GetUser().GetID());
-				Console.WriteLine("User Name: " + session.GetUser().GetUsername());
-				Console.WriteLine("Connected from: " + session.GetContext().ClientAddress);
+				Console.WriteLine("User ID: " + session.user.idAccount);
+				Console.WriteLine("User Name: " + session.user.username);
+				Console.WriteLine("Connected from: " + session.context.ClientAddress);
 				Console.WriteLine("-------------------------------------");
 			}
 		}
@@ -36,8 +36,8 @@ namespace Server.Commands
 			{
 				Console.WriteLine("Message to send: ");
 				var msg = Console.ReadLine();
-				Chat c = new Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, "", msg, "Server Message", session.GetUser().GetUsername());
-				var message = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, session.GetUser().GetID(), JsonConvert.SerializeObject(c));
+				Chat c = new Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, "", msg, "Server Message", session.user.username);
+				var message = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, session.user.idAccount, JsonConvert.SerializeObject(c));
 				session.SendMessage(message);
 			}
 		}
@@ -50,7 +50,7 @@ namespace Server.Commands
 			string password = Console.ReadLine();
 			Console.WriteLine("Insert email:");
 			string email = Console.ReadLine();
-			Account.CreateAccount(username, password, email);
+			AccountMgr.CreateAccount(username, password, email);
 		}
 
 		public void Fakemessage(List<Session> sessions)
@@ -82,13 +82,13 @@ namespace Server.Commands
 							var msg = new MessagePacket(MessageType.MSG_TYPE_CHAT, from, to, JsonConvert.SerializeObject(c));
 
 							logger.Info($"Sending message to {to} - {duname}");
-							if (sessions.Any(s => s.GetUser().GetID() == to))
+							if (sessions.Any(s => s.user.idAccount == to))
 							{
 								logger.Info("L'utente è nella lista delle sessioni");
-								if (sessions.First(s => s.GetUser().GetID() == to).GetUser().IsOnline())
+								if (sessions.First(s => s.user.idAccount == to).user.isOnline)
 								{
 									logger.Info("L'utente è online");
-									Session session = sessions.SingleOrDefault(s => s.GetUser().GetID() == to);
+									Session session = sessions.SingleOrDefault(s => s.user.idAccount == to);
 									logger.Info("Sending message to user");
 									session?.SendMessage(msg);
 								}

@@ -7,7 +7,7 @@ namespace Server.Classes
 {
     public class DB
     {
-        public static Database EllAppDB = new Database();
+        public Database EllAppDB = new Database();
 		public bool Connected { get; set; }
 
 		public DB( DatabaseType dbtype, Config.Config conf )

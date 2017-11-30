@@ -358,11 +358,11 @@ namespace Server
             {
                 Sessions.Remove(Sessions.First(s =>
                                                {
-                                                   bool res = (s.GetContext().ClientAddress == conn.IP);
+                                                   bool res = (s.context.ClientAddress == conn.IP);
                                                    if (res)
                                                    {
                                                        if(s.GetID() > 0)
-                                                           s.GetUser().SetOffline();   
+                                                           AccountMgr.SetOffline(s.user);   
                                                    }
                                                    return res;
                                                }));

@@ -3,6 +3,7 @@ using Server.definitions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Server.Classes.Entities;
 using Server.Network.Alchemy.Classes;
 using Server.Network.Packets;
 
@@ -18,8 +19,8 @@ namespace Server.Network.Handlers
 	        string username = (string)obj.Username;
 	        string psw = (string)obj.Psw;
 	        bool wantWelcomeMessage = Convert.ToBoolean((int)obj.WantWelcomeMessage);
-	        User u = new User(username.ToUpper(), psw.ToUpper());
-	        if (!u.Validate())
+	        Account u = AccountMgr.GetAccount(username.ToUpper(), psw.ToUpper());
+	        if (!AccountMgr.Validate( u ))
 	        {
 		        Connection conn;
 
@@ -32,19 +33,19 @@ namespace Server.Network.Handlers
 	        }
 	        else
 	        {
-		        Session s = new Session(u.GetID(), u, aContext);
+		        Session s = new Session(u.idAccount, u, aContext);
 		        sessions.Add(s);
 
-		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, s.GetUser().GetID(), new LoginResponse{ LoginResult = LoginResult.WrongCredentials, AccountID = s.GetUser().GetID() });
+		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, s.user.idAccount, new LoginResponse{ LoginResult = LoginResult.WrongCredentials, AccountID = s.user.idAccount });
                             
 		        s.SendMessage(loginInfo);
 				
 		        if(wantWelcomeMessage)
 		        {
 			        //Create the welcome message object
-			        Chat chat = new Chat{ chattype = ChatType.CHAT_TYPE_GLOBAL_CHAT, text = "Benvenuto " + s.GetUser().GetUsername() };
-			        s.GetUser().SetOnline();
-			        var welcomeMessage = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, s.GetUser().GetID(), chat);
+			        Chat chat = new Chat{ chattype = ChatType.CHAT_TYPE_GLOBAL_CHAT, text = "Benvenuto " + s.user.username };
+			        AccountMgr.SetOnline( s.user );
+			        var welcomeMessage = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, s.user.idAccount, chat);
 			        s.SendMessage(welcomeMessage);
 		        }
 	        }
