@@ -63,7 +63,10 @@
   <ItemGroup>
     <Compile Include="Classes\Entities\Chat.cs" />
     <Compile Include="Classes\Account.cs" />
+<<<<<<< HEAD
     <Compile Include="Classes\Entities\ChatMessage.cs" />
+=======
+>>>>>>> parent of e2322e0e... Basic implementation of ChatMessage
     <Compile Include="Classes\DB.cs" />
     <Compile Include="Classes\Entities\Account.cs" />
     <Compile Include="Classes\Entities\Friendship.cs" />
@@ -82,7 +85,6 @@
     <Compile Include="Network\Handlers\MessageHandler.cs" />
     <Compile Include="Network\Handlers\RegistrationHandler.cs" />
     <Compile Include="Network\Packets\ChatRequestListResponse.cs" />
-    <Compile Include="Network\Packets\ChatRequestResponse.cs" />
     <Compile Include="Network\Packets\LoginResponse.cs" />
     <Compile Include="Network\Packets\RegistrationResponse.cs" />
     <Compile Include="Program.cs" />
