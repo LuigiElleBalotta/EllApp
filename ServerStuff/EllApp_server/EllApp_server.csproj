@@ -61,17 +61,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Entities\Chat.cs" />
+    <Compile Include="Classes\Chat.cs" />
     <Compile Include="Classes\Account.cs" />
-<<<<<<< HEAD
-    <Compile Include="Classes\Entities\ChatMessage.cs" />
-=======
->>>>>>> parent of e2322e0e... Basic implementation of ChatMessage
+    <Compile Include="Classes\ChatMessage.cs" />
     <Compile Include="Classes\DB.cs" />
     <Compile Include="Classes\Entities\Account.cs" />
     <Compile Include="Classes\Entities\Friendship.cs" />
     <Compile Include="Classes\Entities\LogChat.cs" />
-    <Compile Include="Classes\ChatManager.cs" />
+    <Compile Include="Classes\Log_Manager.cs" />
     <Compile Include="Classes\MessagePacket.cs" />
     <Compile Include="Classes\Session.cs" />
     <Compile Include="Classes\User.cs" />
@@ -85,6 +82,7 @@
     <Compile Include="Network\Handlers\MessageHandler.cs" />
     <Compile Include="Network\Handlers\RegistrationHandler.cs" />
     <Compile Include="Network\Packets\ChatRequestListResponse.cs" />
+    <Compile Include="Network\Packets\ChatRequestResponse.cs" />
     <Compile Include="Network\Packets\LoginResponse.cs" />
     <Compile Include="Network\Packets\RegistrationResponse.cs" />
     <Compile Include="Program.cs" />
@@ -104,8 +102,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(ProjectDir)references\templates\constants.conf.rename" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

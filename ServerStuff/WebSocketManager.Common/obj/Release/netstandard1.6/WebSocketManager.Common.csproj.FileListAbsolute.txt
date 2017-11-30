@@ -1,6 +1,0 @@
-C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager.Common\bin\Release\netstandard1.6\WebSocketManager.Common.deps.json
-C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager.Common\bin\Release\netstandard1.6\WebSocketManager.Common.dll
-C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager.Common\bin\Release\netstandard1.6\WebSocketManager.Common.pdb
-C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager.Common\obj\Release\netstandard1.6\WebSocketManager.Common.AssemblyInfo.cs
-C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager.Common\obj\Release\netstandard1.6\WebSocketManager.Common.dll
-C:\Users\luigib\Documents\Visual Studio 2015\Projects\EllApp\ServerStuff\WebSocketManager.Common\obj\Release\netstandard1.6\WebSocketManager.Common.pdb

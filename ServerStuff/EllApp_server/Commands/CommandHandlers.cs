@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Alchemy;
 using EllApp_server.Classes;
-using EllApp_server.Classes.Entities;
 using EllApp_server.definitions;
 using Newtonsoft.Json;
 using NLog;
-using Account = EllApp_server.Classes.Account;
 
 namespace EllApp_server.Commands
 {
@@ -19,8 +17,8 @@ namespace EllApp_server.Commands
 			Console.WriteLine("Online Users: " + Utility.GetOnlineUsers(sessions));
 			foreach(var session in sessions)
 			{
-				Console.WriteLine("User ID: " + session.GetUser().ID);
-				Console.WriteLine("User Name: " + session.GetUser().Username);
+				Console.WriteLine("User ID: " + session.GetUser().GetID());
+				Console.WriteLine("User Name: " + session.GetUser().GetUsername());
 				Console.WriteLine("Connected from: " + session.GetContext().ClientAddress);
 				Console.WriteLine("-------------------------------------");
 			}
@@ -38,8 +36,8 @@ namespace EllApp_server.Commands
 			{
 				Console.WriteLine("Message to send: ");
 				var msg = Console.ReadLine();
-				ChatMessage c = new ChatMessage{ MessageToType = ChatType.CHAT_TYPE_GLOBAL_CHAT, ChatRoom = "GLOBAL", ToUsername = session.GetUser().Username, Text = msg, FromUsername = "Server Message", MessageTo = session.GetUser().ID};
-				var message = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, session.GetUser().ID, JsonConvert.SerializeObject(c));
+				Chat c = new Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, "", msg, "Server Message", session.GetUser().GetUsername());
+				var message = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, session.GetUser().GetID(), JsonConvert.SerializeObject(c));
 				session.SendMessage(message);
 			}
 		}
@@ -80,29 +78,29 @@ namespace EllApp_server.Commands
 							int to = Misc.GetUserIDByUsername(duname);
 							string chatroomid = Misc.CreateChatRoomID(to, from);
 
-							ChatMessage c = new ChatMessage{ MessageToType = ChatType.CHAT_TYPE_USER_TO_USER, ChatRoom = chatroomid, Text = tmpmessage, FromUsername = uname, ToUsername = duname};
+							Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, chatroomid, tmpmessage, uname, duname);
 							var msg = new MessagePacket(MessageType.MSG_TYPE_CHAT, from, to, JsonConvert.SerializeObject(c));
 
 							logger.Info($"Sending message to {to} - {duname}");
-							if (sessions.Any(s => s.GetUser().ID == to))
+							if (sessions.Any(s => s.GetUser().GetID() == to))
 							{
 								logger.Info("L'utente è nella lista delle sessioni");
-								if (sessions.First(s => s.GetUser().ID == to).GetUser().IsOnline())
+								if (sessions.First(s => s.GetUser().GetID() == to).GetUser().IsOnline())
 								{
 									logger.Info("L'utente è online");
-									Session session = sessions.SingleOrDefault(s => s.GetUser().ID == to);
+									Session session = sessions.SingleOrDefault(s => s.GetUser().GetID() == to);
 									logger.Info("Sending message to user");
 									session?.SendMessage(msg);
 								}
 							}
 
-							var log = new ChatManager();
-							log.ChatRoom = chatroomid;
-							log.Text = tmpmessage;
-							log.MessageToType = ChatType.CHAT_TYPE_USER_TO_USER;
-							log.MessageFrom = from;
-							log.MessageTo = to;
-							log.Save();
+							var log = new Log_Manager();
+							log.ChatID = chatroomid;
+							log.content = tmpmessage;
+							log.to_type = ChatType.CHAT_TYPE_USER_TO_USER;
+							log.from = from;
+							log.to = to;
+							log.SaveLog();
 							Console.WriteLine(JsonConvert.SerializeObject(msg));
 							Console.WriteLine("Done.");
 							break;

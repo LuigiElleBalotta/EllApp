@@ -1,23 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "ChatTest", "ChatTest\ChatTest.jsproj", "{545A4947-547E-4B30-82C3-B186329F1947}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllApp_server", "ServerStuff\EllApp_server\EllApp_server.csproj", "{017EF6CB-AAF6-4F0A-B30E-10600755173D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitFiles", "GitFiles", "{3AA12603-04EA-47E7-8FB6-DCD165755AF8}"
-	ProjectSection(SolutionItems) = preProject
-		.gitignore = .gitignore
-		.travis.yml = .travis.yml
-		appveyor.yml = appveyor.yml
-		LICENSE = LICENSE
-		README.md = README.md
-		TODO.md = TODO.md
-	EndProjectSection
-EndProject
-Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "IonicElle", "IonicElle\IonicElle.jsproj", "{0166431B-0C22-490A-AD5D-98EFB6B6A128}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,48 +115,6 @@ Global
 		{017EF6CB-AAF6-4F0A-B30E-10600755173D}.Release|Windows-x64.Build.0 = Release|Any CPU
 		{017EF6CB-AAF6-4F0A-B30E-10600755173D}.Release|Windows-x86.ActiveCfg = Release|Any CPU
 		{017EF6CB-AAF6-4F0A-B30E-10600755173D}.Release|Windows-x86.Build.0 = Release|Any CPU
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Android.ActiveCfg = Debug|Android
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Android.Build.0 = Debug|Android
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Android.Deploy.0 = Debug|Android
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Any CPU.ActiveCfg = Debug|Android
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|iOS.ActiveCfg = Debug|iOS
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|iOS.Build.0 = Debug|iOS
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|iOS.Deploy.0 = Debug|iOS
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Windows Phone (Universal).ActiveCfg = Debug|Windows-x86
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Windows Phone 8.ActiveCfg = Debug|Windows-x86
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Windows-AnyCPU.ActiveCfg = Debug|Windows-AnyCPU
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Windows-AnyCPU.Build.0 = Debug|Windows-AnyCPU
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Windows-AnyCPU.Deploy.0 = Debug|Windows-AnyCPU
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Windows-ARM.ActiveCfg = Debug|Windows-ARM
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Windows-ARM.Build.0 = Debug|Windows-ARM
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Windows-ARM.Deploy.0 = Debug|Windows-ARM
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Windows-x64.ActiveCfg = Debug|Windows-x64
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Windows-x64.Build.0 = Debug|Windows-x64
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Windows-x64.Deploy.0 = Debug|Windows-x64
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Windows-x86.ActiveCfg = Debug|Windows-x86
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Windows-x86.Build.0 = Debug|Windows-x86
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Debug|Windows-x86.Deploy.0 = Debug|Windows-x86
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Android.ActiveCfg = Release|Android
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Android.Build.0 = Release|Android
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Android.Deploy.0 = Release|Android
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Any CPU.ActiveCfg = Release|Android
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|iOS.ActiveCfg = Release|iOS
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|iOS.Build.0 = Release|iOS
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|iOS.Deploy.0 = Release|iOS
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Windows Phone (Universal).ActiveCfg = Release|Windows-ARM
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Windows Phone 8.ActiveCfg = Release|Windows-ARM
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Windows-AnyCPU.ActiveCfg = Release|Windows-AnyCPU
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Windows-AnyCPU.Build.0 = Release|Windows-AnyCPU
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Windows-AnyCPU.Deploy.0 = Release|Windows-AnyCPU
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Windows-ARM.ActiveCfg = Release|Windows-ARM
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Windows-ARM.Build.0 = Release|Windows-ARM
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Windows-ARM.Deploy.0 = Release|Windows-ARM
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Windows-x64.ActiveCfg = Release|Windows-x64
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Windows-x64.Build.0 = Release|Windows-x64
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Windows-x64.Deploy.0 = Release|Windows-x64
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Windows-x86.ActiveCfg = Release|Windows-x86
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Windows-x86.Build.0 = Release|Windows-x86
-		{0166431B-0C22-490A-AD5D-98EFB6B6A128}.Release|Windows-x86.Deploy.0 = Release|Windows-x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

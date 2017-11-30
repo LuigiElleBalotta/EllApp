@@ -70,13 +70,13 @@
 			conn = new WebSocket('ws://192.168.0.113:8080');
             conn.onmessage = function (e) {
                 dataReceived = e.data;
-                if (dataReceived != "") 
-				{
+                if (dataReceived != "") {
                     var obj = JSON.parse(dataReceived);
                     switch(obj.MessageType)
                     {
                         case MessageType.MSG_TYPE_LOGIN_INFO:
                             accID = obj.data.AccountID;
+
                             //Request existing chat:
                             var chatreqObj = new Object();
                             chatreqObj.Type = CommandType.chatlistrequest;
@@ -121,17 +121,17 @@
 							for (var i = 0; i < ChatList.length; i++)
                             {
 								var chat = ChatList[i];
-                                switch (chat.Chattype)
+                                switch (chat.chattype)
                                 {
                                     case ChatType.CHAT_TYPE_USER_TO_USER:
                                         if ($('.item[data-chatroomid="' + chat.ChatRoom + '" ]').length == 0)
                                         {
                                             var contact = "";
-											if (chat.LastMessageUsername.toString().toUpperCase() == localStorage.getItem("uname").toString().toUpperCase())
-                                                contact = "You";
+                                            if (chat.ChatFrom == localStorage.getItem("uname").toString().toUpperCase())
+                                                contact = chat.ChatTo;
                                             else
-												contact = chat.LastMessageUsername;
-                                            $("#container_box_chat_with_user").append('<div class="user_box_chat" data-chatroomid="' + chat.ChatRoom + '"><a id="' + chat.ChatRoom + '" href="#" class="user_box_chat_link" data-chatroomid="' + chat.ChatRoom + '"><div class="row"><div class="col-xs-8"><h5 class="text_distance_from_left"><b>' + contact + '</b></h5></div><div class="col-xs-4"><h6><small>' + Date.parse(chat.LastMessageDate) + '</small></h6></div></div><div class="row"><div class="col-xs-12 text_distance_from_left">' + chat.LastMessage + '</div></div></a></div>');
+                                                contact = chat.ChatFrom;
+                                            $("#container_box_chat_with_user").append('<div class="user_box_chat" data-chatroomid="' + chat.ChatRoom + '"><a id="' + chat.ChatRoom + '" href="#" class="user_box_chat_link" data-chatroomid="' + chat.ChatRoom + '"><div class="row"><div class="col-xs-8"><h5 class="text_distance_from_left"><b>' + contact + '</b></h5></div><div class="col-xs-4"><h6><small>' + UnixToTime(chat.timestamp) + '</small></h6></div></div><div class="row"><div class="col-xs-12 text_distance_from_left">' + chat.text + '</div></div></a></div>');
                                         }
                                         break;
                                     default:
