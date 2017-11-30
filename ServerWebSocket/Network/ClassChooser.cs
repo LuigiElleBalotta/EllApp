@@ -16,10 +16,8 @@ namespace ServerWebSocket.Network
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
-		public static void Handle(UserContext aContext, List<Session> sessions, ConcurrentDictionary<string, Connection> OnlineConnections)
+		public static string Handle(ClientContext aContext, string json, List<Session> sessions, ConcurrentDictionary<string, Connection> OnlineConnections)
 		{
-			
-			var json = aContext.DataFrame.ToString();
 
 			logger.Info($"======================================={Environment.NewLine}Received packet: {Environment.NewLine} {json} { Environment.NewLine }=======================================");
 
@@ -61,6 +59,8 @@ namespace ServerWebSocket.Network
 					metodo.Invoke(rh, new object[]{ obj, aContext });
 					break;
 			}
+
+            return "";
 		}
 	}
 }

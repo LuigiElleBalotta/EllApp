@@ -98,8 +98,7 @@ namespace ServerWebSocket
                                         // Add a connection Object to thread-safe collection
                                         OnlineConnections.TryAdd(cc.IPAddress, connection);
                                         Sessions.Add(new Session(0, null, cc));
-
-                                        var response = Encoding.UTF8.GetBytes("Echo from server :" + request);
+                                        var response = Encoding.UTF8.GetBytes(ClassChooser.Handle( cc, request, Sessions, OnlineConnections ));
                                         buffer = new ArraySegment<Byte>(response);
                                         await webSocket.SendAsync(buffer, type, true, token);
                                         break;
