@@ -308,12 +308,9 @@ namespace Server
                             metodo.Invoke(cmd, new object[]{ aServer });
                             break;
                         case "commands":
-                            metodo.Invoke(cmd, null);
-                            break;
                         case "createaccount":
-                            metodo.Invoke( cmd, null );
-                            break;
                         case "clearconsole":
+                            metodo.Invoke( cmd, null );
                             break;
                         default:
                             logger.Warn($"Unknown command \"{command}\".");
