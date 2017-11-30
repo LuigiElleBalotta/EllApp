@@ -32,9 +32,7 @@ namespace ServerWebSocket.Classes
             var data = Encoding.UTF8.GetBytes( msg );
             var buffer = new ArraySegment<Byte>(new Byte[4096]);
             buffer = new ArraySegment<Byte>(data);
-            var type = WebSocketMessageType.Text;
-            var token = CancellationToken.None;
-            await context.WebSocket.SendAsync(buffer, type, true, token);
+            await context.WebSocket.SendAsync(buffer, context.Type, true, context.Token);
         }
     }
 }

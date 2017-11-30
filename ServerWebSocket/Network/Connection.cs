@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.WebSockets;
+using ServerWebSocket.Classes;
 
 namespace ServerWebSocket.Network
 {
@@ -8,8 +9,8 @@ namespace ServerWebSocket.Network
 	{
 		public System.Threading.Timer timer;
 		
-		public WebSocket Context { get; set; }
-		public EndPoint IP { get; set; }
+		public ClientContext Context { get; set; }
+		public string IP { get; set; }
 
 		public Connection()
 		{

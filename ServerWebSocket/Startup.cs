@@ -68,14 +68,17 @@ namespace ServerWebSocket
                         if (http.WebSockets.IsWebSocketRequest)
                         {
                             var webSocket = await http.WebSockets.AcceptWebSocketAsync();
+                            
+                            Connection connection;
+                            ClientContext cc = new ClientContext
+                                               {
+                                                   Port = http.Connection.LocalPort,
+                                                   IPAddress = http.Connection.LocalIpAddress.ToString(),
+                                                   WebSocket = webSocket
+                                               };
+                            
                             while (webSocket.State == WebSocketState.Open)
                             {
-                                ClientContext cc = new ClientContext
-                                                   {
-                                                       Port = http.Connection.LocalPort,
-                                                       IPAddress = http.Connection.LocalIpAddress.ToString(),
-                                                       WebSocket = webSocket
-                                                   };
                                 var token = CancellationToken.None;
                                 var buffer = new ArraySegment<Byte>(new Byte[4096]);
                                 var received = await webSocket.ReceiveAsync(buffer, token);
@@ -87,11 +90,38 @@ namespace ServerWebSocket
                                                                               buffer.Offset,
                                                                               buffer.Count);
                                         var type = WebSocketMessageType.Text;
-                                        var data = Encoding.UTF8.GetBytes("Echo from server :" + request);
-                                        buffer = new ArraySegment<Byte>(data);
+                                        
+                                        cc.Token = token;
+                                        cc.Type = type;
+                                        connection = new Connection { Context = cc, IP = cc.IPAddress };
+
+                                        // Add a connection Object to thread-safe collection
+                                        OnlineConnections.TryAdd(cc.IPAddress, connection);
+                                        Sessions.Add(new Session(0, null, cc));
+
+                                        var response = Encoding.UTF8.GetBytes("Echo from server :" + request);
+                                        buffer = new ArraySegment<Byte>(response);
                                         await webSocket.SendAsync(buffer, type, true, token);
                                         break;
                                 }
+                            }
+
+                            
+                            OnlineConnections.TryRemove(cc.IPAddress, out connection);
+                            if (connection != null) //E' riuscito a rimuovere la connessione.
+                            {
+                                Sessions.Remove(Sessions.First(s =>
+                                                               {
+                                                                   bool res = (s.context.IPAddress == connection.IP);
+                                                                   if (res)
+                                                                   {
+                                                                       if(s.GetID() > 0)
+                                                                           AccountMgr.SetOffline(s.user);   
+                                                                   }
+                                                                   return res;
+                                                               }));
+                                // Dispose timer to stop sending messages to the client.
+                                connection.timer.Dispose();
                             }
                         } else {
                             await next();
