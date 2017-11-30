@@ -1,0 +1,8 @@
+{ // Config
+	"Host": "127.0.0.1",
+	"Port": 8087,
+	"MySQLHost": "127.0.0.1",
+	"MySQLUser": "root",
+	"MySQLPassword": "",
+	"MySQLDB": "EllApp"
+}

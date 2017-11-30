@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EllApp_server.definitions;
+﻿using EllApp_server.definitions;
 
 namespace EllApp_server.Classes
 {

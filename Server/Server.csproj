@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.0.9-dmr" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1-beta1" />
+    <PackageReference Include="NLog" Version="5.0.0-beta11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Lappa.ORM">
+      <HintPath>Deps\Lappa.ORM.dll</HintPath>
+    </Reference>
+    <Reference Include="Lappa.Pluralization">
+      <HintPath>Deps\Lappa.Pluralization.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

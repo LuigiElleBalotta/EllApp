@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EllApp_server.Classes.Entities
+﻿namespace EllApp_server.Classes.Entities
 {
 	public class Friendship
 	{
