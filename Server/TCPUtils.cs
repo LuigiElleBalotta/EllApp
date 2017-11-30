@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using EllApp_server.Network;
+using Lappa.ORM.Constants;
 using NLog;
 using Server.Classes;
 using Server.Commands;
@@ -17,6 +18,11 @@ using Server.Network.Alchemy.Classes;
 
 namespace Server
 {
+    public static class Utils
+    {
+        public static DB mysqlDB;
+    }
+
     // State object for reading client data asynchronously  
     public class StateObject {  
         // Client  socket.  
@@ -279,6 +285,8 @@ namespace Server
                           TimeOut = new TimeSpan(0, 5, 0)
                       };
             aServer.Start();
+
+            Utils.mysqlDB = new DB( DatabaseType.MySql, Program.Configuration );
 
             // Accept commands on the console and keep it alive
             var command = string.Empty;

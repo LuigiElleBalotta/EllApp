@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--QUESTO FILE È GENERATO DAL PROCESSO DI COMPILAZIONE DI VISUAL STUDIO PER FINALITÀ DI TELEMETRIA-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="AppxManifestMetadata">
+    <AppxManifestMetaData Include="VisualStudio">
+      <Version>15.0</Version>
+    </AppxManifestMetaData>
+    <AppxManifestMetaData Include="VisualStudioEdition">
+      <Value>Microsoft Visual Studio Enterprise 2017</Value>
+    </AppxManifestMetaData>
+    <AppxManifestMetaData Include="C:\WINDOWS\system32\cmd.exe">
+      <Name>OperatingSystem</Name>
+    </AppxManifestMetaData>
+    <AppxManifestMetaData Include="ProjectGUID">
+      <Value>545a4947-547e-4b30-82c3-b186329f1947</Value>
+    </AppxManifestMetaData>
+  </ItemGroup>
+</Project>

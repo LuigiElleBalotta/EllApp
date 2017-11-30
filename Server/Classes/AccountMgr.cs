@@ -30,7 +30,7 @@ namespace Server.Classes
                               password = hashedpsw
                           };
 
-            if( Program.mysql.EllAppDB.Insert<Account>( acc )) {
+            if( Utils.mysqlDB.EllAppDB.Insert<Account>( acc )) {
                 Console.WriteLine("Account created.");
                 return true;
             } else {
@@ -50,7 +50,7 @@ namespace Server.Classes
             password = password.ToUpper();
             username = username.ToUpper();
 
-            return Program.mysql.EllAppDB.Single<Account>( acc => acc.username == username && acc.password == password );
+            return Utils.mysqlDB.EllAppDB.Single<Account>( acc => acc.username == username && acc.password == password );
         }
 
         public static bool Validate( Account account )
@@ -73,17 +73,17 @@ namespace Server.Classes
 
         public static bool IsOnline( Account account )
         {
-            return Program.mysql.EllAppDB.Single<Account>( row => row.idAccount == account.idAccount ).isOnline;
+            return Utils.mysqlDB.EllAppDB.Single<Account>( row => row.idAccount == account.idAccount ).isOnline;
         }
 
         public static void SetOnline( Account account )
         {
-            Program.mysql.EllAppDB.Update<Account>( row => row.idAccount == account.idAccount, row => row.isOnline.Set( true ));
+            Utils.mysqlDB.EllAppDB.Update<Account>( row => row.idAccount == account.idAccount, row => row.isOnline.Set( true ));
         }
 
         public static void SetOffline( Account account )
         {
-            Program.mysql.EllAppDB.Update<Account>( row => row.idAccount == account.idAccount, row => row.isOnline.Set( false ));
+            Utils.mysqlDB.EllAppDB.Update<Account>( row => row.idAccount == account.idAccount, row => row.isOnline.Set( false ));
         }
 
 	    public static List<ChatMessage> GetChat(int AccountID, string ChatRequestID)

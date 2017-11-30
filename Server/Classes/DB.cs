@@ -7,11 +7,12 @@ namespace Server.Classes
 {
     public class DB
     {
-        public Database EllAppDB = new Database();
+        public Database EllAppDB;
 		public bool Connected { get; set; }
 
 		public DB( DatabaseType dbtype, Config.Config conf )
 		{
+            EllAppDB = new Database();
 			switch( dbtype ) {
 				case DatabaseType.MySql:
 					Connected = EllAppDB.Initialize( GetMySqlConnectionString( conf ), dbtype, false, false );
@@ -24,9 +25,9 @@ namespace Server.Classes
 			
 		}
 
-        public static string GetMySqlConnectionString( Config.Config cfg )
+        public static string GetMySqlConnectionString( Config.Config conf )
         {
-            return $"server={cfg.MySQLHost};uid={cfg.MySQLUser};pwd={cfg.MySQLPassword};database={cfg.MySQLDB};";
+            return $"server={conf.MySQLHost};uid={conf.MySQLUser};pwd={conf.MySQLPassword};database={conf.MySQLDB};";
         }
     }
 }

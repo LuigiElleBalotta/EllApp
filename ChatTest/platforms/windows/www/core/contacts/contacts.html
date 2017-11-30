@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Search User</title>
+    <link href="../../css/index.css" rel="stylesheet" />
+    <link href="../../css/bootstrap.css" rel="stylesheet" />
+    <link href="../../css/spinner.css" rel="stylesheet" />
+    <link href="../../css/mystyle.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="navbar navbar-custom navbar-fixed-top topmenu" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu" id="menuBTN">
+                    <i class="glyphicon glyphicon-menu-hamburger headerBTN"></i>
+                </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#friendshiprequests" id="friendBTN">
+                    <i class="glyphicon glyphicon-user headerBTN"></i>
+                    <span class="label label-warning" id="pendingRequestFriendship"></span>
+                </button>
+                <a class="navbar-brand" href="#" id="homepagelink">
+                    <span class="light"><small>Benvenuto <span id="userspan"></span></small></span>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse" id="menu">
+                <ul class="nav navbar-nav text-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li><a href="#" class="nav-page">Add User</a></li>
+                    <li><a href="#" class="nav-page">My Contacts</a></li>
+                    <li><a href="../../index.html" class="nav-page">Chat</a></li>
+                </ul>
+            </div>
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse" id="friendshiprequests">
+                <ul class="nav navbar-nav text-right" id="listPendingFriendships">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li id="element_loading" class="text-center"><i class="spinner-loading"></i></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="content_under_navbar">
+        
+    </div>
+    <script src="../../scripts/jquery.js"></script>
+    <script src="../../scripts/bootstrap.js"></script>
+    <script src="../../scripts/JSMQ.js"></script>
+    <script src="../../scripts/responsive_menu.js"></script>
+    <script src="../controls/friendships_pending.js"></script>
+    <script src="contacts.js"></script>
+    <script type="text/javascript">
+        $("document").ready(function () { document.getElementById("userspan").innerText = localStorage["uname"]; });
+    </script>
+</body>
+</html>

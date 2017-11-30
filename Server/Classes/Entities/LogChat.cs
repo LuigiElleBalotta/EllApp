@@ -1,8 +1,9 @@
-﻿using Server.definitions;
+﻿using Lappa.ORM;
+using Server.definitions;
 
 namespace Server.Classes.Entities
 {
-	public class LogChat
+	public class LogChat : Entity
 	{
 		public int		idLog { get; set; }
 		public string	content { get; set; }

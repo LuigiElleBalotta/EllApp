@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project=".\default.props" />
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
@@ -12,12 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Lappa.ORM">
-      <HintPath>Deps\Lappa.ORM.dll</HintPath>
-    </Reference>
-    <Reference Include="Lappa.Pluralization">
-      <HintPath>Deps\Lappa.Pluralization.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\LappaORM\src\Lappa.ORM\Lappa.ORM.csproj" />
   </ItemGroup>
 
 </Project>

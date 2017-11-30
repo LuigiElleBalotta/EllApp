@@ -1,0 +1,40 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "EllApp"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "EllApp"
+        }
+    },
+    "dependent_plugins": {},
+    "modules": [
+        {
+            "id": "cordova-plugin-device.device",
+            "file": "plugins/cordova-plugin-device/www/device.js",
+            "pluginId": "cordova-plugin-device",
+            "clobbers": [
+                "device"
+            ]
+        },
+        {
+            "id": "cordova-plugin-device.DeviceProxy",
+            "file": "plugins/cordova-plugin-device/src/windows/DeviceProxy.js",
+            "pluginId": "cordova-plugin-device",
+            "merges": [
+                ""
+            ]
+        }
+    ],
+    "plugin_metadata": {
+        "cordova-plugin-device": "1.1.1",
+        "cordova-plugin-whitelist": "1.2.1"
+    }
+}
