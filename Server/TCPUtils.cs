@@ -311,6 +311,8 @@ namespace Server
                             metodo.Invoke(cmd, null);
                             break;
                         case "createaccount":
+                            metodo.Invoke( cmd, null );
+                            break;
                         case "clearconsole":
                             break;
                         default:

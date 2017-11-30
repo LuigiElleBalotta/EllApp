@@ -27,7 +27,7 @@ namespace Server.Classes
 
         public static string GetMySqlConnectionString( Config.Config conf )
         {
-            return $"server={conf.MySQLHost};uid={conf.MySQLUser};pwd={conf.MySQLPassword};database={conf.MySQLDB};";
+            return $"server={conf.MySQLHost};uid={conf.MySQLUser};pwd={conf.MySQLPassword};database={conf.MySQLDB};SslMode=none";
         }
     }
 }
