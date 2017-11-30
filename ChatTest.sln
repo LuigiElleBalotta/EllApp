@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lappa.ORM", "LappaORM\src\L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lappa.Pluralization", "LappaORM\deps\src\Lappa.Pluralization\src\Lappa.Pluralization.csproj", "{0D39D930-58D0-4102-A3C0-457A6818E65E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerWebSocket", "ServerWebSocket\ServerWebSocket.csproj", "{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Android = Debug|Android
@@ -211,6 +213,42 @@ Global
 		{0D39D930-58D0-4102-A3C0-457A6818E65E}.Release|Windows-x64.Build.0 = Release|Any CPU
 		{0D39D930-58D0-4102-A3C0-457A6818E65E}.Release|Windows-x86.ActiveCfg = Release|Any CPU
 		{0D39D930-58D0-4102-A3C0-457A6818E65E}.Release|Windows-x86.Build.0 = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Android.ActiveCfg = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Android.Build.0 = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|iOS.ActiveCfg = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|iOS.Build.0 = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Windows Phone (Universal).ActiveCfg = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Windows Phone (Universal).Build.0 = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Windows Phone 8.ActiveCfg = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Windows Phone 8.Build.0 = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Windows-AnyCPU.ActiveCfg = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Windows-AnyCPU.Build.0 = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Windows-ARM.ActiveCfg = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Windows-ARM.Build.0 = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Windows-x64.ActiveCfg = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Windows-x64.Build.0 = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Windows-x86.ActiveCfg = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Debug|Windows-x86.Build.0 = Debug|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Android.ActiveCfg = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Android.Build.0 = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|iOS.ActiveCfg = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|iOS.Build.0 = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Windows Phone (Universal).ActiveCfg = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Windows Phone (Universal).Build.0 = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Windows Phone 8.ActiveCfg = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Windows Phone 8.Build.0 = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Windows-AnyCPU.ActiveCfg = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Windows-AnyCPU.Build.0 = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Windows-ARM.ActiveCfg = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Windows-ARM.Build.0 = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Windows-x64.ActiveCfg = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Windows-x64.Build.0 = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Windows-x86.ActiveCfg = Release|Any CPU
+		{8FD1FB6A-ACB9-4904-A3FF-25A1576D902B}.Release|Windows-x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
