@@ -58,7 +58,7 @@ namespace EllApp_server.Network
 				case CommandType.Registration:
 					type = rh.GetType();
 					metodo = type.GetMethod("RegisterAccount");
-					metodo.Invoke(rh, new object[]{ obj, aContext });
+					ret.AddRange((List<GenericResponsePacket>)metodo.Invoke(rh, new object[]{ obj.RegistrationPacket, aContext }));
 					break;
 			}
 

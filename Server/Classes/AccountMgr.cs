@@ -18,7 +18,7 @@ namespace Server.Classes
             byte[] passwordbyte = Encoding.ASCII.GetBytes(username + ":" + password);
             var sha_pass = SHA1.Create();
             byte[] bytehash = sha_pass.ComputeHash(passwordbyte);
-            var hashedpsw = Utility.HexStringFromBytes(bytehash);
+            var hashedpsw = Utility.HexStringFromBytes(bytehash).ToUpper();
 
             Account acc = new Account
                           {
