@@ -158,7 +158,7 @@ namespace Server
             }
             catch( Exception ex ) {
                 Console.WriteLine( ex.Message );
-                Console.WriteLine( ex.InnerException.Message );
+                Console.WriteLine( ex.InnerException?.Message );
 
                 Connection conn;
                 Program.Server.OnlineConnections.TryRemove(state.workSocket.RemoteEndPoint.ToString(), out conn);
