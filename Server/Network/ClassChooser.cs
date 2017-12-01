@@ -47,13 +47,13 @@ namespace EllApp_server.Network
 					break;
 				case CommandType.ChatsRequest:
 					type = chatHandler.GetType();
-					metodo = type.GetMethod("ChatRequestList");
+					metodo = type.GetMethod("ChatRequest");
 					metodo.Invoke(chatHandler, new object[]{ sessions, obj });
 					break;
 				case CommandType.ChatListRequest:
 					type = chatHandler.GetType();
 					metodo = type.GetMethod("ChatRequestList");
-					metodo.Invoke(chatHandler, new object[]{ sessions, obj });
+                    ret.AddRange((List<GenericResponsePacket>)metodo.Invoke(chatHandler, new object[]{ sessions, obj }));
 					break;
 				case CommandType.Registration:
 					type = rh.GetType();

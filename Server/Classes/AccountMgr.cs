@@ -117,24 +117,49 @@ namespace Server.Classes
 		    return null;//chatMessages;
 	    }
 
-        public static List<Chat> GetChats(int AccountID)
+        public static List<ChatRoomForApp> GetChats(int AccountID)
         {
-	        /*staticconn.Open();
-	        List<Chat> chats = new List<Chat>();
-            MySqlCommand cmd = new MySqlCommand("SELECT ChatID as 'chatroom', `from`, content, `to`, `date` FROM log_chat WHERE to_type = 'CHAT_TYPE_USER_TO_USER' AND (`from` = @id or `to` = @id) AND `date` IN (SELECT MAX(`date`) FROM log_chat WHERE ChatID <> '' GROUP BY ChatID) ORDER BY `date` desc;", staticconn);
-            MySqlParameter idParameter = new MySqlParameter("@id", MySqlDbType.Int32, 0);
-            idParameter.Value = AccountID;
-            cmd.Parameters.Add(idParameter);
-            MySqlDataReader r = cmd.ExecuteReader();
-            while (r.Read())
-            {
-                Chat c = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, r["chatroom"].ToString(), r["content"].ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["from"])).ToString(), Misc.GetUsernameByID(Convert.ToInt32(r["to"])).ToString(), (long)Misc.DateTimeToUnixTimestamp(Convert.ToDateTime(r["date"].ToString())));
-                chats.Add(c);
+            List<ChatRoomForApp> ret = new List<ChatRoomForApp>();
+
+            //Tutte le chatroom dove è presente l'utente loggato
+            List<ChatRoomUsers> accountsChatRoom = Utils.mysqlDB.EllAppDB.Select<ChatRoomUsers>( x => x.IDAccount == AccountID );
+
+            foreach( ChatRoomUsers chatroomuser in accountsChatRoom ) {
+                ChatRoom chatroomInfo = Utils.mysqlDB.EllAppDB.Single<ChatRoom>( x => x.ID == chatroomuser.IDChatRoom );
+                ChatRoomUsers cru = Utils.mysqlDB.EllAppDB.Single<ChatRoomUsers>( x => x.IDChatRoom == chatroomuser.IDChatRoom && x.IDAccount != chatroomuser.IDAccount );
+                ChatRoomForApp crfa = null;
+
+                switch( chatroomInfo.Type ) {
+                    case ChatType.CHAT_TYPE_USER_TO_USER:
+
+                        Account destinatario = Utils.mysqlDB.EllAppDB.Single<Account>( x => x.idAccount == cru.IDAccount );
+
+                        crfa = new ChatRoomForApp
+                                              {
+                                                  ChatRoomID = chatroomInfo.ID,
+                                                  ChatRoomName = destinatario.username,
+                                                  Destinatario = destinatario.username,
+                                                  DestinatarioID = destinatario.idAccount,
+                                                  Type = chatroomInfo.Type
+                                              };
+
+                        ret.Add( crfa );
+                        break;
+                    case ChatType.CHAT_TYPE_GROUP_CHAT:
+                    case ChatType.CHAT_TYPE_GLOBAL_CHAT: //This have to be inserted manually to db with the correct TYPE.
+                        crfa = new ChatRoomForApp
+                               {
+                                   ChatRoomID = chatroomInfo.ID,
+                                   ChatRoomName = chatroomInfo.Name,
+                                   Type = chatroomInfo.Type
+                               };
+
+                        ret.Add( crfa );
+                        break;
+                }
+
             }
-            r.Close();
-            staticconn.Close();
-            return chats;*/
-            return null;
+            return ret;
         }
     }
 }

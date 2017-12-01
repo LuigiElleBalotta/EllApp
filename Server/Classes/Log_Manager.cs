@@ -19,7 +19,7 @@ namespace Server.Classes
 
         public void SaveLog()
         {
-			db.Insert<Log_Manager>( this );
+			//db.Insert<Log_Manager>( this );
         }
     }
 }
