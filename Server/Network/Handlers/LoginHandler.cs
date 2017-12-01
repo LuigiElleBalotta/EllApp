@@ -3,51 +3,82 @@ using Server.definitions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 using Server.Classes.Entities;
 using Server.Network.Packets;
+using Server.Network.Packets.Client;
+using Server.Network.Packets.Server;
 
 namespace Server.Network.Handlers
 {
     public class LoginHandler
     {
 
-        public static void DoLogin(ClientContext aContext, List<Session> sessions, ConcurrentDictionary<string, Connection> onlineConnections, dynamic obj, string json)
+        public static List<GenericResponsePacket> DoLogin(ClientContext aContext, List<Session> sessions, ConcurrentDictionary<string, Connection> onlineConnections, LoginPacket packet)
         {
-	        Console.WriteLine("LOGIN REQUEST FROM " + aContext.IPAddress);
-	        Console.WriteLine(json);
-	        string username = (string)obj.Username;
-	        string psw = (string)obj.Psw;
-	        bool wantWelcomeMessage = Convert.ToBoolean((int)obj.WantWelcomeMessage);
-	        Account u = AccountMgr.GetAccount(username.ToUpper(), psw.ToUpper());
+            List<GenericResponsePacket> responsePackets = new List<GenericResponsePacket>();
+
+	        Console.WriteLine("LOGIN REQUEST FROM " + aContext.Socket.RemoteEndPoint);
+
+	        Account u = AccountMgr.GetAccount(packet.Username.ToUpper(), packet.Psw.ToUpper());
 	        if (!AccountMgr.Validate( u ))
 	        {
-		        Connection conn;
+                GenericResponsePacket grp = new GenericResponsePacket
+                                            {
+                                                Client = aContext,
+                                                Response = new LoginResponse
+                                                           {
+                                                              MessageType = MessageType.MSG_TYPE_LOGIN_INFO,
+                                                              LoginResult = LoginResult.WrongCredentials
+                                                           },
+                                                SenderType = SenderType.Server
+                                            };
 
-		        Session s = new Session("tmp_" + Program.Server.Sessions.Count + 1, null, aContext);
-		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, -1, new LoginResponse{ LoginResult = LoginResult.WrongCredentials });
-		        s.SendMessage(loginInfo);
-
-		        onlineConnections.TryRemove(aContext.IPAddress, out conn);
-		        conn.timer.Dispose();
+                responsePackets.Add( grp );
 	        }
 	        else
 	        {
-		        Session s = new Session(u.idAccount.ToString(), u, aContext);
-		        sessions.Add(s);
+		        Session s = sessions.First( session => session.ID == aContext.IPAddress );
+		        s.user = u;
+                s.context = aContext;
 
-		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, s.user.idAccount, new LoginResponse{ LoginResult = LoginResult.WrongCredentials, AccountID = s.user.idAccount });
-                            
-		        s.SendMessage(loginInfo);
+
+                GenericResponsePacket grpLogin = new GenericResponsePacket
+                                                 {
+                                                     Client = aContext,
+                                                     Response = new LoginResponse
+                                                                {
+                                                                    MessageType = MessageType.MSG_TYPE_LOGIN_INFO,
+                                                                    LoginResult = LoginResult.Success,
+                                                                    AccountID = s.user.idAccount
+                                                                },
+                                                     SenderType = SenderType.Server,
+                                                     IDAccountReceiver = s.user.idAccount
+                                                 };
+
+                responsePackets.Add( grpLogin );
 				
-		        if(wantWelcomeMessage)
+		        if(packet.WantWelcomeMessage)
 		        {
 			        //Create the welcome message object
-			        Chat chat = new Chat{ chattype = ChatType.CHAT_TYPE_GLOBAL_CHAT, text = "Benvenuto " + s.user.username };
+			        //Chat chat = new Chat{ chattype = ChatType.CHAT_TYPE_GLOBAL_CHAT, text = "Benvenuto " + s.user.username };
 			        AccountMgr.SetOnline( s.user );
-			        var welcomeMessage = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, s.user.idAccount, chat);
-			        s.SendMessage(welcomeMessage);
+			        //var welcomeMessage = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, s.user.idAccount, chat);
+			        //s.CreateResponse(welcomeMessage);
 		        }
+                /*
+                GenericResponsePacket grpWwm = new GenericResponsePacket
+                                               {
+                                                   Client = aContext,
+                                                   Response = new ChatMessage
+                                                              {
+                                                                  Message = 
+                                                              }
+                                               };
+                */
 	        }
+            return responsePackets;
         }
     }
 }

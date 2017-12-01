@@ -1,6 +1,7 @@
 ﻿using Server.Classes;
 using Server.definitions;
 using Server.Network.Packets;
+using Server.Network.Packets.Server;
 
 namespace Server.Network.Handlers
 {
@@ -18,7 +19,7 @@ namespace Server.Network.Handlers
 
 			MessagePacket registrationInfo = new MessagePacket(MessageType.MSG_TYPE_REGISTRATION_RESPONSE, 0, -1, new RegistrationResponse{ Result = result });
                             
-			tmpSession.SendMessage(registrationInfo);
+			tmpSession.CreateResponse(registrationInfo);
 		}
 	}
 }

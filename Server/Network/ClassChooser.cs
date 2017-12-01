@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using NLog;
 using Server.Network;
 using Server.Network.Packets.Client;
+using Server.Network.Packets.Server;
 
 namespace EllApp_server.Network
 {
@@ -16,9 +17,9 @@ namespace EllApp_server.Network
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
-		public static string Handle(ClientContext aContext, string json, List<Session> sessions, ConcurrentDictionary<string, Connection> OnlineConnections)
+		public static List<GenericResponsePacket> Handle(ClientContext aContext, string json, List<Session> sessions, ConcurrentDictionary<string, Connection> OnlineConnections)
 		{
-			string ret = "Nessun metodo da chiamare in base alla richiesta.";
+			List<GenericResponsePacket> ret = new List<GenericResponsePacket>();
 
 			logger.Info($"======================================={Environment.NewLine}Received packet: {Environment.NewLine} {json} { Environment.NewLine }=======================================");
 
@@ -37,7 +38,7 @@ namespace EllApp_server.Network
 				case CommandType.Login:
 					type = lh.GetType();
 					metodo = type.GetMethod("DoLogin");
-					metodo.Invoke(lh, new object[]{ aContext, sessions, OnlineConnections, obj, json });
+					ret.AddRange((List<GenericResponsePacket>)metodo.Invoke(lh, new object[]{ aContext, sessions, OnlineConnections, obj.LoginPacket }));
 					break;
 				case CommandType.Message:
 					type = messageHandler.GetType();
@@ -60,6 +61,9 @@ namespace EllApp_server.Network
 					metodo.Invoke(rh, new object[]{ obj, aContext });
 					break;
 			}
+
+            if( ret.Count == 0 )
+                ret.Add( new GenericResponsePacket{ Client = aContext, Response = new Response{ ErrorMessage = "Nessun metodo da chiamare in base alla richiesta.", ResponseType = ResponseType.Error } });
 
             return ret;
 		}

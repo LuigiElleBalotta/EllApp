@@ -6,7 +6,7 @@ namespace Server.Classes
 {
     public class Session
     {
-        public string ID;
+        public string ID { get; set; }
         public Account user { get; set; }
         public ClientContext context { get; set; }
 
@@ -17,16 +17,11 @@ namespace Server.Classes
             context = _context;
         }
 
-        public string GetID()
-        {
-            return ID;
-        }
-
-        public void SendMessage(MessagePacket pkt)
+        public string CreateResponse(MessagePacket pkt)
         {
             var msg = JsonConvert.SerializeObject(pkt);
             Console.WriteLine($"Invio questo pacchetto: {msg}");
-            //context.Send(msg);
+            return msg;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using Server.Classes;
 using Server.definitions;
 using Server.Network.Packets;
+using Server.Network.Packets.Server;
 
 namespace Server.Network.Handlers
 {
@@ -17,7 +18,7 @@ namespace Server.Network.Handlers
 			if (obj.ChatRequestID != null)
 				ChatRequestID = obj.ChatRequestID;
 			var chats = AccountMgr.GetChat(accountID, ChatRequestID);
-			Sessions.First(s => s.user.idAccount == accountID).SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT_REQUEST_RESPONSE, 0, accountID, chats));
+			Sessions.First(s => s.user.idAccount == accountID).CreateResponse(new MessagePacket(MessageType.MSG_TYPE_CHAT_REQUEST_RESPONSE, 0, accountID, chats));
 		}
 
 		public void ChatRequestList(List<Session> Sessions, dynamic obj)
@@ -25,7 +26,7 @@ namespace Server.Network.Handlers
 			Console.WriteLine("Received CHAT LIST REQUEST from AccountID = " + obj.accid + ".");
 			int accountid = obj.accid;
 			var chatlist = AccountMgr.GetChats(accountid);
-			Sessions.First(s => s.user.idAccount == accountid).SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE, 0, accountid, new ChatRequestListResponse{ ChatList = chatlist }));
+			Sessions.First(s => s.user.idAccount == accountid).CreateResponse(new MessagePacket(MessageType.MSG_TYPE_CHAT_REQUEST_LIST_RESPONSE, 0, accountid, new ChatRequestListResponse{ ChatList = chatlist }));
 		}
 	}
 }

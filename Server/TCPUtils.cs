@@ -5,8 +5,11 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using EllApp_server.Network;
+using Lappa.ORM.Constants;
+using Newtonsoft.Json;
 using Server.Classes;
 using Server.Network;
+using Server.Network.Packets.Server;
 using Session = Server.Classes.Session;
 
 namespace Server
@@ -35,7 +38,12 @@ namespace Server
 		private static TcpListener listener { get; set; }  
 		private static bool accept { get; set; } = false;  
    
-        public static void StartListening( Config.Config Configuration ) {  
+        public static void StartListening( Config.Config Configuration ) { 
+            
+            Utils.mysqlDB = new DB( DatabaseType.MySql, Program.Configuration );
+
+            Console.WriteLine( $"MySQL DB status: {Utils.mysqlDB.Connected}");
+
             // Data buffer for incoming data.  
             byte[] bytes = new Byte[1024];  
 
@@ -101,7 +109,7 @@ namespace Server
             ClientContext cc = new ClientContext
                                {
                                    Socket = state.workSocket,
-                                   IPAddress = socketAddress.ToString()
+                                   IPAddress = state.workSocket.RemoteEndPoint.ToString()
                                };
 
             // Create a new Connection Object to save client context information
@@ -136,11 +144,13 @@ namespace Server
                     content = Encoding.ASCII.GetString( state.buffer, 0, bytesRead ); 
  
                     Console.WriteLine("Read {0} bytes from socket. \n Data : {1}", content.Length, content );  
-
-                    //@todo: gestire qua i pacchetti.
+                    
                     if( Program.Server.OnlineConnections.TryGetValue( state.workSocket.RemoteEndPoint.ToString(), out Connection val ) ) {
-                        var response = ClassChooser.Handle( val.Context, content, Program.Server.Sessions, Program.Server.OnlineConnections );
-                        Send(handler, response);
+                        var responses = ClassChooser.Handle( val.Context, content, Program.Server.Sessions, Program.Server.OnlineConnections );
+
+                        foreach( GenericResponsePacket response in responses ) {
+                            Send( response.Client.Socket, JsonConvert.SerializeObject( response.Response )  );
+                        }
                     } else {
                         Console.WriteLine( $"Nessun client connesso dall'ip {state.workSocket.RemoteEndPoint}" );
                     }
@@ -158,7 +168,7 @@ namespace Server
                                                                   bool res = (s.ID == conn.IP.ToString());
                                                                   if (res)
                                                                   {
-                                                                      if(s.GetID() != "" )
+                                                                      if(s.ID != "" )
                                                                           if( s.user != null )
                                                                               AccountMgr.SetOffline( s.user );   
                                                                   }

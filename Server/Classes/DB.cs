@@ -6,7 +6,7 @@ namespace Server.Classes
 {
     public class DB
     {
-        public Database EllAppDB;
+        public readonly Database EllAppDB;
 		public bool Connected { get; set; }
 
 		public DB( DatabaseType dbtype, Config.Config conf )
@@ -14,7 +14,7 @@ namespace Server.Classes
             EllAppDB = new Database();
 			switch( dbtype ) {
 				case DatabaseType.MySql:
-					Connected = EllAppDB.Initialize( GetMySqlConnectionString( conf ), dbtype, false, false );
+					Connected = EllAppDB.Initialize( GetMySqlConnectionString( conf ), dbtype, false, false, true );
 					break;
 				case DatabaseType.MSSql:
 					throw new NotImplementedException( "MSSQL non ancora implementato." );

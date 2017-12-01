@@ -38,7 +38,7 @@ namespace Server.Commands
 				var msg = Console.ReadLine();
 				Chat c = new Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, "", msg, "Server Message", session.user.username);
 				var message = new MessagePacket(MessageType.MSG_TYPE_CHAT, 0, session.user.idAccount, JsonConvert.SerializeObject(c));
-				session.SendMessage(message);
+				session.CreateResponse(message);
 			}
 		}
 
@@ -90,7 +90,7 @@ namespace Server.Commands
 									logger.Info("L'utente è online");
 									Session session = sessions.SingleOrDefault(s => s.user.idAccount == to);
 									logger.Info("Sending message to user");
-									session?.SendMessage(msg);
+									session?.CreateResponse(msg);
 								}
 							}
 

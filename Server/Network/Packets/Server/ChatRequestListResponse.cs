@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Server.Classes;
 
-namespace Server.Network.Packets
+namespace Server.Network.Packets.Server
 {
-	public class ChatRequestListResponse
+	public class ChatRequestListResponse : Response
 	{
 		public List<Chat> ChatList { get; set; }
 	}

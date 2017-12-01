@@ -40,7 +40,6 @@ namespace Server.Classes
 
         public static Account GetAccount( string username, string password )
         {
-            username = username;
             byte[] passwordbyte = Encoding.ASCII.GetBytes(username + ":" + password);
             var sha_pass = SHA1.Create();
             byte[] bytehash = sha_pass.ComputeHash(passwordbyte);
@@ -49,7 +48,9 @@ namespace Server.Classes
             password = password.ToUpper();
             username = username.ToUpper();
 
-            return Utils.mysqlDB.EllAppDB.Single<Account>( acc => acc.username == username && acc.password == password );
+            Account ret = Utils.mysqlDB.EllAppDB.Single<Account>( acc => acc.username == username && acc.password == password );
+
+            return ret;
         }
 
         public static bool Validate( Account account )

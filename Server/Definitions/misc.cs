@@ -107,4 +107,10 @@ namespace Server.definitions
         Pending     = 1,
         Refused     = 2
     }
+
+    public enum SenderType
+    {
+        Server = 0,
+        RealPerson = 1
+    }
 }

@@ -57,7 +57,7 @@ namespace Server.Network.Handlers
 				if (session.user.idAccount != from) //Do not send message to ourselves
 				{
 					Chat chat = new Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, Misc.CreateChatRoomID(from, session.user.idAccount), messagecontent, Misc.GetUsernameByID(from), Misc.GetUsernameByID(session.user.idAccount));
-					session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, from, session.user.idAccount, chat));
+					session.CreateResponse(new MessagePacket(MessageType.MSG_TYPE_CHAT, from, session.user.idAccount, chat));
 					stCLog.content = messagecontent;
 					stCLog.to_type = toType;
 					stCLog.from = from;
@@ -80,7 +80,7 @@ namespace Server.Network.Handlers
 				{
 					Chat chat = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, Misc.CreateChatRoomID(obj.To, obj.From), obj.Message, obj.From, obj.To);
 					Session session = sessions.SingleOrDefault(s => s.user.idAccount == (int)obj.To);
-					session?.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, obj.From, obj.To, chat));
+					session?.CreateResponse(new MessagePacket(MessageType.MSG_TYPE_CHAT, obj.From, obj.To, chat));
 				}
 			}
 			else
