@@ -125,12 +125,13 @@ namespace Server
         }  
 
         public static void ReadCallback(IAsyncResult ar) {  
+            StateObject state = (StateObject) ar.AsyncState;  
             try {
                 String content = String.Empty;  
 
                 // Retrieve the state object and the handler socket  
                 // from the asynchronous state object.  
-                StateObject state = (StateObject) ar.AsyncState;  
+                
                 Socket handler = state.workSocket;  
 
                 // Read data from the client socket.   
@@ -155,7 +156,23 @@ namespace Server
             catch( Exception ex ) {
                 Console.WriteLine( ex.Message );
 
-                //@todo rimuovere qui la sessione
+                Connection conn;
+                Program.Server.OnlineConnections.TryRemove(state.workSocket.RemoteEndPoint.ToString(), out conn);
+                if (conn != null) //E' riuscito a rimuovere la connessione.
+                {
+                    Program.Server.Sessions.Remove(Program.Server.Sessions.First(s =>
+                                                   {
+                                                       bool res = (s.context.IPAddress == conn.IP.ToString());
+                                                       if (res)
+                                                       {
+                                                           if(s.GetID() != "" )
+                                                               AccountMgr.SetOffline( s.user );   
+                                                       }
+                                                       return res;
+                                                   }));
+                    // Dispose timer to stop sending messages to the client.
+                    conn.timer.Dispose();
+                }
             }
              
         }  
