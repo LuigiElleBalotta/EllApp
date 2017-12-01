@@ -9,12 +9,14 @@ using System.Text;
 using System.Threading;
 using EllApp_server.Network;
 using Lappa.ORM.Constants;
+using MySqlX.XDevAPI;
 using NLog;
 using Server.Classes;
 using Server.Commands;
 using Server.Network;
 using Server.Network.Alchemy;
 using Server.Network.Alchemy.Classes;
+using Session = Server.Classes.Session;
 
 namespace Server
 {
@@ -160,16 +162,19 @@ namespace Server
                 Program.Server.OnlineConnections.TryRemove(state.workSocket.RemoteEndPoint.ToString(), out conn);
                 if (conn != null) //E' riuscito a rimuovere la connessione.
                 {
-                    Program.Server.Sessions.Remove(Program.Server.Sessions.First(s =>
-                                                   {
-                                                       bool res = (s.context.IPAddress == conn.IP.ToString());
-                                                       if (res)
-                                                       {
-                                                           if(s.GetID() != "" )
-                                                               AccountMgr.SetOffline( s.user );   
-                                                       }
-                                                       return res;
-                                                   }));
+                    Session sess = Program.Server.Sessions.First(s =>
+                                                              {
+                                                                  bool res = (s.ID == conn.IP.ToString());
+                                                                  if (res)
+                                                                  {
+                                                                      if(s.GetID() != "" )
+                                                                          if( s.user != null )
+                                                                              AccountMgr.SetOffline( s.user );   
+                                                                  }
+                                                                  return res;
+                                                              });
+                    if( sess != null )
+                        Program.Server.Sessions.Remove( sess );
                     // Dispose timer to stop sending messages to the client.
                     conn.timer.Dispose();
                 }

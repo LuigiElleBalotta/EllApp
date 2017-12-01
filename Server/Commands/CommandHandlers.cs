@@ -27,7 +27,8 @@ namespace Server.Commands
 		public void Serverinfo(ServerContext aServer)
 		{
             Console.WriteLine("Listening on: " + aServer.IPAddress);
-            Console.WriteLine("Is connected: " + aServer.Socket.Connected );
+            Console.WriteLine("Connected Client: " + Program.Server.OnlineConnections.Count );
+            Console.WriteLine("Active sessions: " + Program.Server.Sessions.Count );
 		}
 
 		public void Gsm(List<Session> sessions) //Global Server Message

@@ -7,7 +7,7 @@ namespace Server.Classes
 {
     public class Session
     {
-        string ID;
+        public string ID;
         public Account user { get; set; }
         public ClientContext context { get; set; }
 
