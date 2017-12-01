@@ -27,7 +27,7 @@ $("document").ready(function ()
                 return false;
 			}
 
-	        conn = new WebSocket('ws://192.168.0.113:8080');
+	        conn = new WebSocket('ws://192.168.0.113:10726');
 	        conn.onmessage = function (e) {
 		        try {
 					var dataReceived = e.data;
@@ -66,9 +66,11 @@ $("document").ready(function ()
 	        conn.onopen = function (e) {
 		        var regObj = new Object();
 		        regObj.Type = 4;
-		        regObj.Username = username;
-				regObj.Psw = password;
-		        regObj.Email = email;
+                regObj.RegistrationPacket = {
+                    Username: username,
+                    Psw: password,
+                    Email: email
+                };
 				regObj = JSON.stringify(regObj);
 				conn.send(regObj);
 

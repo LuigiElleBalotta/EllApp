@@ -25,14 +25,15 @@ namespace ServerWebSocket.Classes
             return ID;
         }
 
-        public async void SendMessage(MessagePacket pkt)
+        public /*async*/ string CreateMessage(MessagePacket pkt)
         {
-            var msg = JsonConvert.SerializeObject(pkt);
+            var msg = JsonConvert.SerializeObject( pkt );
             Console.WriteLine($"Invio questo pacchetto: {msg}");
-            var data = Encoding.UTF8.GetBytes( msg );
+            return msg;
+            /*var data = Encoding.UTF8.GetBytes( msg );
             var buffer = new ArraySegment<Byte>(new Byte[4096]);
-            buffer = new ArraySegment<Byte>(data);
-            await context.WebSocket.SendAsync(buffer, context.Type, true, context.Token);
+            buffer = new ArraySegment<Byte>( data );
+            await context.WebSocket.SendAsync( buffer, context.Type, true, context.Token );*/
         }
     }
 }

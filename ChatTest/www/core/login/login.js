@@ -33,7 +33,7 @@ $("document").ready(function () {
         }
         else
         {
-			conn = new WebSocket('ws://192.168.0.113:8080');
+			conn = new WebSocket('ws://192.168.0.113:10726');
 			conn.onmessage = function (e) {
 				try {
 					//Risposta del login da parte del server
@@ -83,9 +83,11 @@ $("document").ready(function () {
             conn.onopen = function (e) {
                 var loginObj = new Object();
                 loginObj.Type = 0;
-                loginObj.Username = username;
-                loginObj.Psw = password;
-                loginObj.WantWelcomeMessage = 0;
+                loginObj.LoginPacket = {
+                    Username: username,
+                    Psw: password,
+                    WantWelcomeMessage: 0
+                };
                 loginObj = JSON.stringify(loginObj);
                 conn.send(loginObj);
 

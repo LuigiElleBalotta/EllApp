@@ -10,8 +10,11 @@ namespace ServerWebSocket.Network.Handlers
 	public class MessageHandler
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();
-		public void HandleMessage(ClientContext aContext, dynamic obj, List<Session> sessions)
+		public List<string> HandleMessage(ClientContext aContext, dynamic obj, List<Session> sessions)
 		{
+
+            List<string> ret = new List<string>();
+
 			logger.Info($"MESSAGE PACKET FROM {aContext.IPAddress}:{aContext.Port}");
 			string messagecontent = obj.Message;
 			ChatType toType = obj.ToType;
@@ -23,7 +26,7 @@ namespace ServerWebSocket.Network.Handlers
 			switch (toType)
 			{
 				case ChatType.CHAT_TYPE_GLOBAL_CHAT: //Send message to all connected clients (that we have stored in sessions)
-					HandleGlobalChat(sessions, from, to, toType, messagecontent);
+					ret = HandleGlobalChat(sessions, from, to, toType, messagecontent);
 					break;
 				case ChatType.CHAT_TYPE_USER_TO_USER:
 					HandleUserChat(sessions, obj);
@@ -35,6 +38,8 @@ namespace ServerWebSocket.Network.Handlers
 					HandleChatNull();
 					break;
 			}
+
+            return ret;
 		}
 
 		private void MakeLog(int from, int to, ChatType toType, string messagecontent)
@@ -49,8 +54,9 @@ namespace ServerWebSocket.Network.Handlers
 					  }.SaveLog();
 		}
 
-		private void HandleGlobalChat(List<Session> sessions, int from, int to, ChatType toType, string messagecontent)
+		private List<string> HandleGlobalChat(List<Session> sessions, int from, int to, ChatType toType, string messagecontent)
 		{
+            List<string> ret = new List<string>();
 			var stCLog = new Log_Manager();
 			var o = 1;
 			foreach (var session in sessions)
@@ -58,7 +64,7 @@ namespace ServerWebSocket.Network.Handlers
 				if (session.user.idAccount != from) //Do not send message to ourselves
 				{
 					Chat chat = new Chat(ChatType.CHAT_TYPE_GLOBAL_CHAT, Misc.CreateChatRoomID(from, session.user.idAccount), messagecontent, Misc.GetUsernameByID(from), Misc.GetUsernameByID(session.user.idAccount));
-					session.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, from, session.user.idAccount, chat));
+					ret.Add(session.CreateMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, from, session.user.idAccount, chat)));
 					stCLog.content = messagecontent;
 					stCLog.to_type = toType;
 					stCLog.from = from;
@@ -68,6 +74,7 @@ namespace ServerWebSocket.Network.Handlers
 				}
 			}
 			logger.Info("Message sent to {0} users", (o - 1));
+            return ret;
 		}
 
 		private void HandleUserChat(List<Session> sessions, dynamic obj)
@@ -81,7 +88,7 @@ namespace ServerWebSocket.Network.Handlers
 				{
 					Chat chat = new Chat(ChatType.CHAT_TYPE_USER_TO_USER, Misc.CreateChatRoomID(obj.To, obj.From), obj.Message, obj.From, obj.To);
 					Session session = sessions.SingleOrDefault(s => s.user.idAccount == (int)obj.To);
-					session?.SendMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, obj.From, obj.To, chat));
+					session?.CreateMessage(new MessagePacket(MessageType.MSG_TYPE_CHAT, obj.From, obj.To, chat));
 				}
 			}
 			else

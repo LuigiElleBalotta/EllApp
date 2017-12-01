@@ -7,7 +7,7 @@ namespace ServerWebSocket.Network.Handlers
 {
 	public class RegistrationHandler
 	{
-		public static void RegisterAccount(dynamic obj, ClientContext uContext)
+		public static string RegisterAccount(dynamic obj, ClientContext uContext)
 		{
 			string username = obj.Username.ToString();
 			string password = obj.Psw.ToString();
@@ -19,7 +19,7 @@ namespace ServerWebSocket.Network.Handlers
 
 			MessagePacket registrationInfo = new MessagePacket(MessageType.MSG_TYPE_REGISTRATION_RESPONSE, 0, -1, new RegistrationResponse{ Result = result });
                             
-			tmpSession.SendMessage(registrationInfo);
+			return tmpSession.CreateMessage(registrationInfo);
 		}
 	}
 }

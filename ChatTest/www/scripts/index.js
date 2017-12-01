@@ -67,7 +67,7 @@
     {
         if (!isConnected)
         {
-			conn = new WebSocket('ws://192.168.0.113:8080');
+			conn = new WebSocket('ws://192.168.0.113:10726');
             conn.onmessage = function (e) {
                 dataReceived = e.data;
                 if (dataReceived != "") {
@@ -175,9 +175,11 @@
                 $("#container_text").hide();
                 var loginObj = new Object();
                 loginObj.Type = CommandType.login;
-                loginObj.Username = localStorage.getItem("uname");
-                loginObj.Psw = localStorage.getItem("psw");
-                loginObj.WantWelcomeMessage = 1;
+                loginObj.LoginPacket = {
+                    Username: localStorage.getItem("uname"),
+                    Psw: localStorage.getItem("psw"),
+                    WantWelcomeMessage: 1
+                };
                 loginObj = JSON.stringify(loginObj);
                 conn.send(loginObj);
 
@@ -220,21 +222,26 @@
                 executeCommand(messaggio);
             else {
                 $("#container_chat").append('<div class="row"><div class="col-xs-12 text-right"><div class="bubble bubble--alt">' + messaggio + '</div></div></div>');
-                var messageObj = new Object();
-                messageObj.Type = CommandType.message;
-                messageObj.Message = messaggio;
-                messageObj.ToType = _ChatType;
-                messageObj.From = accID;
+                var to = 0;
                 if(CurrentChatRoomID == "globalchat")
-                    messageObj.To = 0;
+                    to = 0;
                 else
                 {
                     var res = CurrentChatRoomID.split("-");
                     if (res[0] != accID)
-                        messageObj.To = res[0];
+                        to = res[0];
                     else
-                        messageObj.To = res[1];
+                        to = res[1];
                 }
+
+                var messageObj = new Object();
+                messageObj.Type = CommandType.message;
+                messageObj.MessagePacket = {
+                    Message: messaggio,
+                    ToType: _ChatType,
+                    From: accID,
+                    To: to
+                };
                 messageObj = JSON.stringify(messageObj);
                 conn.send(messageObj);
                 $("#message").val("");
@@ -302,8 +309,10 @@
             //I Have to ask to the server for the chat that i selected
             var ReqObj = new Object();
             ReqObj.Type = CommandType.chatsrequest;
-            ReqObj.accid = accID;
-            ReqObj.ChatRequestID = CurrentChatRoomID;
+            ReqObj.ChatsRequestPacket = {
+                AccID: accID,
+                ChatRequestID: CurrentChatRoomID
+            };
             ReqObj = JSON.stringify(ReqObj);
             conn.send(ReqObj);
         }
