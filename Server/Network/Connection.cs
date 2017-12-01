@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Server.Classes;
 using Server.Network.Alchemy.Classes;
 
 namespace Server.Network
@@ -8,7 +9,7 @@ namespace Server.Network
 	{
 		public System.Threading.Timer timer;
 		
-		public UserContext Context { get; set; }
+		public ClientContext Context { get; set; }
 		public EndPoint IP { get; set; }
 
 		public Connection()

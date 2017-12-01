@@ -7,18 +7,18 @@ namespace Server.Classes
 {
     public class Session
     {
-        int ID;
+        string ID;
         public Account user { get; set; }
-        public UserContext context { get; set; }
+        public ClientContext context { get; set; }
 
-        public Session(int _id, Account _user, UserContext _context)
+        public Session(string _id, Account _user, ClientContext _context)
         {
             ID = _id;
             user = _user;
             context = _context;
         }
 
-        public int GetID()
+        public string GetID()
         {
             return ID;
         }
@@ -27,7 +27,7 @@ namespace Server.Classes
         {
             var msg = JsonConvert.SerializeObject(pkt);
             Console.WriteLine($"Invio questo pacchetto: {msg}");
-            context.Send(msg);
+            //context.Send(msg);
         }
     }
 }

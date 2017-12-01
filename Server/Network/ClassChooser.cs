@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using NLog;
 using Server.Network;
 using Server.Network.Alchemy.Classes;
+using Server.Network.Packets.Client;
 
 namespace EllApp_server.Network
 {
@@ -16,14 +17,13 @@ namespace EllApp_server.Network
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
-		public static void Handle(UserContext aContext, List<Session> sessions, ConcurrentDictionary<string, Connection> OnlineConnections)
+		public static string Handle(ClientContext aContext, string json, List<Session> sessions, ConcurrentDictionary<string, Connection> OnlineConnections)
 		{
-			
-			var json = aContext.DataFrame.ToString();
+			string ret = "Nessun metodo da chiamare in base alla richiesta.";
 
 			logger.Info($"======================================={Environment.NewLine}Received packet: {Environment.NewLine} {json} { Environment.NewLine }=======================================");
 
-			dynamic obj = JsonConvert.DeserializeObject(json);
+			GenericRequestPacket obj = JsonConvert.DeserializeObject<GenericRequestPacket>(json);
 			Type type;
 			MethodInfo metodo;
 
@@ -33,34 +33,36 @@ namespace EllApp_server.Network
 			MessageHandler messageHandler = new MessageHandler();
 			RegistrationHandler rh = new RegistrationHandler();
 
-			switch ((int)obj.Type)
+			switch (obj.Type)
 			{
-				case (int)CommandType.Login:
+				case CommandType.Login:
 					type = lh.GetType();
 					metodo = type.GetMethod("DoLogin");
 					metodo.Invoke(lh, new object[]{ aContext, sessions, OnlineConnections, obj, json });
 					break;
-				case (int)CommandType.Message:
+				case CommandType.Message:
 					type = messageHandler.GetType();
 					metodo = type.GetMethod("HandleMessage");
 					metodo.Invoke(messageHandler, new object[]{ aContext, obj, sessions });
 					break;
-				case (int)CommandType.ChatsRequest:
+				case CommandType.ChatsRequest:
 					type = chatHandler.GetType();
 					metodo = type.GetMethod("ChatRequestList");
 					metodo.Invoke(chatHandler, new object[]{ sessions, obj });
 					break;
-				case (int)CommandType.ChatListRequest:
+				case CommandType.ChatListRequest:
 					type = chatHandler.GetType();
 					metodo = type.GetMethod("ChatRequestList");
 					metodo.Invoke(chatHandler, new object[]{ sessions, obj });
 					break;
-				case (int)CommandType.Registration:
+				case CommandType.Registration:
 					type = rh.GetType();
 					metodo = type.GetMethod("RegisterAccount");
 					metodo.Invoke(rh, new object[]{ obj, aContext });
 					break;
 			}
+
+            return ret;
 		}
 	}
 }

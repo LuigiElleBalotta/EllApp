@@ -7,7 +7,7 @@ namespace Server.Network.Handlers
 {
 	public class RegistrationHandler
 	{
-		public static void RegisterAccount(dynamic obj, UserContext uContext)
+		public static void RegisterAccount(dynamic obj, ClientContext uContext)
 		{
 			string username = obj.Username.ToString();
 			string password = obj.Psw.ToString();
@@ -15,7 +15,7 @@ namespace Server.Network.Handlers
 
 			bool result = AccountMgr.CreateAccount(username, password, email);
 
-			Session tmpSession = new Session(0, null, uContext);
+			Session tmpSession = new Session("tmp_" + Program.Server.Sessions.Count + 1, null, uContext);
 
 			MessagePacket registrationInfo = new MessagePacket(MessageType.MSG_TYPE_REGISTRATION_RESPONSE, 0, -1, new RegistrationResponse{ Result = result });
                             

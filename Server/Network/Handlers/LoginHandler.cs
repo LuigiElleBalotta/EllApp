@@ -12,9 +12,9 @@ namespace Server.Network.Handlers
     public class LoginHandler
     {
 
-        public static void DoLogin(UserContext aContext, List<Session> sessions, ConcurrentDictionary<string, Connection> onlineConnections, dynamic obj, string json)
+        public static void DoLogin(ClientContext aContext, List<Session> sessions, ConcurrentDictionary<string, Connection> onlineConnections, dynamic obj, string json)
         {
-	        Console.WriteLine("LOGIN REQUEST FROM " + aContext.ClientAddress);
+	        Console.WriteLine("LOGIN REQUEST FROM " + aContext.IPAddress);
 	        Console.WriteLine(json);
 	        string username = (string)obj.Username;
 	        string psw = (string)obj.Psw;
@@ -24,16 +24,16 @@ namespace Server.Network.Handlers
 	        {
 		        Connection conn;
 
-		        Session s = new Session(0, null, aContext);
+		        Session s = new Session("tmp_" + Program.Server.Sessions.Count + 1, null, aContext);
 		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, -1, new LoginResponse{ LoginResult = LoginResult.WrongCredentials });
 		        s.SendMessage(loginInfo);
 
-		        onlineConnections.TryRemove(aContext.ClientAddress.ToString(), out conn);
+		        onlineConnections.TryRemove(aContext.IPAddress, out conn);
 		        conn.timer.Dispose();
 	        }
 	        else
 	        {
-		        Session s = new Session(u.idAccount, u, aContext);
+		        Session s = new Session(u.idAccount.ToString(), u, aContext);
 		        sessions.Add(s);
 
 		        MessagePacket loginInfo = new MessagePacket(MessageType.MSG_TYPE_LOGIN_INFO, 0, s.user.idAccount, new LoginResponse{ LoginResult = LoginResult.WrongCredentials, AccountID = s.user.idAccount });

@@ -41,86 +41,7 @@ namespace Server
         public static ManualResetEvent allDone = new ManualResetEvent(false); 
 		private static TcpListener listener { get; set; }  
 		private static bool accept { get; set; } = false;  
-		private static Logger logger = LogManager.GetCurrentClassLogger();
-        protected static ConcurrentDictionary<string, Connection> OnlineConnections = new ConcurrentDictionary<string, Connection>();
-        public static List<Session> Sessions = new List<Session>();
-        private static SocketServer aServer;
    
-		public static void StartServer(string host, int port) {  
-			IPAddress address = IPAddress.Parse(host);  
-			listener = new TcpListener(address, port);  
-   
-			listener.Start();  
-			accept = true;  
-   
-			Console.WriteLine($"Server started. Listening to TCP clients at 127.0.0.1:{port}");  
-		}  
-   
-		public static void Listen()
-		{  
-			if(listener != null && accept) 
-			{  
-				// Continue listening.  
-				while (true)
-				{  
-					Console.WriteLine("Waiting for client...");  
-					var clientTask = listener.AcceptTcpClientAsync(); // Get the client  
-   
-					if(clientTask.Result != null)
-					{  
-						Console.WriteLine("Client connected. Waiting for data.");  
-						var client = clientTask.Result;  
-						string message = "";  
-   
-						while (message != null && message != "exit")
-						{  
-
-							if (message != "")
-							{
-								CommandHandlers cmd = new CommandHandlers();
-								Type type = cmd.GetType();
-								MethodInfo metodo = type.GetMethod(Utility.ToTitleCase(message));
-								switch (message)
-								{
-									case "fakemessage":
-									case "gsm":
-									case "online":
-										metodo.Invoke(cmd, new object[]{ Sessions });
-										break;
-									case "serverinfo":
-										metodo.Invoke(cmd, new object[]{ Program.Configuration });
-										break;
-									case "commands":
-										metodo.Invoke(cmd, null);
-										break;
-									case "createaccount":
-									case "clearconsole":
-										break;
-									default:
-										logger.Warn($"Unknown command \"{message}\".");
-										break;
-								}
-							}
-							message = Console.ReadLine();
-
-							//------------------------------------------
-
-							/*byte[] data = Encoding.ASCII.GetBytes("Send next data: [enter 'quit' to terminate] ");  
-							client.GetStream().Write(data, 0, data.Length);  
-   
-							byte[] buffer = new byte[1024];  
-							client.GetStream().Read(buffer, 0, buffer.Length);  
-   
-							message = Encoding.ASCII.GetString(buffer);  
-							Console.WriteLine(message);  */
-						}  
-						Console.WriteLine("Closing connection.");  
-						client.GetStream().Dispose();  
-					}  
-				}  
-			}  
-		}  
-
         public static void StartListening( Config.Config Configuration ) {  
             // Data buffer for incoming data.  
             byte[] bytes = new Byte[1024];  
@@ -141,6 +62,12 @@ namespace Server
                 listener.Bind(localEndPoint);  
                 listener.Listen(100);  
 
+                Program.Server = new ServerContext
+                                  {
+                                      Socket = listener,
+                                      IPAddress = listener.LocalEndPoint.ToString()
+                                  };
+
                 while (true) {  
                     // Set the event to nonsignaled state.  
                     allDone.Reset();  
@@ -157,10 +84,10 @@ namespace Server
 
             } catch (Exception e) {  
                 Console.WriteLine(e.ToString());  
-            }  
+            } 
 
-            Console.WriteLine("\nPress ENTER to continue...");  
-            Console.Read();  
+            Console.WriteLine("\nPress ENTER to continue...");
+            Console.Read();
 
         }  
 
@@ -173,87 +100,81 @@ namespace Server
             Socket handler = listener.EndAccept(ar);  
 
             // Create the state object.  
-            StateObject state = new StateObject();  
-            state.workSocket = handler;  
+            StateObject state = new StateObject {workSocket = handler};
+
+
+            SocketAddress socketAddress = state.workSocket.RemoteEndPoint.Serialize();
+
+            ClientContext cc = new ClientContext
+                               {
+                                   Socket = state.workSocket,
+                                   IPAddress = socketAddress.ToString()
+                               };
+
+            // Create a new Connection Object to save client context information
+            var conn = new Connection { Context = cc, IP = state.workSocket.RemoteEndPoint };
+
+            Console.WriteLine( $"Connected client from {conn.IP}" );
+
+            // Add a connection Object to thread-safe collection
+            Program.Server.OnlineConnections.TryAdd(conn.IP.ToString(), conn);
+            Program.Server.Sessions.Add(new Session(conn.IP.ToString(), null, cc));
+            
             handler.BeginReceive( state.buffer, 0, StateObject.BufferSize, 0,  
-                new AsyncCallback(ReadCallback), state);  
+                                    new AsyncCallback(ReadCallback), state);  
         }  
 
         public static void ReadCallback(IAsyncResult ar) {  
-            String content = String.Empty;  
+            try {
+                String content = String.Empty;  
 
-            // Retrieve the state object and the handler socket  
-            // from the asynchronous state object.  
-            StateObject state = (StateObject) ar.AsyncState;  
-            Socket handler = state.workSocket;  
+                // Retrieve the state object and the handler socket  
+                // from the asynchronous state object.  
+                StateObject state = (StateObject) ar.AsyncState;  
+                Socket handler = state.workSocket;  
 
-            // Read data from the client socket.   
-            int bytesRead = handler.EndReceive(ar);  
+                // Read data from the client socket.   
+                int bytesRead = handler.EndReceive(ar);  
 
-            if (bytesRead > 0) {  
-                // There  might be more data, so store the data received so far.  
-                state.sb.Append(Encoding.ASCII.GetString(  
-                    state.buffer,0,bytesRead));  
+                if (bytesRead > 0) {  
+                    // There  might be more data, so store the data received so far. 
 
-                // Check for end-of-file tag. If it is not there, read   
-                // more data.  
-                content = state.sb.ToString(); 
-   
-                while (content != null && content != "exit")
-                {  
+                    content = Encoding.ASCII.GetString( state.buffer, 0, bytesRead ); 
+ 
+                    Console.WriteLine("Read {0} bytes from socket. \n Data : {1}", content.Length, content );  
 
-                    if (content != "")
-                    {
-                        CommandHandlers cmd = new CommandHandlers();
-                        Type type = cmd.GetType();
-                        MethodInfo metodo = type.GetMethod(Utility.ToTitleCase(content));
-                        switch (content)
-                        {
-                            case "fakemessage":
-                            case "gsm":
-                            case "online":
-                                metodo.Invoke(cmd, new object[]{ Sessions });
-                                break;
-                            case "serverinfo":
-                                metodo.Invoke(cmd, new object[]{ Program.Configuration });
-                                break;
-                            case "commands":
-                                metodo.Invoke(cmd, null);
-                                break;
-                            case "createaccount":
-                            case "clearconsole":
-                                break;
-                            default:
-                                logger.Warn($"Unknown command \"{content}\".");
-                                break;
-                        }
+                    //@todo: gestire qua i pacchetti.
+                    if( Program.Server.OnlineConnections.TryGetValue( state.workSocket.RemoteEndPoint.ToString(), out Connection val ) ) {
+                        var response = ClassChooser.Handle( val.Context, content, Program.Server.Sessions, Program.Server.OnlineConnections );
+                        Send(handler, response);
+                    } else {
+                        Console.WriteLine( $"Nessun client connesso dall'ip {state.workSocket.RemoteEndPoint}" );
                     }
-                    content = Console.ReadLine();
-                }
+                } 
+            }
+            catch( Exception ex ) {
+                Console.WriteLine( ex.Message );
 
-
-                if (content.IndexOf("<EOF>") > -1) {  
-                    // All the data has been read from the   
-                    // client. Display it on the console.  
-                    Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",  
-                        content.Length, content );  
-                    // Echo the data back to the client.  
-                    Send(handler, content);  
-                } else {  
-                    // Not all data received. Get more.  
-                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,  
-                    new AsyncCallback(ReadCallback), state);  
-                }  
-            }  
+                //@todo rimuovere qui la sessione
+            }
+             
         }  
 
         private static void Send(Socket handler, String data) {  
-            // Convert the string data to byte data using ASCII encoding.  
+            // Convert the string data to byte data using ASCII encoding.
             byte[] byteData = Encoding.ASCII.GetBytes(data);  
 
             // Begin sending the data to the remote device.  
             handler.BeginSend(byteData, 0, byteData.Length, 0,  
-                new AsyncCallback(SendCallback), handler);  
+                new AsyncCallback(SendCallback), handler); 
+            
+            try {
+                StateObject state = new StateObject {workSocket = handler};
+                handler.BeginReceive( state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback( ReadCallback ), state );
+            }
+            catch( Exception ex ) {
+                Console.WriteLine( ex.Message );
+            }
         }  
 
         private static void SendCallback(IAsyncResult ar) {  
@@ -262,121 +183,13 @@ namespace Server
                 Socket handler = (Socket) ar.AsyncState;  
 
                 // Complete sending the data to the remote device.  
-                int bytesSent = handler.EndSend(ar);  
-                Console.WriteLine("Sent {0} bytes to client.", bytesSent);  
+                int bytesSent = handler.EndSend( ar );  
 
-                handler.Shutdown(SocketShutdown.Both);  
-                handler.Close();  
+                Console.WriteLine("Sent {0} bytes to client.", bytesSent);  
 
             } catch (Exception e) {  
                 Console.WriteLine(e.ToString());  
             }  
         }  
-
-
-        public static void StartListening()
-        {
-            aServer = new SocketServer(Convert.ToInt16(Program.Configuration.Port), IPAddress.Parse( Program.Configuration.Host ))
-                      {
-                          OnReceive = OnReceive,
-                          OnSend = OnSend,
-                          OnConnected = OnConnect,
-                          OnDisconnect = OnDisconnect,
-                          TimeOut = new TimeSpan(0, 5, 0)
-                      };
-            aServer.Start();
-
-            Utils.mysqlDB = new DB( DatabaseType.MySql, Program.Configuration );
-
-            // Accept commands on the console and keep it alive
-            var command = string.Empty;
-            while (command != "exit")
-            {
-                if (command != "")
-                {
-                    CommandHandlers cmd = new CommandHandlers();
-                    Type type = cmd.GetType();
-                    MethodInfo metodo = type.GetMethod(Utility.ToTitleCase(command));
-                    switch (command)
-                    {
-                        case "fakemessage":
-                        case "gsm":
-                        case "online":
-                            metodo.Invoke(cmd, new object[]{ Sessions });
-                            break;
-                        case "serverinfo":
-                            metodo.Invoke(cmd, new object[]{ aServer });
-                            break;
-                        case "commands":
-                        case "createaccount":
-                        case "clearconsole":
-                            metodo.Invoke( cmd, null );
-                            break;
-                        default:
-                            logger.Warn($"Unknown command \"{command}\".");
-                            break;
-                    }
-                }
-                command = Console.ReadLine();
-            }
-
-            aServer.Stop();
-            Environment.Exit(0);
-        }
-
-        public static void OnConnect(UserContext aContext)
-        {
-
-            logger.Info("Client Connected From : " + aContext.ClientAddress);
-
-            // Create a new Connection Object to save client context information
-            var conn = new Connection { Context = aContext, IP = aContext.ClientAddress };
-
-            // Add a connection Object to thread-safe collection
-            OnlineConnections.TryAdd(aContext.ClientAddress.ToString(), conn);
-            Sessions.Add(new Session(0, null, aContext));
-        }
-        public static void OnReceive(UserContext aContext)
-        {
-            try
-            {
-                ClassChooser.Handle(aContext, Sessions, OnlineConnections);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-        }
-
-        public static void OnSend(UserContext aContext)
-        {
-            logger.Info("Data Sent To : " + aContext.ClientAddress);
-        }
-		
-        public static void OnDisconnect(UserContext aContext)
-        {
-            logger.Info("Client Disconnected : " + aContext.ClientAddress);
-            Sessions = Sessions;
-            // Remove the connection Object from the thread-safe collection
-            Connection conn;
-            OnlineConnections.TryRemove(aContext.ClientAddress.ToString(), out conn);
-            if (conn != null) //E' riuscito a rimuovere la connessione.
-            {
-                Sessions.Remove(Sessions.First(s =>
-                                               {
-                                                   bool res = (s.context.ClientAddress == conn.IP);
-                                                   if (res)
-                                                   {
-                                                       if(s.GetID() > 0)
-                                                           AccountMgr.SetOffline(s.user);   
-                                                   }
-                                                   return res;
-                                               }));
-                // Dispose timer to stop sending messages to the client.
-                conn.timer.Dispose();
-            }
-            
-        }
 	}  
 }

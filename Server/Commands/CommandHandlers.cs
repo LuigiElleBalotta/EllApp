@@ -19,15 +19,15 @@ namespace Server.Commands
 			{
 				Console.WriteLine("User ID: " + session.user.idAccount);
 				Console.WriteLine("User Name: " + session.user.username);
-				Console.WriteLine("Connected from: " + session.context.ClientAddress);
+				Console.WriteLine("Connected from: " + session.context.Socket.RemoteEndPoint.Serialize().ToString());
 				Console.WriteLine("-------------------------------------");
 			}
 		}
 
-		public void Serverinfo(SocketServer aServer)
+		public void Serverinfo(ServerContext aServer)
 		{
-            Console.WriteLine("Listening on: " + aServer.ListenAddress);
-            Console.WriteLine("Port: " + aServer.Port);
+            Console.WriteLine("Listening on: " + aServer.IPAddress);
+            Console.WriteLine("Is connected: " + aServer.Socket.Connected );
 		}
 
 		public void Gsm(List<Session> sessions) //Global Server Message
