@@ -1,5 +1,4 @@
-﻿using MySql.Data.MySqlClient;
-using Server.definitions;
+﻿using Server.definitions;
 
 namespace Server.Classes
 {

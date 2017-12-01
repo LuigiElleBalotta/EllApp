@@ -1,7 +1,6 @@
 ﻿using System;
 using Lappa.ORM;
 using Lappa.ORM.Constants;
-using MySql.Data.MySqlClient;
 
 namespace Server.Classes
 {

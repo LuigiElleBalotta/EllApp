@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Server.Network.Packets.Client
+﻿namespace Server.Network.Packets.Client
 {
     public class LoginPacket
     {

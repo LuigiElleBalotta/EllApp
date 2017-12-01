@@ -1,5 +1,4 @@
 ﻿using Lappa.ORM;
-using MySql.Data.MySqlClient;
 using Server.definitions;
 
 namespace Server.Classes

@@ -3,16 +3,15 @@ using System.Linq;
 using Server.Classes;
 using Server.definitions;
 using NLog;
-using Server.Network.Alchemy.Classes;
 
 namespace Server.Network.Handlers
 {
 	public class MessageHandler
 	{
 		private static Logger logger = LogManager.GetCurrentClassLogger();
-		public void HandleMessage(UserContext aContext, dynamic obj, List<Session> sessions)
+		public void HandleMessage(ClientContext aContext, dynamic obj, List<Session> sessions)
 		{
-			logger.Info("MESSAGE PACKET FROM " + aContext.ClientAddress);
+			logger.Info("MESSAGE PACKET FROM " + aContext.IPAddress);
 			string messagecontent = obj.Message;
 			ChatType toType = obj.ToType;
 			int from = obj.From;
